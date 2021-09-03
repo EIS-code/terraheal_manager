@@ -17,10 +17,10 @@ const msiCreator = new MSICreator({
     outputDirectory: OUT_DIR,
 
     // Configure metadata
-    description: TERRAHEAL + " " + MANAGER,
-    exe: MANAGER + 'Exe',
-    name: MANAGER,
-    manufacturer: EVOLUTION_IT_SOLUTIONS,
+    description: 'This is Manager Admin',
+    exe: 'ManagerExe',
+    name: 'Manager',
+    manufacturer: 'Evolution IT Solutions',
     version: '1.0.0',
 
     // Configure installer User Interface
