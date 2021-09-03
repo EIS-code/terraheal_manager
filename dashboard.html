@@ -1,0 +1,390 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/dashboard.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">{{DASHBOARD}}</div>
+                <div class="top-right">
+                    <div class="search-top">
+                        <input type="text" placeholder="Search"/>
+                        <button type="submit"><img src="images/search.png" alt="search"/></button>
+                    </div>
+                </div>
+            </div>
+            <div class="midd-center-content">
+                <div class="catop-second">
+                    <div class="tab-common">
+                        <ul id="ca-top-tab" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                            <li><a class="active" href="#salesinsight" data-toggle="tab">{{SALES}} {{INSIGHT}}</a></li>
+                            <li><a href="#thinsight" data-toggle="tab">{{THERAPIST}} {{INSIGHT}}</a></li>
+                            <li><a href="#custinsight" data-toggle="tab">{{CUSTOMER}} {{INSIGHT}}</a></li>
+                            <li><a href="#calndr" data-toggle="tab">{{CALENDAR}}</a></li>
+                            <li><a href="#dtill" data-toggle="tab" onclick="location.href='manager-daily-till.html';">{{DAILY_TILL}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content md-cont">
+                    <div role="tabpanel" class="tab-pane fade in active" id="salesinsight">
+                        <div class="si-top">
+                            <div class="d-flex flex-wrap">
+                                <div class="si-in"> <span class="sin-value" id="total-bookings">0</span>
+                                    <label>{{BOOKINGS}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{TOTAL_EARNINGS}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{PAYMENT_RECEIVED}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{UNPAID_AMOUNT}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{TOTAL_EXPENSES}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value" id="cancelled-bookings">0</span>
+                                    <label>{{CANCELLED}} {{BOOKINGS}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{CANCELLED}} {{BOOKINGS}} {{VALUE}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{VOUCHER_EARNINGS}}</label>
+                                </div>
+                                <div class="si-in"> <span class="sin-value">&#8364; 0</span>
+                                    <label>{{PACKS_EARNINGS}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="si-middle">
+                            <div class="d-flex justify-content-between si-int">
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{SERVICES}}</div>
+                                    <div class="sin-cont">
+                                        <div class="chart-area"> <img src="images/service-chart.jpg" alt=""/> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{PAYMENT_MODES}}</div>
+                                    <div class="sin-cont no-padd">
+                                        <div class="p-mode"> <span>{{CASH}}</span> <span>&#8364; 500</span> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{CANCELLED}} {{BOOKINGS}}</div>
+                                    <div class="sin-cont no-padd">
+                                        <ul class="fley">
+                                            <li>&#8364; 0<span>{{ESTIMATED_EARNINGS}}</span></li>
+                                            <li>&#8364; 0<span>{{REALIZED_EARNINGS}}</span></li>
+                                            <li>0<span>{{PENDING}} {{BOOKINGS}}</span></li>
+                                        </ul>
+                                        <div class="chart-area"> <img src="images/book-chart.jpg" alt=""/> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{BOOKINGS}} {{TYPES}}</div>
+                                    <div class="sin-cont">
+                                        <div class="chart-area"> <img src="images/service-chart.jpg" alt=""/> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">
+                                        {{UPCOMING_APPOINTMENTS}}
+
+                                        <select class="filter-week-month" data-title="upcoming">
+                                            <option>{{LAST_WEEK}}</option>
+                                            <option>{{LAST_MONTH}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="sin-cont no-padd">
+                                        <ul class="fley">
+                                            <li><span id="total-upcoming-appointments">0</span><span>{{TOTAL}}</span></li>
+                                            <li><span id="total-upcoming-center">0</span><span>{{CENTER_APPOINTMENTS}}</span></li>
+                                            <li><span id="total-upcoming-home-hotel-appointments">0</span><span>{{HOME_HOTEL_APPOINTMENTS}}</span></li>
+                                        </ul>
+                                        <div class="chart-area"> <canvas id="upcoming-appointments"></canvas> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{TODAYS_APPOINTMENTS}}</div>
+                                    <div class="sin-cont no-padd">
+                                        <ul class="fley">
+                                            <li><span id="total-today-appointments">0</span><span>{{TOTAL}}</span></li>
+                                            <li><span id="total-today-center">0</span><span>{{CENTER_APPOINTMENTS}}</span></li>
+                                            <li><span id="total-today-home-hotel-appointments">0</span><span>{{HOME_HOTEL_APPOINTMENTS}}</span></li>
+                                        </ul>
+                                        <div class="chart-area"> <canvas id="today-appointments"></canvas> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">
+                                        {{TOP_MASSAGES}}
+
+                                        <select class="filter-week-month" data-title="top-massages">
+                                            <option>{{LAST_WEEK}}</option>
+                                            <option>{{LAST_MONTH}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="sin-cont no-padd">
+                                        <div class="chart-area"> <canvas id="top-massages"></canvas> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">
+                                        {{TOP_THERAPIES}}
+
+                                        <select class="filter-week-month" data-title="top-therapies">
+                                            <option>{{LAST_WEEK}}</option>
+                                            <option>{{LAST_MONTH}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="sin-cont no-padd">
+                                        <div class="chart-area"> <canvas id="top-therapies"></canvas> </div>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title"></div>
+                                    <div class="sin-cont no-padd">
+                                        <table width="100%" cellpadding="0" cellspacing="0" id="massages-table">
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title"></div>
+                                    <div class="sin-cont no-padd">
+                                        <table width="100%" cellpadding="0" cellspacing="0" id="therapies-table">
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <div class="sm-midd">
+                                    <div class="sin-title">{{BOOKING_ACTIVITY_CENTER}}</div>
+
+                                    <div class="sin-cont">
+                                        <ul class="lnt-list">
+                                            <li>
+                                                <span class="int-val comp">{{COMPLETED}}</span>
+
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span><span><img src="images/gsmall.png" alt=""/>Prithvi</span></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="int-val cance">{{CANCELLED}}</span>
+
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="int-val">{{NEW}}</span>
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span><span><img src="images/gsmall.png" alt=""/>Prithvi</span></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sm-midd">
+                                    <div class="sin-title">{{BOOKING_ACTIVITY_HOME_HOTEL_VISITS}}</div>
+                                    <div class="sin-cont">
+                                        <ul class="lnt-list">
+                                            <li>
+                                                <span class="int-val comp">{{COMPLETED}}</span>
+
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span><span><img src="images/gsmall.png" alt=""/>Prithvi</span></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="int-val cance">{{CANCELLED}}</span>
+
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span class="int-val">{{NEW}}</span>
+
+                                                <div class="lnt-right">
+                                                    <p>Thai Yoga Massage of Sanjay Gupta</p>
+                                                    <div class="lnt-btm">5 Aug. 2020 at 1:15PM<span><i class="far fa-clock"></i>30 min</span><span><img src="images/gsmall.png" alt=""/>Prithvi</span></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="thinsight">
+                        <div class="d-flex justify-content-between si-int">
+                            <div class="sm-midd">
+                                <div class="sin-title">{{STAFF_PERFORMANCE}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <div class="chart-area"> <img src="images/gth1.jpg" alt=""/> </div>
+                                </div>
+                            </div>
+                            <div class="sm-midd">
+                                <div class="sin-title">{{TOP_PERFORMER}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <div class="rank-main">
+                                        <div class="rank-list">
+                                            <figure><img src="images/trophy1.png" alt="t1"/></figure>
+                                            <span class="r-name">Merlin</span> <span class="price-name">&#8364; 450</span> 
+                                        </div>
+                                        <div class="rank-list">
+                                            <figure><img src="images/trophy2.png" alt="t1"/></figure>
+                                            <span class="r-name">Rita</span> <span class="price-name">&#8364; 700</span> 
+                                        </div>
+                                        <div class="rank-list">
+                                            <figure><img src="images/trophy3.png" alt="t1"/></figure>
+                                            <span class="r-name">John</span> <span class="price-name">&#8364; 450</span> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>{{BY_CLICKING_THE_STAFF_NAME}}</p>
+
+                        <div class="bottom-filt">
+                            <select>
+                                <option>{{TODAY}}</option>
+                                <option>{{YESTERDAY}}</option>
+                                <option>{{CURRENT_MONTH}}</option>
+                                <option>{{LAST_7_DAYS}}</option>
+                                <option>{{LAST_14_DAYS}}</option>
+                                <option>{{LAST_30_DAYS}}</option>
+                                <option>{{CUSTOM}}</option>
+                            </select>
+                            <table class="norm-blue" width="100%" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>{{NAME}}</th>
+                                        <th>{{MASSAGE}}</th>
+                                        <th>{{THERAPIES}}</th>
+                                        <th>{{PERCENTAGE_AMOUNT}}</th>
+                                        <th>{{TIPS}}</th>
+                                        <th>{{PAID}}</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rita</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td>€ 20</td>
+                                        <td>€ 66<span><img src="images/edit-icon.png" alt=""></span></td>
+                                        <td>€ 20</td>
+                                        <td><img src="images/money-icon.png" alt=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>John</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td>€ 20</td>
+                                        <td>€ 66<span><img src="images/edit-icon.png" alt=""></span></td>
+                                        <td>€ 20</td>
+                                        <td><img src="images/money-icon1.png" alt=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rita</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td>€ 20</td>
+                                        <td>€ 66<span><img src="images/edit-icon.png" alt=""></span></td>
+                                        <td>€ 20</td>
+                                        <td><img src="images/money-icon1.png" alt=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rita</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td class="limit">€ 61, € 66, € 60, € 61, € 66, € 60, € 61, € 66, € 60</td>
+                                        <td>€ 20</td>
+                                        <td>€ 66<span><img src="images/edit-icon.png" alt=""></span></td>
+                                        <td>€ 20</td>
+                                        <td><img src="images/money-icon1.png" alt=""/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="custinsight">
+                        <div class="d-flex justify-content-between si-int">
+                            <div class="sm-midd">
+                                <div class="sin-title">{{REVENUE_BY_GENDER}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <div class="chart-area"> <img src="images/sales-graph.jpg" alt=""/> </div>
+                                </div>
+                            </div>
+                            <div class="sm-midd">
+                                <div class="sin-title">{{TOTAL_VOUCHERS}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <ul class="fley">
+                                        <li>€ 0<span>{{TOTAL_SOLD}}</span></li>
+                                        <li>€ 0<span>{{TOTAL_USED}}</span></li>
+                                        <li>0<span>{{TOTAL_UNUSED}}</span></li>
+                                    </ul>
+                                    <div class="chart-area"> <img src="images/sales-graph1.jpg" alt=""/> </div>
+                                </div>
+                            </div>
+                            <div class="sm-midd">
+                                <div class="sin-title">{{TOTAL_PACKS}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <ul class="fley">
+                                        <li>€ 0<span>{{TOTAL_SOLD}}</span></li>
+                                        <li>€ 0<span>{{TOTAL_USED}}</span></li>
+                                        <li>0<span>{{TOTAL_UNUSED}}</span></li>
+                                    </ul>
+                                    <div class="chart-area"> <img src="images/sales-graph2.jpg" alt=""/> </div>
+                                </div>
+                            </div>
+                            <div class="sm-midd">
+                                <div class="sin-title">{{ACTIVE_DEFECTED_CUSTOMERS}}</div>
+
+                                <div class="sin-cont no-padd">
+                                    <div class="chart-area"> <img src="images/sales-graph3.jpg" alt=""/> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="calndr">{{CALENDAR_HERE}}</div>
+                    <div role="tabpanel" class="tab-pane fade" id="dtill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

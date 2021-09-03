@@ -1,0 +1,5 @@
+.env
+node_modules/
+/export-exe.bat
+ShopExe-win32-x64/
+windows_installer/

@@ -1,0 +1,39 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div id='heading'>").prependTo(".main-login-page").load("heading.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/login.js" async></script>
+
+<body class="hm-screen" style="display: none;">
+    <section class="shop-main-section">
+        <div class="main-login-page">
+            <div class="main-login">
+                <div class="login-logo"><img src="images/logo.png" alt=""/></div>
+                <div class="login-container">
+                    <div class="login-box">
+                        <p>{{LOGIN_TO_MANAGER}}</p>
+
+                        <form class="main-log">
+                            <input type="email" placeholder="{{EMAIL}}" autofocus="" id="user_name" />
+                            <input type="password" placeholder="{{PASSWORD}}" id="password" />
+
+                            <button class="login" type="button">{{LOGIN}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

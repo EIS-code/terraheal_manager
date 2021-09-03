@@ -1,0 +1,297 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $(".language-bar").load("language-bar.html", function() {
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/waiting-list.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side">
+            <div class="right-tp justify-content-end">
+                <div class="top-right">
+                    <div class="language-bar">
+                        
+                    </div>
+                    <div class="timer">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Waiting List</div>
+                <div class="top-right">
+                    <div class="search-top">
+                        <input type="text" placeholder="Search">
+                        <button type="submit"><img src="images/search.png" alt="search"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="top-in-menu d-flex justify-content-between">
+                <div class="in-left">
+                    <div class="tab-common">
+                        <ul id="waiting-tab" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                            <li><a class="active" href="#center" data-toggle="tab">Center</a></li>
+                            <li><a href="#home" data-toggle="tab">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="in-right myMenu">
+                    <ul class="d-flex">
+                        <li>
+                            <a href="javascript:void(0)">Book Now</a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0)">Now</a></li>
+                                <li><a href="javascript:void(0)">Later</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Booking List</a>
+                            <ul class="submenu">
+                                <li><a href="manager-make-booking.html">Future&nbsp;<i class="far fa-arrow-alt-circle-up"></i></a></li>
+                                <li><a href="javascript:void(0)">Past&nbsp;<i class="far fa-arrow-alt-circle-down"></i></a></li>
+                                <li><a href="javascript:void(0)">Canceled&nbsp;<i class="fas fa-trash-alt"></i></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="javascript:void(0)">Booking Overview</a></li>
+                        <li><a href="javascript:void(0)">Room Occupations</a></li>
+                        <li><a href="manager-timetable.html">Time Table Therapist</a></li>
+                        <li><a href="manager-timetable.html">Receptionist</a></li>
+                        <li><a href="javascript:void(0)">Services</a></li>
+                        <li>
+                            <a href="javascript:void(0)">Clients</a>
+                            <ul class="submenu">
+                                <li><a href="javascript:void(0)">List Clients</a></li>
+                                <li><a href="javascript:void(0)">New Client</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="waiting-content-sec">
+                <div class="tab-content cmn-cont">
+                    <div role="tabpanel" class="tab-pane fade in active" id="center">
+                        <div class="title">Ongoing Massages</div>
+                        <div class="table-content h-7">
+                            <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Client</th>
+                                        <th>Service</th>
+                                        <th>Time</th>
+                                        <th class="text-center">Therapist</th>
+                                        <th class="text-center">Room</th>
+                                        <th class="text-center">Booked</th>
+                                        <th>Payment</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">Timer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="pair">
+                                        <td><span class="user-icon"><img src="images/single-user.png" alt=""/></span>Test - 1<span class="bib"><img src="images/bib.png" alt=""/></span></td>
+                                        <td>Hot Yoga Massage (30 Min)</td>
+                                        <td>10:11 -13:41</td>
+                                        <td class="text-center"><span class="th-sp orange">Rita</span></td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">App</td>
+                                        <td>
+                                            <span class="pay-sp">
+                                                &#8364; 661
+                                                <div class="payble">
+                                                    <table>
+                                                        <tr>
+                                                            <td>Total Payble</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Amount Paid</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Remaining Amount</td>
+                                                            <td>&#8364; 000</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </span>
+                                            <i class="fas fa-stop-circle"></i><i class="fas fa-arrow-alt-circle-down"></i>
+                                        </td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#notes-modal"><i class="fas fa-sticky-note"></i></a></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#detail-modal"><i class="fas fa-eye"></i></a></td>
+                                        <td class="text-center">10:11</td>
+                                    </tr>
+                                    <tr class="pair">
+                                        <td><span class="user-icon"><img src="images/single-user.png" alt=""/></span>Test - 1<span class="bib"><img src="images/bib.png" alt=""/></span></td>
+                                        <td>Hot Yoga Massage (30 Min)</td>
+                                        <td>10:11 -13:41</td>
+                                        <td class="text-center"><span class="th-sp orange">Rita</span></td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">App</td>
+                                        <td>
+                                            <span class="pay-sp">
+                                                &#8364; 661
+                                                <div class="payble">
+                                                    <table>
+                                                        <tr>
+                                                            <td>Total Payble</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Amount Paid</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Remaining Amount</td>
+                                                            <td>&#8364; 000</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </span>
+                                            <i class="fas fa-stop-circle"></i><i class="fas fa-arrow-alt-circle-down"></i>
+                                        </td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#notes-modal"><i class="fas fa-sticky-note"></i></a></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#detail-modal"><i class="fas fa-eye"></i></a></td>
+                                        <td class="text-center">10:11</td>
+                                    </tr>
+                                    <tr class="pair">
+                                        <td><span class="user-icon"><img src="images/single-user.png" alt=""/></span>Test - 1<span class="bib"><img src="images/bib.png" alt=""/></span></td>
+                                        <td>Hot Yoga Massage (30 Min)</td>
+                                        <td>10:11 -13:41</td>
+                                        <td class="text-center"><span class="th-sp orange">Rita</span></td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">App</td>
+                                        <td>
+                                            <span class="pay-sp">
+                                                &#8364; 661
+                                                <div class="payble">
+                                                    <table>
+                                                        <tr>
+                                                            <td>Total Payble</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Amount Paid</td>
+                                                            <td>&#8364; 661</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Remaining Amount</td>
+                                                            <td>&#8364; 000</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </span>
+                                            <i class="fas fa-stop-circle"></i><i class="fas fa-arrow-alt-circle-down"></i>
+                                        </td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#notes-modal"><i class="fas fa-sticky-note"></i></a></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#detail-modal"><i class="fas fa-eye"></i></a></td>
+                                        <td class="text-center">10:11</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="title">Waiting List</div>
+                        <div class="table-content h-7">
+                            <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Client</th>
+                                        <th>
+                                            <ul class="dropDownMenu" id="service">
+                                                <li class="has-children">
+                                                    <a href="#">Service</a>
+                                                    <ul style="display: none;">
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="0"><label>Massages</label></li>
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="1"><label>Therapies</label></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </th>
+                                        <th>Time</th>
+                                        <th class="text-center">
+                                            <ul class="dropDownMenu" id="service">
+                                                <li class="has-children">
+                                                    <a href="#">Therapist</a>
+                                                    <ul style="display: none;">
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="0"><label>Therapist - 01</label></li>
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="1"><label>Therapist - 02</label></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </th>
+                                        <th class="text-center">
+                                            <ul class="dropDownMenu" id="service">
+                                                <li class="has-children">
+                                                    <a href="#">Room</a>
+                                                    <ul style="display: none;">
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="0"><label>Room - 01</label></li>
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="1"><label>Room - 02</label></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </th>
+                                        <th class="text-center">Booked</th>
+                                        <th>
+                                            <ul class="dropDownMenu" id="service">
+                                                <li class="has-children">
+                                                    <a href="#">Payment</a>
+                                                    <ul style="display: none;">
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="0"><label>Paid</label></li>
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="1"><label>Partially</label></li>
+                                                        <li><input type="radio" name="filter_services" class="header_filter" value="1"><label>Pending</label></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">&nbsp;</th>
+                                        <th class="text-center">Confirm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="user-icon"><img src="images/single-user.png" alt=""/></span>Test - 1<span class="bib"><img src="images/bib.png" alt=""/></span></td>
+                                        <td>Hot Yoga Massage (30 Min)</td>
+                                        <td>10:11 -13:41</td>
+                                        <td class="text-center"><img src="images/girl.png" alt=""/></td>
+                                        <td class="text-center">15</td>
+                                        <td class="text-center">App</td>
+                                        <td><span class="pay-sp">&#8364; 661</span><i class="fas fa-play-circle"></i></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#notes-modal"><i class="fas fa-sticky-note"></i></a></td>
+                                        <td class="text-center"><i class="fas fa-edit"></i></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#delete-modal"><i class="far fa-trash-alt"></i></a></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#detail-modal"><i class="fas fa-eye"></i></a></td>
+                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#print-modal"><i class="fas fa-print"></i></a></td>
+                                        <td>
+                                            <span class="confirm">
+                                                <input type="checkbox" name="confirm_booking" class="confirm_booking" value="167" data-type="1"><label></label>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="home">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

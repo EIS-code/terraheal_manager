@@ -1,0 +1,255 @@
+
+    <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+
+    <div class="right-panel">
+        <div class="top-right">
+            <div class="language-bar">
+                
+            </div>
+            <div class="timer">
+                
+            </div>
+        </div>
+        <div class="panel-top d-flex justify-content-between">
+            <div class="announce" data-toggle="modal" data-target="#mannounce">
+                <img src="images/announce.png" alt="announce"/>
+                <span class="counts" id="news-count">0</span>
+            </div>
+            <div class="profile"><img src="images/profile.png" alt="profile"/></div>
+            <div class="notification" data-toggle="modal" data-target="#notify-model">
+                <img src="images/notification.png" alt="notification"/>
+                <span class="counts">12</span>
+            </div>
+        </div>
+        <div class="right-counts d-flex">
+            <div class="rt-in">
+                <h4 id="massages-count">0</h4>
+                <figure><img src="images/rt1.png" alt=""/></figure>
+                <span>{{MASSAGES}}</span> 
+            </div>
+            <div class="rt-in">
+                <h4 id="therapies-count">0</h4>
+                <figure><img src="images/rt2.png" alt=""/></figure>
+                <span>{{THERAPIES}}</span> 
+            </div>
+            <div class="rt-in">
+                <h4 id="vouchers-count">0</h4>
+                <span>{{VOUCHERS}}</span> <a href="#" class="v-all cmn-btn">{{VIEW_ALL}}</a> 
+            </div>
+            <div class="rt-in">
+                <h4 id="packs-count">0</h4>
+                <span>{{PACKS}}</span> <a href="#" class="v-all cmn-btn">{{VIEW_ALL}}</a> 
+            </div>
+        </div>
+        <div class="righ-graph">
+            <div class="d-flex justify-content-between">
+                {{REVIEWS}}
+
+                <select class="filter-week-month">
+                    <option value="0">{{LAST_WEEK}}</option>
+                    <option value="1">{{LAST_MONTH}}</option>
+                </select>
+            </div>
+
+            <div class="graph-box" id="reviews-graph-div"> <canvas id="total-reviews"></canvas> </div>
+
+            <p>
+                <label id="label-last-week" class="disp-none">{{LAST_WEEK}}</label>
+                <label id="label-last-month" class="disp-none">{{LAST_MONTH}}</label>
+
+                <span id="last-week-reviews">0%</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Announce Modal -->
+    <div class="modal fade" id="mannounce" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">{{NEWS}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="top-select-rd" style="display: inline-flex;">
+                        <select id="news-filters">
+                            <option value="0">{{TODAY}}</option>
+                            <option value="1">{{YESTERDAY}}</option>
+                            <option value="2">{{THIS_WEEK}}</option>
+                            <option value="3">{{CURRENT_MONTH}}</option>
+                            <option value="4">{{LAST_7_DAYS}}</option>
+                            <option value="5">{{LAST_14_DAYS}}</option>
+                            <option value="6">{{LAST_30_DAYS}}</option>
+                            <option value="7">{{CUSTOM}}</option>
+                        </select>
+                        <div id="news-filter-date" class="disp-none">
+                            <input type="date" id="news-filter-date-input" />
+                            <button type="button" class="btn btn-primary do-news-get">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ann-modal-cont" id="news-listing">
+                        
+                    </div>
+                    <br />
+                    <div class="text-center m-mode"> <a class="cmn-btn" href="#" data-toggle="modal" data-target="#medit">&plus; {{CREATE}}</a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- news edit Modal -->
+    <div class="modal fade" id="medit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">{{NEWS}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="news-modal-cont">
+                        <div class="nw-md-grp">
+                            <label>{{TITLE}}</label>
+                            <input type="text" id="news-title">
+                        </div>
+                        <div class="nw-md-grp">
+                            <label>{{CONTENT}}</label>
+                            <textarea id="news-descriptions"></textarea>
+                        </div>
+                        <div class="nw-md-grp">
+                            <button class="cmn-btn">{{PUBLISH}}</button>
+                            <button class="cmn-btn cancl" type="button" data-dismiss="modal" aria-label="Close">{{CANCEL}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- notification Modal -->
+    <div class="modal fade" id="notify-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">{{NOTIFICATIONS}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="notify-list">
+                        <ul>
+                            <li>
+                                <figure> <img src="images/placeholder.png" alt="notify"> </figure>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+                                <span class="note-date">Today:3.15PM</span> 
+                            </li>
+                            <li>
+                                <figure> <img src="images/placeholder.png" alt="notify"> </figure>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took </p>
+                                <span class="note-date">Today:3.15PM</span> 
+                            </li>
+                            <li>
+                                <figure> <img src="images/placeholder.png" alt="notify"> </figure>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+                                <span class="note-date">Today:3.15PM</span> 
+                            </li>
+                            <li>
+                                <figure> <img src="images/placeholder.png" alt="notify"> </figure>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+                                <span class="note-date">Today:3.15PM</span> 
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- news eye Modal -->
+    <div class="modal fade" id="meye" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{NEWS}}</h4>
+                    <div class="tab-common">
+                        <ul id="vouchertabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                            <li><a class="active" href="#read" data-toggle="tab"><i class="fas fa-eye"></i> {{READ}}</a></li>
+                            <li><a href="#unread" data-toggle="tab"><i class="far fa-eye-slash"></i> {{UNREAD}}</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="ann-modal-cont">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="read">
+                                <div class="ann-mode">
+                                    <div class="ann-left">
+                                        <h3>Lorem Ipsum<span><i class="fas fa-clock"></i>01 Jan 2021</span></h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod.</p>
+                                    </div>
+                                    <div class="ann-right">
+                                        <ul>
+                                            <li><a href="#" data-toggle="modal" data-target="#medit"><i class="fas fa-edit"></i></a><a href="#"><i class="far fa-trash-alt"></i></a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#meye"><i class="fas fa-eye"></i></a><span class="an-val">08</span></li>
+                                            <li><a href="#"><i class="far fa-eye-slash"></i></a><span class="an-val">15</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="an-view-cont">
+                                    <ul>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i1.png" alt=""> </div>
+                                                <span class="name">Rita</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i2.png" alt=""> </div>
+                                                <span class="name">Merlin</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i3.png" alt=""> </div>
+                                                <span class="name">John</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i4.png" alt=""> </div>
+                                                <span class="name">Rita</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i5.png" alt=""> </div>
+                                                <span class="name">Merlin</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i6.png" alt=""> </div>
+                                                <span class="name">John</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i1.png" alt=""> </div>
+                                                <span class="name">Rita</span> 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="sl-cont">
+                                                <div class="th-image"> <img src="images/i2.png" alt=""> </div>
+                                                <span class="name">Merlin</span>
+                                                <div class="avail">Now</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="unread"> {{UNREAD}} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
