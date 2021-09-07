@@ -86,8 +86,17 @@ function currentUTCTimestamps()
     return +new Date();
 }
 
+function hideAllAlerts()
+{
+    $('.alert-primary, .alert-secondary, .alert-success, .alert-danger, .alert-warning, .alert-info, .alert-light, .alert-dark').addClass('d-none');
+
+    $('#confirm').modal('hide');
+}
+
 function showError(errorMsg)
 {
+    hideAllAlerts();
+
     $('.alert-danger').removeClass('d-none').html(errorMsg);
 
     $('#alert').modal('show');
@@ -95,6 +104,8 @@ function showError(errorMsg)
 
 function showSuccess(successMsg)
 {
+    hideAllAlerts();
+
     $('.alert-success').removeClass('d-none').html(successMsg);
 
     $('#alert').modal('show');
@@ -306,6 +317,24 @@ $(function() {
 
 });
 
+function getUrl(urlString, param)
+{
+    param = param.replace(/[\[\]]/g, '\\$&');
+
+    let regex   = new RegExp('[?&]' + param + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(urlString);
+
+    if (!results) {
+        return null;
+    }
+
+    if (!results[2]) {
+        return '';
+    }
+
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 $(document).ready(function(){
 	$(".mover").click(function() {
 		$('html,body').animate({                                                         
@@ -389,9 +418,49 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    $('.backlink').click(function(){
-        parent.history.back();
-        return false;
+    $(document).find('.backlink').click(function() {
+        let backFile = getUrl(window.location.href, 'backfile');
+
+        if (!empty(backFile)) {
+            window.location.href = backFile;
+        } else {
+            parent.history.back();
+        }
+
+        // return false;
+    });
+
+    $(document).find('#history-push').click(function() {
+        let self = $(this),
+            href = self.data('href');
+
+        window.history.pushState({urlPath: '/' + href}, "", href);
+
+        window.location.reload();
+    });
+
+    // Alerts
+    $(document).find('#alert').on('hidden.bs.modal', function () {
+        $('.alert-primary').html('').addClass('d-none');
+        $('.alert-secondary').html('').addClass('d-none');
+        $('.alert-success').html('').addClass('d-none');
+        $('.alert-danger').html('').addClass('d-none');
+        $('.alert-warning').html('').addClass('d-none');
+        $('.alert-info').html('').addClass('d-none');
+        $('.alert-light').html('').addClass('d-none');
+        $('.alert-dark').html('').addClass('d-none');
+    });
+
+    // Confirms
+    var triggeredElement = null;
+    $(document).on('shown.bs.modal', '#confirm', function (event) {
+         triggeredElement = $(event.relatedTarget);
+    });
+
+    $(document).find(".unconfirmed").on("click", function() {
+        triggeredElement = $(this).parents('#confirm').data('element');
+
+        triggeredElement.prop("checked", triggeredElement.data('default'));
     });
 });
 

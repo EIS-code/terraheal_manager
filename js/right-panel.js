@@ -1,7 +1,7 @@
-import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS } from './networkconst.js';
+import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS, DASHBOARD_UPDATE_NEWS, DASHBOARD_ADD_NEWS } from './networkconst.js';
 import { Post, redirect, SUCCESS_CODE } from './networkconst.js';
 
-var charts = [];
+var charts = [], ckEditor = [];
 
 window.addEventListener("load", function() {
     getData();
@@ -31,7 +31,28 @@ window.addEventListener("load", function() {
 
     $(".do-news-get").on('click', getNews);
 
-    CKEDITOR.replace("news-descriptions", {
+    $("#news-update").on('click', updateNews);
+
+    $("#news-create").on('click', createNews);
+
+    $('#mcreate').on('show.bs.modal', function (e) {
+        let self = $(this);
+
+        self.find("#news-title-create").val("");
+        self.find("#news-descriptions-create").empty();
+
+        initCKEditor('news-descriptions-create');
+
+        ckEditor['news-descriptions-create'].setData("");
+    });
+});
+
+function initCKEditor(id) {
+    if (ckEditor[id]) {
+        ckEditor[id].destroy();
+    }
+
+    ckEditor[id] = CKEDITOR.replace(id, {
         toolbarGroups: [
             {
                 "name": "basicstyles",
@@ -45,7 +66,7 @@ window.addEventListener("load", function() {
         // Remove the redundant buttons from toolbar groups defined above.
         removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
     });
-});
+}
 
 function deleteNews(newsId) {
     return Post(DASHBOARD_DELETE_NEWS, {"news_id": newsId}, function (res) {
@@ -110,9 +131,62 @@ function getNews() {
                     let self = $(this),
                         newsId = self.data("id");
 
+                    $("#news-title").val("");
+                    $("#news-descriptions").empty();
 
+                    $.each(data, function(index, row) {
+                        if (row.id == newsId) {
+                            $("#news-update").data("id", row.id);
+
+                            $("#news-title").val(row.title);
+                            $("#news-descriptions").empty().html(row.description);
+
+                            initCKEditor("news-descriptions");
+
+                            ckEditor["news-descriptions"].setData(row.description);
+                        }
+                    });
                 });
             }
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function updateNews() {
+    let newsId = $(this).data("id"),
+        newsTitle = $("#news-title").val(),
+        description = ckEditor["news-descriptions"].getData();
+
+    return Post(DASHBOARD_UPDATE_NEWS, {"news_id": newsId, "title": newsTitle, "description": description}, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            showSuccess(res.data.msg);
+
+            $('#medit').modal('hide');
+
+            getNews();
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function createNews() {
+    let newsTitle = $("#news-title-create").val(),
+        description = ckEditor["news-descriptions-create"].getData();
+
+    return Post(DASHBOARD_ADD_NEWS, {"title": newsTitle, "description": description}, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            showSuccess(res.data.msg);
+
+            $('#mcreate').modal('hide');
+
+            getNews();
         } else {
             showError(res.data.msg);
         }

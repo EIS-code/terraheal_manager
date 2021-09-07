@@ -92,7 +92,7 @@
                         
                     </div>
                     <br />
-                    <div class="text-center m-mode"> <a class="cmn-btn" href="#" data-toggle="modal" data-target="#medit">&plus; {{CREATE}}</a> </div>
+                    <div class="text-center m-mode"> <a class="cmn-btn" href="#" data-toggle="modal" data-target="#mcreate" >&plus; {{CREATE}}</a> </div>
                 </div>
             </div>
         </div>
@@ -116,7 +116,34 @@
                             <textarea id="news-descriptions"></textarea>
                         </div>
                         <div class="nw-md-grp">
-                            <button class="cmn-btn">{{PUBLISH}}</button>
+                            <button class="cmn-btn" id="news-update">{{PUBLISH}}</button>
+                            <button class="cmn-btn cancl" type="button" data-dismiss="modal" aria-label="Close">{{CANCEL}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- news edit Modal -->
+    <div class="modal fade" id="mcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">{{NEWS}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="news-modal-cont">
+                        <div class="nw-md-grp">
+                            <label>{{TITLE}}</label>
+                            <input type="text" id="news-title-create">
+                        </div>
+                        <div class="nw-md-grp">
+                            <label>{{CONTENT}}</label>
+                            <textarea id="news-descriptions-create"></textarea>
+                        </div>
+                        <div class="nw-md-grp">
+                            <button class="cmn-btn" id="news-create">{{PUBLISH}}</button>
                             <button class="cmn-btn cancl" type="button" data-dismiss="modal" aria-label="Close">{{CANCEL}}</button>
                         </div>
                     </div>

@@ -1,15 +1,34 @@
 const BASEURL = "http://35.180.202.175";
 const BASEURL_MANAGER = BASEURL + "/manager";
+const BASEURL_SHOP = BASEURL + "/shop";
 
 export const SUCCESS_CODE     = 200;
 export const ERROR_CODE       = 401;
 export const EXCEPTION_CODE   = 401;
 
+// Manager routes
 export const SIGNIN = BASEURL_MANAGER + "/signIn";
 export const DASHBOARD_RIGHT_SIDEBAR = BASEURL_MANAGER + "/side/data/get";
 export const DASHBOARD_SALES_INSIGHTS = BASEURL_MANAGER + "/salesInfo/get";
 export const DASHBOARD_GET_NEWS = BASEURL_MANAGER + "/news/get";
 export const DASHBOARD_DELETE_NEWS = BASEURL_MANAGER + "/news/delete";
+export const DASHBOARD_UPDATE_NEWS = BASEURL_MANAGER + "/news/update";
+export const DASHBOARD_ADD_NEWS = BASEURL_MANAGER + "/news/add";
+
+// Other routes
+export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
+export const WAITING = BASEURL + "/waiting/getWaitingMassage";
+export const CONFIRM_BOOKING = BASEURL + "/waiting/confirmBooking";
+export const GET_ALL_THERAPISTS = BASEURL + "/waiting/getAllTherapists";
+export const GET_ROOMS = BASEURL + "/rooms/getRooms";
+export const ASSIGN_ROOMS = BASEURL + "/waiting/assignRoom";
+export const DOWNGRADE_BOOKING = BASEURL + "/waiting/downgradeBooking";
+export const CANCEL_BOOKING = BASEURL + "/waiting/cancelAppointment";
+export const END_SERVICE_TIME = BASEURL + "/waiting/endServiceTime";
+export const START_SERVICE_TIME = BASEURL + "/waiting/startServiceTime";
+export const PRINT_BOOKING_DETAILS = BASEURL + "/waiting/printBookingDetails";
+
+// Shop routes
 
 export async function Post(url, postData, success, errorCallBack)
 {

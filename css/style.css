@@ -404,7 +404,7 @@ table.seprate{ border-collapse: separate; border-spacing: 0 0.5em; }
 .orange{ color:#FF9900; }
 .pay-sp.bg-orange{ background:#FF9900; }
 .pay-sp.bg-green{ background:#91F432; }
-.table-content.h-7 { max-height: 355px; overflow: auto; margin-bottom: 10px;}
+.table-content.h-7 { max-height: 355px; overflow: auto; margin-bottom: 10px;min-height: 235px; }
 thead.fixed-header{ position: sticky; top: 0; background: #fff; }
 .waiting-sec .wh-content{ max-height:900px; overflow:auto; }
 .confirm { display: block; width: 20px; height: 20px; border: 2px solid #29B6F6; margin: 0 auto; border-radius: 4px;}
@@ -525,7 +525,8 @@ table td a{ color:#6D6E71; }
 .model-inner.no-pad { padding-left: 15px; padding-right: 15px;}
 .booking-info { display: flex; flex-wrap: wrap; justify-content: space-between;}
 .booking-info::after { content: ""; display: block; height: 0; overflow: hidden; clear: both;}
-.book-grp.half { float: left; width: 46%; margin-top: 0px; clear: inherit;}
+.book-grp.half { float: left; margin-top: 0px; clear: inherit; }
+.book-grp.half.with-width { width: 46%; }
 .grp-field { display: flex; align-items: flex-start; margin-top: 15px; min-height: 40px;}
 .grp-field label { min-width: 127px; margin-bottom: 0px; color: #6D6E71; padding-right: 5px;  cursor: pointer;}
 .grp-right {  width: 100%;}
@@ -2354,7 +2355,7 @@ table.fc-header {
 
 /* Waiting list head filters. */
 .dropDownMenu li{ position:relative; }
-.dropDownMenu ul{ display:none; position:absolute; top:100%; left:-7px; background:#fff; padding:10px; border-radius: 5px; border: 1px solid #eee; min-width: 100px; text-align:left; }
+.dropDownMenu ul{ display:none; position:absolute; top:100%; left:-7px; background:#fff; padding:10px; border-radius: 5px; border: 1px solid #eee; min-width: 100px; text-align:left;z-index: 9; }
 .dropDownMenu li a{ color:#6D6E71; }
 .dropDownMenu li > a:after{ content:"\f078"; display:inline-block; margin-left:4px; font-family: 'Font Awesome 5 Free'; font-weight:900; font-size:12px; }
 .dropDownMenu li.act > a::after{ content:"\f077"; }
@@ -2586,7 +2587,7 @@ a.bg-orange{ background:#FF9900; padding: 2px 4px;border-radius: 4px;color: #fff
 
 .right-tp{ margin-bottom:10px; }
 .right-tp .top-right{ justify-content: flex-end; }
-.table-content.h-7{ padding-left:20px; }
+/* .table-content.h-7{ padding-left:20px; } */
 table tr.pair{ position:relative; }
 table tr.pair:after{ content:""; background:url(../images/pair.png) no-repeat center bottom; background-size:contain; height:20vh; width:20px; position:absolute; left:-20px; display:block; }
 table tr.pair + tr.pair:after{ display:none; }
