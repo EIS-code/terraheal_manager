@@ -1,0 +1,871 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $(".language-bar").load("language-bar.html", function() {
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/booking-list.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <section class="shop-main-section content-sec" style="width: 100% !important;">
+            <div class="right-tp justify-content-end">
+                <div class="top-right">
+                    <div class="language-bar">
+                        
+                    </div>
+                    <div class="timer">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="main-page">
+                <div id="heading"></div>
+                <div class="waiting-booking cm-height">
+                    <div class="wrapper booking-list" style="max-width: 100% !important;">
+                        <div class="waiting-main">
+                            <div class="top-in-menu d-flex justify-content-between">
+                                <div class="in-left">
+                                    <div class="tab-common" id="waiting-tabs">
+                                        <ul class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                            <li><a class="active" id="center_bookings" href="#future-bookings">Center</a></li>
+                                            <li><a id="home_bookings" href="#future-bookings">Home</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="in-middle">
+                                    <div class="tab-common" id="book-wait-tabs">
+                                        <ul class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                            <li><a class="active" href="#future-bookings" data-toggle="tab">Future bookings</a></li>
+                                            <li><a href="#completed-bookings" data-toggle="tab">Completed bookings</a></li>
+                                            <li><a href="#canceled-bookings" data-toggle="tab">Canceled bookings</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="in-right blank"></div>
+                            </div>
+
+                            <div class="waiting-sec">
+                                <form id="form-booking-list">
+                                    <div class="wh-content">
+                                        <div class="waiting-content-sec">
+                                            <div class="tab-content cmn-cont">
+                                                <div role="tabpanel" class="tab-pane fade in active" id="future-bookings">
+                                                    <div class="table-content h-7">
+                                                        <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="date-future">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Date</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="4"/><label>Tomorrow</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="2"/><label>This Week</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="3"/><label>This Month</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="5"/><label>Custom</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="empty">&nbsp;</th>
+                                                                    <th class="text-center">Client</th>
+                                                                    <th>
+                                                                        <ul class="dropDownMenu" id="service-future">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Service</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="0"/><label>Massages</label></li>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="1"/><label>Therapies</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Time</th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="therapist-future">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Therapist</a>
+                                                                                <ul>
+                                                                                    
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="room-future">
+                                                                            <li class="has-children"><a href="#">Room</a>
+                                                                                <ul>
+                                                                                    
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Booked</th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="payment-future">
+                                                                            <li class="has-children"><a href="#">Payment</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Paid</label></li>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Partially</label></li>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Pending</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Notes</th>
+                                                                    <th class="text-center">Edit</th>
+                                                                    <th class="text-center">Delete</th>
+                                                                    <th class="text-center">Details</th>
+                                                                    <th class="text-center">Print</th>
+                                                                    <th class="text-center">Confirm</th>
+                                                                    <th class="text-center">&nbsp;</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody-future">
+                                                                <tr>
+                                                                    <td colspan="15" class="text-center">
+                                                                        <mark>No records found!</mark>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane fade" id="completed-bookings">
+                                                    <div class="table-content h-7">
+                                                        <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="date-completed">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Date</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="0"/><label>Tomorrow</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="2"/><label>This Week</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="3"/><label>This Month</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="4"/><label>Custom</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Time</th>
+                                                                    <th class="text-center">Client</th>
+                                                                    <th>
+                                                                        <ul class="dropDownMenu" id="service-completed">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Service</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="0"/><label>Massages</label></li>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="1"/><label>Therapies</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="therapist-completed">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Therapist</a>
+                                                                                <ul>
+                                                                                    
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="room-completed">
+                                                                            <li class="has-children"><a href="#">Room</a>
+                                                                                <ul>
+                                                                                    
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Booked</th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="payment-completed">
+                                                                            <li class="has-children"><a href="#">Payment</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Paid</label></li>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Partially</label></li>
+                                                                                    <li><input type="radio" class="header_filter" name="filter_payment"/><label>Pending</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Notes</th>
+                                                                    <th class="text-center">Observation</th>
+                                                                    <th class="text-center">Delete</th>
+                                                                    <th class="text-center">Details</th>
+                                                                    <th class="text-center">Review</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody-completed">
+                                                                <tr>
+                                                                    <td colspan="15" class="text-center">
+                                                                        <mark>No records found!</mark>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane fade" id="canceled-bookings">
+                                                    <div class="table-content h-7">
+                                                        <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="date-canceled">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Date</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="0"/><label>Tomorrow</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="2"/><label>This Week</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="3"/><label>This Month</label></li>
+                                                                                    <li><input type="radio" name="filter_date" class="header_filter" value="4"/><label>Custom</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Time</th>
+                                                                    <th class="text-center">Client</th>
+                                                                    <th>
+                                                                        <ul class="dropDownMenu" id="service-canceled">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Service</a>
+                                                                                <ul>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="0"/><label>Massages</label></li>
+                                                                                    <li><input type="radio" name="filter_services" class="header_filter" value="1"/><label>Therapies</label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        <ul class="dropDownMenu" id="therapist-canceled">
+                                                                            <li class="has-children">
+                                                                                <a href="#">Therapist</a>
+                                                                                <ul>
+                                                                                    
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </th>
+                                                                    <th class="text-center">Booked</th>
+                                                                    <th class="text-center">Payment</th>
+                                                                    <th class="text-center">Notes</th>
+                                                                    <th class="text-center">Reasons</th>
+                                                                    <th class="text-center">Details</th>
+                                                                    <th class="text-center">Recover</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody-canceled">
+                                                                <tr>
+                                                                    <td colspan="14" class="text-center">
+                                                                        <mark>No records found!</mark>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex wait-bottom justify-content-between">
+                                                <a href="waiting-list.html" class="cmn-btn backlink">&#8592; Back</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Delete reason Modal -->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Cancel Appointment
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-modal">
+                        <li><input type="radio" name="cancel_type" value="0" checked="" /><label>No Show</label></li>
+                        <li><input type="radio" name="cancel_type" value="1" /><label>No availability</label></li>
+                        <li><input type="radio" name="cancel_type" value="2" /><label>Double booking</label></li>
+                        <li><input type="radio" name="cancel_type" value="3" /><label>Wrong booking</label></li>
+                        <li><input type="radio" name="cancel_type" value="4" /><label>Canceled By Client</label></li>
+                        <li>
+                            <input class="other-reasons" type="radio" name="cancel_type" value="5" /><label>Other reason</label>
+                        </li>
+                        <li>
+                            <div class="reason-box" style="display:none;">
+                                <textarea placeholder="Please Type here..." name="cancel_reason" id="cancel_reason"></textarea>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="cancle-btn">
+                        <a href="#" class="cmn-btn cancel-booking">Cancel Appointment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deleted reason Modal -->
+    <div class="modal fade" id="deleted-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Cancel Appointment
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-modal">
+                        <li><input type="radio" name="cancel_type" value="0" /><label>No Show</label></li>
+                        <li><input type="radio" name="cancel_type" value="1" /><label>No availability</label></li>
+                        <li><input type="radio" name="cancel_type" value="2" /><label>Double booking</label></li>
+                        <li><input type="radio" name="cancel_type" value="3" /><label>Wrong booking</label></li>
+                        <li><input type="radio" name="cancel_type" value="4" /><label>Canceled By Client</label></li>
+                        <li>
+                            <input class="other-reasons" type="radio" name="cancel_type" value="5" /><label>Other reason</label>
+                        </li>
+                        <li>
+                            <div class="reason-box" style="display:none;">
+                                <textarea placeholder="Please Type here..." name="cancel_reason" id="cancel_reason"></textarea>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal-static"></div>
+
+    <!-- ratings Modal -->
+    <div class="modal fade" id="rating-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Client Rating
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="rating-inner">
+                        <ul>
+                            <li>
+                                Punctuality And Presence For Reservations
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                            <li>
+                                Behavior
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                            <li>
+                                Sexual Issues
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                            <li>
+                                Hygiene
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                            <li>
+                                Left Bad / Good Review
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                            <li>
+                                Payment Issues
+                                <div class="rating rating2">
+                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="d-flex justify-content-end rate-btm">
+                            <a href="#" class="cmn-btn" data-dismiss="modal">Submit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Modal -->
+    <div class="modal fade" id="print-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header cust-head">
+                    <span class="code-id" data-toggle="modal" data-target="#codemodel"><img src="images/qr.png" alt=""></span>
+                    <h5 class="modal-title">Booking ID: 85874858766</h5>
+                    <a href="#" class="cmn-btn print">Print Ticket</a>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="model-inner no-pad">
+                        <div class="booking-info">
+                            <div class="book-grp half">
+                                <div class="grp-field">
+                                    <label>Center:</label>
+                                    <div class="grp-right">
+                                        <input type="text" name="center" placeholder="Terra Heal Massage Center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field">
+                                    <label>Date &amp; Time:</label>
+                                    <div class="grp-right">
+                                        <input type="text" name="" placeholder="28 Oct 2020, 3:30pm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field">
+                                    <label>Delivery Types:</label>
+                                    <div class="grp-right">
+                                        <input type="text" name="center" placeholder="In massage center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field">
+                                    <label>Session Details:</label>
+                                    <div class="grp-right">
+                                        <input type="text" name="center" placeholder="Group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field txtarea">
+                                    <label>Delivery Address:</label>
+                                    <div class="grp-right">
+                                        <textarea placeholder="lorem ipsum dolor sit, lisbon, portugal -25412"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field txtarea">
+                                    <label>Booking Notes:</label>
+                                    <div class="grp-right">
+                                        <textarea placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do labore et dolore magna aliqua."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp full">
+                                <div class="grp-field table-cont">
+                                    <label>Booking Notes:</label>
+                                    <div class="grp-right">
+                                        <table class="table" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Sr.No</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Age</th>
+                                                    <th scope="col">Gender</th>
+                                                    <th scope="col">Pressure</th>
+                                                    <th scope="col">Services</th>
+                                                    <th scope="col">Durations</th>
+                                                    <th scope="col">Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Sauravsingh Tomar</td>
+                                                    <td>27</td>
+                                                    <td>Male</td>
+                                                    <td>Soft</td>
+                                                    <td>Thai yoga massage</td>
+                                                    <td>90 min</td>
+                                                    <td>&#8364; 100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Pooja Tomar</td>
+                                                    <td>25</td>
+                                                    <td>Female</td>
+                                                    <td>Medium</td>
+                                                    <td>hand or foot massage</td>
+                                                    <td>60 min</td>
+                                                    <td>&#8364; 80</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Sauravsingh Tomar</td>
+                                                    <td>27</td>
+                                                    <td>Male</td>
+                                                    <td>Soft</td>
+                                                    <td>Thai yoga massage</td>
+                                                    <td>90 min</td>
+                                                    <td>&#8364; 100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Pooja Tomar</td>
+                                                    <td>25</td>
+                                                    <td>Female</td>
+                                                    <td>Medium</td>
+                                                    <td>hand or foot massage</td>
+                                                    <td>60 min</td>
+                                                    <td>&#8364; 80</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="6" class="no-border">&nbsp;</td>
+                                                    <td>Total</td>
+                                                    <td>&#8364; 360</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field table-cont">
+                                    <label>Payment Status:</label>
+                                    <div class="grp-right">
+                                        <div class="norm-cont"> <span class="paid">paid 50%</span><small>Paid by creditCard</small> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-grp half">
+                                <div class="grp-field table-cont">
+                                    <label>Payment Status:</label>
+                                    <div class="grp-right">
+                                        <table class="table payment" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Paid</td>
+                                                    <td>&#8364; 180</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>voucher</td>
+                                                    <td>&#8364; 60</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pack</td>
+                                                    <td>&#8364; 60</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>Pending</td>
+                                                    <td>&#8364; 180</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- assign rooms Modal -->
+    <div class="modal fade" id="assign-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="assign-inner tab-common">
+                        <ul id="detail-tab" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                            <li><a class="active" href="#available" data-toggle="tab">Available</a></li>
+                            <li><a href="#busy" data-toggle="tab">Busy</a></li>
+                        </ul>
+                        <div class="tab-content cmn-cont">
+                            <div role="tabpanel" class="tab-pane fade in active" id="available">
+                                <ul class="assign-list">
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">01</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">02</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">03</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">04</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">05</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">06</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">07</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">08</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">09</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">10</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">11</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="assign"/>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">12</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="busy">
+                                <ul class="assign-list">
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">01</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">03</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">05</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">07</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">09</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">11</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">13</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">15</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">17</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">19</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">21</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                    <li>
+                                        <div class="assign-box">
+                                            <div class="as-img">
+                                                <img src="images/assign-img.png"/>
+                                            </div>
+                                            <span class="as-count">23</span>
+                                        </div>
+                                        <span class="aft-time">30 Min | 2:50</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- observation Modal -->
+    <div id="observations-modal-static"></div>
+
+    <!-- Special notes Modal -->
+    <div id="notes-modal-static"></div>
+
+    <!-- location Modal -->
+    <div class="modal fade" id="location-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="location-inner">
+                        <div class="location-top">
+                            <h4><i class="fas fa-map-marker-alt"></i> home</h4>
+                            <p>Lorem Ipsum, Lisbon, portugal 12451.</p>
+                        </div>
+                        <figure>
+                            <img src="images/location.jpg"/>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

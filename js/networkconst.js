@@ -1,6 +1,7 @@
+const PASSWORD_SALT = "shivRam@1434"
 const BASEURL = "http://35.180.202.175";
 const BASEURL_MANAGER = BASEURL + "/manager";
-const BASEURL_SHOP = BASEURL + "/shop";
+const BASEURL_SHOP = BASEURL + "/shops";
 
 export const SUCCESS_CODE     = 200;
 export const ERROR_CODE       = 401;
@@ -14,6 +15,24 @@ export const DASHBOARD_GET_NEWS = BASEURL_MANAGER + "/news/get";
 export const DASHBOARD_DELETE_NEWS = BASEURL_MANAGER + "/news/delete";
 export const DASHBOARD_UPDATE_NEWS = BASEURL_MANAGER + "/news/update";
 export const DASHBOARD_ADD_NEWS = BASEURL_MANAGER + "/news/add";
+export const DASHBOARD_NEWS_DETAILS = BASEURL_MANAGER + "/news/details/get";
+export const DASHBOARD_GET_VOUCHERS = BASEURL_MANAGER + "/vouchers/get";
+export const DASHBOARD_GET_PACKS = BASEURL_MANAGER + "/packs/get";
+export const GET_CLIENT_DETAILS = BASEURL_MANAGER + "/clients/getClientDetails";
+export const GET_CLIENT_FUTURE_BOOKINGS = BASEURL_MANAGER + "/clients/getFutureBookings";
+export const GET_CLIENT_PAST_BOOKINGS = BASEURL_MANAGER + "/clients/getPastBookings";
+export const GET_CLIENT_CANCELLED_BOOKINGS = BASEURL_MANAGER + "/clients/getCancelledBookings";
+export const UPDATE_CLIENT_QUESTIONNAIRS = BASEURL_MANAGER + "/clients/questionnaries/update";
+export const DECLINE_CLIENT_DOCUMENT = BASEURL_MANAGER + "/clients/document/decline";
+export const ACCEPT_CLIENT_DOCUMENT = BASEURL_MANAGER + "/clients/document/accept";
+export const UPLOAD_CLIENT_DOCUMENT = BASEURL + "/user/profile/document/upload";
+export const THERAPISTS = BASEURL_MANAGER + "/therapist/get";
+export const THERAPISTS_EXISTING = BASEURL_MANAGER + "/therapist/get/all";
+export const GET_THERAPIST_INFO = BASEURL_MANAGER + "/therapist/getInfo";
+export const GET_STAFF_LIST = BASEURL_MANAGER + "/staff/list";
+export const ADD_STAFF = BASEURL_MANAGER + "/staff/add";
+export const UPDATE_STAFF = BASEURL_MANAGER + "/staff/update";
+export const UPDATE_STAFF_STATUS = BASEURL_MANAGER + "/staff/update/status";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
@@ -27,8 +46,36 @@ export const CANCEL_BOOKING = BASEURL + "/waiting/cancelAppointment";
 export const END_SERVICE_TIME = BASEURL + "/waiting/endServiceTime";
 export const START_SERVICE_TIME = BASEURL + "/waiting/startServiceTime";
 export const PRINT_BOOKING_DETAILS = BASEURL + "/waiting/printBookingDetails";
+// export const THERAPISTS = BASEURL + "/therapist/getTherapists";
+export const ADD_NEW_BOOKING_SHOP = BASEURL + "/waiting/booking/add";
+export const SEARCH_CLIENT = BASEURL + "/clients/searchClients";
+export const SEARCH_PACKS = BASEURL + "/waiting/searchPacks";
+export const FUTURE_BOOKINGS = BASEURL + "/waiting/getFutureBooking";
+export const COMPLETED_BOOKINGS = BASEURL + "/waiting/getCompletedBooking";
+export const CANCELED_BOOKINGS = BASEURL + "/waiting/getCancelBooking";
+export const RECOVER_BOOKING = BASEURL + "/waiting/recoverAppointment";
+export const BOOKING_OVERVIEW = BASEURL + "/waiting/bookingOverview";
+export const ROOM_OCCUPATIONS = BASEURL + "/waiting/roomOccupation";
+export const GET_RECEPTIONIST = BASEURL + "/receptionist/getReceptionist";
+export const UPDATE_RECEPTIONIST = BASEURL + "/receptionist/update";
+export const RECEPTIONIST_ADD_DOCUMENT = BASEURL + "/receptionist/addDocument";
+export const GET_RECEPTIONIST_STATISTICS = BASEURL + "/receptionist/getStatistics";
+export const GET_COUNTRIES = BASEURL + "/location/get/country";
+export const GET_CITIES = BASEURL + "/location/get/city";
+export const THERAPIST_ADD_NEW = BASEURL + "/therapist/new";
+export const THERAPIST_ADD_NEW_EXISTING = BASEURL + "/therapist/existing";
+export const ADD_CLIENT = BASEURL + "/waiting/addClient";
+export const THERAPIST_TIMETABLE = BASEURL + "/waiting/getTimeTable";
+export const UPDATE_THERAPIST = BASEURL + "/therapist/profile/update";
 
 // Shop routes
+export const SERVICES = BASEURL_SHOP + "/getServices";
+export const SESSIONS = BASEURL_SHOP + "/sessions/get";
+export const PREFERENCES = BASEURL_SHOP + "/getPreferences";
+
+const CancelToken = axios.CancelToken;
+
+let cancel;
 
 export async function Post(url, postData, success, errorCallBack)
 {
@@ -52,8 +99,16 @@ export async function Post(url, postData, success, errorCallBack)
             headers: headersData
         };
 
-        postData['manager_id'] = managerData.id;
-        postData['shop_id']    = managerData.shop_id;
+        if (!(postData['is_pass_manager_id'] === false)) {
+            postData['manager_id'] = managerData.id;
+        }
+
+        if (!(postData['is_pass_shop_id'] === false)) {
+            postData['shop_id']    = managerData.shop_id;
+        }
+
+        delete postData['is_pass_manager_id'];
+        delete postData['is_pass_shop_id'];
     }
 
     return axios.post(url, postData, axiosConfig)
@@ -206,6 +261,173 @@ export async function getCities(countryId, provinceId)
     };
 
     return  axios.post(GET_CITIES, postData, {
+                cancelToken: new CancelToken(function executor(c) {
+                    cancel = c;
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': "*",
+                    'Content-Type': 'application/json',
+                    'api-key': managerData.api_key
+                }
+            })
+            .then((response) => {
+                // Response Body
+
+                return response;
+            })
+            .catch((error) => {
+                if (axios.isCancel(error)) {}
+            });
+}
+
+export async function searchClients(postData, page)
+{
+    loggedIn();
+
+    let managerData = getLocalManagerStorage();
+
+    // Cancel previous request
+    if (cancel !== undefined) {
+        cancel();
+    }
+
+    page = page || 1;
+
+    postData["shop_id"]     = managerData.shop_id;
+    postData["manager_id"]  = managerData.id;
+    postData["page_number"] = page;
+
+    return  axios.post(SEARCH_CLIENT, postData, {
+                cancelToken: new CancelToken(function executor(c) {
+                    cancel = c;
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': "*",
+                    'Content-Type': 'application/json',
+                    'api-key': managerData.api_key
+                }
+            })
+            .then((response) => {
+                // Response Body
+
+                return response;
+            })
+            .catch((error) => {
+                if (axios.isCancel(error)) {}
+            });
+}
+
+export async function getTherapists(clearCache)
+{
+    loggedIn();
+
+    if (clearCache) {
+        localStorage.setItem('shopTherapist', {});
+    } else {
+        let cachedData = JSON.parse(localStorage.getItem('shopTherapist'));
+
+        if (cachedData != "" && cachedData != null && typeof cachedData == "object" && Object.keys(cachedData).length > 0) {
+            return cachedData;
+        }
+    }
+
+    let managerData = getLocalManagerStorage();
+
+    // Cancel previous request
+    if (cancel !== undefined) {
+        cancel();
+    }
+
+    let postData  = {
+        "shop_id": managerData.shop_id,
+        "manager_id": managerData.id
+    };
+
+    return  axios.post(GET_ALL_THERAPISTS, postData, {
+                cancelToken: new CancelToken(function executor(c) {
+                    cancel = c;
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': "*",
+                    'Content-Type': 'application/json',
+                    'api-key': managerData.api_key
+                }
+            })
+            .then((response) => {
+                // Response Body
+
+                localStorage.setItem('shopTherapist', JSON.stringify(response));
+
+                return response;
+            })
+            .catch((error) => {
+                if (axios.isCancel(error)) {}
+            });
+}
+
+export async function getRooms(clearCache)
+{
+    loggedIn();
+
+    if (clearCache) {
+        localStorage.setItem('shopRooms', {});
+    } else {
+        let cachedData = JSON.parse(localStorage.getItem('shopRooms'));
+
+        if (cachedData != "" && cachedData != null && typeof cachedData == "object" && Object.keys(cachedData).length > 0) {
+            return cachedData;
+        }
+    }
+
+    let managerData = getLocalManagerStorage();
+
+    // Cancel previous request
+    if (cancel !== undefined) {
+        cancel();
+    }
+
+    let postData  = {
+        "shop_id": managerData.shop_id,
+        "manager_id": managerData.id
+    };
+
+    return  axios.post(GET_ROOMS, postData, {
+                cancelToken: new CancelToken(function executor(c) {
+                    cancel = c;
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': "*",
+                    'Content-Type': 'application/json',
+                    'api-key': managerData.api_key
+                }
+            })
+            .then((response) => {
+                // Response Body
+
+                localStorage.setItem('shopRooms', JSON.stringify(response));
+
+                return response;
+            })
+            .catch((error) => {
+                if (axios.isCancel(error)) {}
+            });
+}
+
+export async function updateQuestionnairs(postData)
+{
+    loggedIn();
+
+    let managerData = getLocalManagerStorage();
+
+    // Cancel previous request
+    if (cancel !== undefined) {
+        cancel();
+    }
+
+    postData["shop_id"]     = managerData.shop_id;
+    postData["manager_id"]  = managerData.id;
+
+    return  axios.post(UPDATE_CLIENT_QUESTIONNAIRS, postData, {
                 cancelToken: new CancelToken(function executor(c) {
                     cancel = c;
                 }),

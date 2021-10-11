@@ -1,0 +1,79 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $(".language-bar").load("language-bar.html", function() {
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/room-occupations.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <section class="shop-main-section content-sec" style="width: 100% !important;">
+            <div class="right-tp justify-content-end">
+                <div class="top-right">
+                    <div class="language-bar">
+                        
+                    </div>
+                    <div class="timer">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="main-page">
+                <label><h2>Room Occupations</h2></label>
+                <div class="home-booking cm-height">
+                    <div class="wrapper" style="max-width: 100% !important;">
+                        <div class="book-main">
+                            <div class="top-filter d-flex justify-content-between">
+                                <div class="norm-filter">
+                                    
+                                </div>
+                                <div class="norm-filter">
+                                    
+                                </div>
+                                <div class="norm-filter">
+                                    <input type="date" id="booking-date">
+                                </div>
+                            </div>
+                            <div class="book-sec event-main">
+                                <div class="wh-box">
+                                    <div class="wh-content tab-common">
+                                        <div class="event-calender">
+                                            <div class="event-calender-sec">
+                                                <div class="custom-calender">
+                                                    <div id="table-scroll" class="table-scroll">
+                                                        <table id="custom-table-cal" class="custom-tab">
+                                                            <thead id="current-thead">
+                                                                
+                                                            </thead>
+                                                            <tbody id="current-tbody">
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="norm-back">
+                                                <a href="waiting-list.html" class="cmn-btn backlink">← Back</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>

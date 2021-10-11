@@ -52,26 +52,26 @@
                         <li>
                             <a href="javascript:void(0)">Book Now</a>
                             <ul class="submenu">
-                                <li><a href="javascript:void(0)">Now</a></li>
+                                <li><a href="booking-now.html">Now</a></li>
                                 <li><a href="javascript:void(0)">Later</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Booking List</a>
+                            <a href="booking-list.html#future-bookings?backfile=waiting-list.html">Booking List</a>
                             <ul class="submenu">
-                                <li><a href="manager-make-booking.html">Future&nbsp;<i class="far fa-arrow-alt-circle-up"></i></a></li>
-                                <li><a href="javascript:void(0)">Past&nbsp;<i class="far fa-arrow-alt-circle-down"></i></a></li>
-                                <li><a href="javascript:void(0)">Canceled&nbsp;<i class="fas fa-trash-alt"></i></a></li>
+                                <li><a href="booking-list.html#future-bookings">Future <i class="far fa-arrow-alt-circle-up"></i></a></li>
+                                <li><a href="booking-list.html#completed-bookings">Completed <i class="far fa-arrow-alt-circle-down"></i></a></li>
+                                <li><a href="booking-list.html#canceled-bookings">Canceled <i class="fas fa-trash-alt"></i></a></li>
                             </ul>
                         </li>
-                        <li><a href="javascript:void(0)">Booking Overview</a></li>
-                        <li><a href="javascript:void(0)">Room Occupations</a></li>
-                        <li><a href="manager-timetable.html">Time Table Therapist</a></li>
+                        <li><a href="booking-overview.html">Booking Overview</a></li>
+                        <li><a href="room-occupations.html">Room Occupations</a></li>
+                        <li><a href="#" class="open-model" data-target="#therapist-timetable-modal">Time Table Therapist</a></li>
                         <li>
                             <a href="javascript:void(0)">Staff</a>
                             <ul class="submenu">
-                                <li><a href="receptionist.html">Receptionist</a></li>
-                                <li><a href="therapist-list.html?backfile=waiting-booking.html">Therapist</a></li>
+                                <li><a href="receptionist-profile.html">Receptionist</a></li>
+                                <li><a href="therapists.html?backfile=waiting-list.html">Therapist</a></li>
                             </ul>
                         </li>
                         <li>
@@ -82,11 +82,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">Clients</a>
-                            <ul class="submenu">
-                                <li><a href="client-list.html?backfile=waiting-booking.html">List Clients</a></li>
-                                <li><a href="add-new-client.html?backfile=waiting-booking.html">New Client</a></li>
-                            </ul>
+                            <a href="clients.html?backfile=waiting-list.html">Clients</a>
                         </li>
                     </ul>
                 </div>
@@ -750,7 +746,56 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Therapist timetable Modal -->
+    <div class="modal fade" id="therapist-timetable-modal" data-id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header"><strong>Therapist Timetable</strong>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="month" id="current-month" class="form-control">
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href="#" type="button" class="cmn-btn">Create Shift</a>
+                        </div>
+                    </div>
+
+                    <div class="time-table">
+                        <div class="tt-inner">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table cellpadding="0" cellspacing="0" id="current-table" class="therapist-timetable table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody id="current-body">
+                                            <tr>
+                                                <td colspan="31">
+                                                    <mark>No records found!</mark>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="norm-back">
+                                <a href="javascript:void()" type="button" data-dismiss="modal" aria-label="Close" class="cmn-btn bg-blue" style="float: right;">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

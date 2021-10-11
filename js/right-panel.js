@@ -1,7 +1,10 @@
-import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS, DASHBOARD_UPDATE_NEWS, DASHBOARD_ADD_NEWS } from './networkconst.js';
+import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS, DASHBOARD_UPDATE_NEWS, DASHBOARD_ADD_NEWS, DASHBOARD_NEWS_DETAILS, DASHBOARD_GET_VOUCHERS, SEARCH_PACKS } from './networkconst.js';
 import { Post, redirect, SUCCESS_CODE } from './networkconst.js';
 
 var charts = [], ckEditor = [];
+
+const IS_READ = '0';
+const IS_UNREAD = '1';
 
 window.addEventListener("load", function() {
     getData();
@@ -45,6 +48,24 @@ window.addEventListener("load", function() {
 
         ckEditor['news-descriptions-create'].setData("");
     });
+
+    $('#unread-news').on('click', function() {
+        let self = $(this),
+            newsId = self.data("id");
+
+        getNewsDetails(newsId, IS_UNREAD);
+    });
+
+    $('#read-news').on('click', function() {
+        let self = $(this),
+            newsId = self.data("id");
+
+        getNewsDetails(newsId, IS_READ);
+    });
+
+    $('#view-all-vouchers').on('click', getVouchers);
+
+    $('#view-all-packs').on('click', function() { getPacks(1); });
 });
 
 function initCKEditor(id) {
@@ -91,7 +112,7 @@ function getFilterCustomDate(filter) {
 }
 
 function getNewsHtml() {
-    return $('<div class="ann-mode"><div class="ann-left"><h3><label class="news-title"></label><span><i class="fas fa-clock"></i><label class="news-createdat"></label></span></h3><p class="news-details"></p></div><div class="ann-right"><ul><li><a href="#" data-toggle="modal" data-target="#medit" class="news-edit"><i class="fas fa-edit"></i></a><a href="#" class="news-delete"><i class="far fa-trash-alt"></i></a></li><li><a href="#" data-toggle="modal" data-target="#meye"><i class="fas fa-eye"></i></a><span class="an-val news-reads-total">0</span></li><li><a href="#"><i class="far fa-eye-slash"></i></a><span class="an-val news-unreads-total">0</span></li></ul></div></div>');
+    return $('<div class="ann-mode"><div class="ann-left"><h3><label class="news-title"></label><span><i class="fas fa-clock"></i><label class="news-createdat"></label></span></h3><p class="news-details"></p></div><div class="ann-right"><ul><li><a href="#" data-toggle="modal" data-target="#medit" class="news-edit"><i class="fas fa-edit"></i></a><a href="#" class="news-delete"><i class="far fa-trash-alt"></i></a></li><li><a href="#" class="meye" data-filter="0"><i class="fas fa-eye"></i></a><span class="an-val news-reads-total">0</span></li><li><a href="#" class="meye" data-filter="1"><i class="far fa-eye-slash"></i></a><span class="an-val news-unreads-total">0</span></li></ul></div></div>');
 }
 
 function getNews() {
@@ -116,6 +137,7 @@ function getNews() {
                     html.find(".news-unreads-total").empty().html(row.unread);
                     html.find(".news-delete").data("id", row.id);
                     html.find(".news-edit").data("id", row.id);
+                    html.find(".meye").data("id", row.id);
 
                     $("#news-listing").append(html);
                 });
@@ -146,6 +168,28 @@ function getNews() {
                             ckEditor["news-descriptions"].setData(row.description);
                         }
                     });
+                });
+
+                $(".meye").unbind().on("click", function() {
+                    let self = $(this),
+                        newsId = self.data("id"),
+                        filter = self.data("filter"),
+                        newsTab = null;
+
+                    let newsTabUnread = $("#unread-news"),
+                        newsTabRead = $("#read-news");
+
+                    if (filter == IS_UNREAD) {
+                        newsTab = newsTabUnread;
+                    } else {
+                        newsTab = newsTabRead;
+                    }
+
+                    if (!empty(newsTab)) {
+                        newsTabUnread.data("id", newsId);
+                        newsTabRead.data("id", newsId);
+                        newsTab.click();
+                    }
                 });
             }
         } else {
@@ -187,6 +231,69 @@ function createNews() {
             $('#mcreate').modal('hide');
 
             getNews();
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getReadUnreadTherapistHtml() {
+    return $('<li><div class="sl-cont"><div class="th-image"><img class="profile-image" alt="" /></div><span class="name"></span></div></li>');
+}
+
+function getNewsDetails(newsId, filter) {
+    filter = filter || IS_READ;
+
+    return Post(DASHBOARD_NEWS_DETAILS, {"news_id": newsId, "filter" : filter}, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            let data = res.data.data;
+
+            if (!empty(data) && Object.values(data).length > 0) {
+                // Append news info.
+                let html = getNewsHtml(),
+                    htmlElement = null,
+                    therapistHtmlElement = null;
+
+                if (filter == IS_UNREAD) {
+                    htmlElement = $("#unread").find("#news-listing-show");
+                    therapistHtmlElement = $("#unread").find("#read-unread-therapists");
+                } else {
+                    htmlElement = $("#read").find("#news-listing-show");
+                    therapistHtmlElement = $("#read").find("#read-unread-therapists");
+                }
+
+                htmlElement.empty();
+                if (!empty(htmlElement)) {
+                    html.find(".news-title").empty().html(data.title);
+                    html.find(".news-createdat").empty().html(getDate(data.created_at));
+                    html.find(".news-details").empty().html(data.description);
+                    html.find(".news-reads-total").remove();
+                    html.find(".news-unreads-total").remove();
+                    html.find(".news-delete").remove();
+                    html.find(".news-edit").remove();
+                    html.find(".meye").remove();
+
+                    htmlElement.append(html);
+                }
+
+                // Append therapists info.
+                therapistHtmlElement.empty();
+                if (!empty(therapistHtmlElement) && !empty(data.therapists) && Object.values(data.therapists).length > 0) {
+                    $.each(data.therapists, function(key, row) {
+                        let html = getReadUnreadTherapistHtml();
+
+                        html.find(".profile-image").attr("src", row.profile_photo);
+                        html.find(".name").empty().html(row.therapist_name);
+
+                        therapistHtmlElement.append(html);
+                    });
+                }
+
+                // Show modal.
+                $("#meye").modal("show");
+            }
         } else {
             showError(res.data.msg);
         }
@@ -353,4 +460,105 @@ function drawTotals(chart, output) {
 
     ctx.fillText(text, textX, textY);
     ctx.save();
+}
+
+function getVoucherListHtml() {
+    return $('<tr><td class="numbers"></td><td class="date"></td><td class="total-value"></td><td class="expiry-date"></td></tr>');
+}
+
+function getVouchers() {
+    return Post(DASHBOARD_GET_VOUCHERS, {}, function (res) {
+        $('#tbody-vouchers').empty();
+
+        if (res.data.code == SUCCESS_CODE) {
+            let data = res.data.data;
+
+            if (!empty(data) && Object.values(data).length > 0) {
+                $('#count-vouchers').empty().html(data.length);
+
+                $('#table-vouchers').DataTable().clear();
+                $('#table-vouchers').DataTable().destroy();
+
+                $.each(data, function(key, row) {
+                    let html = getVoucherListHtml();
+
+                    html.find('.numbers').html(row.number);
+                    html.find('.date').html(getDate(row.created_at));
+                    html.find('.total-value').html(row.price);
+                    html.find('.expiry-date').html(getDate(row.expired_date));
+
+                    $('#tbody-vouchers').append(html);
+                });
+
+                $('#table-vouchers').DataTable({
+                    "searching": false,
+                    "info": false,
+                    "lengthChange": false,
+                    "columnDefs": [
+                        {orderable: false, targets: 0},
+                        {orderable: true, className: 'reorder', targets: 1},
+                        {orderable: false, targets: 2},
+                        {orderable: true, className: 'reorder', targets: 3}
+                    ]
+                });
+
+                $('#modal-vouchers').modal('show');
+            }
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getPacks(page) {
+    page = page || 1;
+
+    return Post(SEARCH_PACKS, {"page_number" : page}, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            let data = res.data.data,
+                element = $('#ul-pack-list');
+
+            if (!empty(data) && Object.keys(data).length > 0 && !empty(data.data) && Object.keys(data.data).length) {
+                $('#count-packs').empty().html(data.data.length);
+
+                paginate(data, $(document).find('#pagination'), getPacks, []);
+
+                if (element) {
+                    let ul = '';
+
+                    $.each(data.data, function(key, item) {
+                        ul += '<li>';
+                            ul += '<figure>';
+                                ul += '<img src="' + item.image + '" alt="' + item.image + '" />';
+                            ul += '</figure>';
+
+                            ul += '<p>';
+                                ul += '<a href="#" data-toggle="modal" data-target="#">';
+                                    ul += item.name;
+
+                                    ul += '<br />';
+
+                                    ul += item.sub_title;
+                                ul += '</a>';
+                            ul += '</p>';
+
+                            ul += '<div class="prc">';
+                                ul += item.pack_price;
+                            ul += '</div>';
+                        ul += '</li>';
+                    });
+
+                    element.empty().html(ul);
+
+                    $('#modal-packs').modal('show');
+                }
+            } else if (element) {
+                element.empty().html('');
+            }
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
 }

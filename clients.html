@@ -1,0 +1,230 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/clients.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side-last">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Client</div>
+            </div>
+            <div class="prof-top d-flex justify-content-between">
+                <div class="left-search">
+                    <input type="text" placeholder="Search by name, id, email, etc" id="search-input" />
+
+                    <button type="button" id="search-client"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="right-qr">
+                    <a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#qrmodal">Search By QR Code</a>
+                </div>
+            </div>
+            <div class="filter-flex d-flex">
+                <div class="filter-left-new">
+                    <div class="filter-top">
+                        <label>Name filter by</label>
+                        <ul id="search-alphabet">
+                            <li><a href="javascript:void(0);">A</a></li>
+                            <li><a href="javascript:void(0);">B</a></li>
+                            <li><a href="javascript:void(0);">C</a></li>
+                            <li><a href="javascript:void(0);">D</a></li>
+                            <li><a href="javascript:void(0);">E</a></li>
+                            <li><a href="javascript:void(0);">F</a></li>
+                            <li><a href="javascript:void(0);">G</a></li>
+                            <li><a href="javascript:void(0);">H</a></li>
+                            <li><a href="javascript:void(0);">I</a></li>
+                            <li><a href="javascript:void(0);">J</a></li>
+                            <li><a href="javascript:void(0);">K</a></li>
+                            <li><a href="javascript:void(0);">L</a></li>
+                            <li><a href="javascript:void(0);">M</a></li>
+                            <li><a href="javascript:void(0);">N</a></li>
+                            <li><a href="javascript:void(0);">O</a></li>
+                            <li><a href="javascript:void(0);">P</a></li>
+                            <li><a href="javascript:void(0);">Q</a></li>
+                            <li><a href="javascript:void(0);">R</a></li>
+                            <li><a href="javascript:void(0);">S</a></li>
+                            <li><a href="javascript:void(0);">T</a></li>
+                            <li><a href="javascript:void(0);">U</a></li>
+                            <li><a href="javascript:void(0);">V</a></li>
+                            <li><a href="javascript:void(0);">W</a></li>
+                            <li><a href="javascript:void(0);">X</a></li>
+                            <li><a href="javascript:void(0);">Y</a></li>
+                            <li><a href="javascript:void(0);">Z</a></li>
+                            <li id="all"><a class="active" href="javascript:void(0);">ALL</a></li>
+                        </ul>
+                    </div>
+                    <div class="filter-profile">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Client Id</th>
+                                    <th>Email Id</th>
+                                    <th>Mobile</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-client-list">
+                                
+                            </tbody>
+                        </table>
+
+                        <div class="text-center" id="pagination">
+                            
+                        </div>
+
+                        <div class="d-flex justify-content-between" style="float: right;">
+                            <a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#add-new-client-modal">Register New Client</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-right-new">
+                    <div class="new-filter-grp">
+                        <label>Booking Types</label>
+                        <select id="booking-type">
+                            <option value="">Select</option>
+                            <option value="1">In Massage Center</option>
+                            <option value="2">Home / Hotel Visit</option>
+                        </select>
+                    </div>
+                    <div class="new-filter-grp">
+                        <label>Ratings</label>
+                        <select id="rating">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="new-filter-grp">
+                        <label>Type of payments</label>
+                        <select id="payment-type">
+                            <option value="">Select..</option>
+                            <option value="">Select 1</option>
+                        </select>
+                    </div>
+                    <div class="new-filter-grp">
+                        <label>Date of birth</label>
+                        <input type="date" id="dob" />
+                    </div>
+                    <div class="new-filter-grp">
+                        <label>Gender</label>
+                        <select id="gender">
+                            <option value="">Select</option>
+                            <option value="m">Male</option>
+                            <option value="f">Female</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client QR Modal -->
+    <div class="modal fade" id="qrmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="ct-id-box">
+                        <figure><span><img src="images/qr.png" alt="qr-code"/></span></figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add new client modal -->
+    <div class="modal fade" id="add-new-client-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Client</h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="form-add-new">
+                        <div class="d-flex flex-wrap">
+                            <div class="p-wrap">
+                                <label>Name</label>
+
+                                <input type="text" name="name" />
+                            </div>
+
+                            <div class="p-wrap">
+                                <label>Telephone Number</label>
+                                <input type="text" name="tel_number" />
+                            </div>
+
+                            <div class="p-wrap">
+                                <label>Email ID</label>
+                                <input type="email" name="email" />
+                            </div>
+
+                            <div class="p-wrap">
+                                <label>Gender</label>
+
+                                <select name="gender">
+                                    <option value="">Select</option>
+                                    <option value="m">Male</option>
+                                    <option value="f">Female</option>
+                                </select>
+                            </div>
+
+                            <div class="p-wrap">
+                                <label>Source</label>
+
+                                <select name="source">
+                                    <option value="">Select</option>
+                                    <option value="0">Internet</option>
+                                    <option value="1">Recommendation</option>
+                                    <option value="2">Flyer</option>
+                                    <option value="3">Publicity</option>
+                                    <option value="4">Hotel</option>
+                                    <option value="5">By Chance</option>
+                                </select>
+                            </div>
+
+                            <div class="p-wrap" style="width: 100%;">
+                                <label>Client Notes</label>
+                                <input type="text" name="client_note"/>
+                            </div>
+                        </div>
+
+                        <div class="person-bottom row">
+                            <div class="text-right col-md-12">
+                                <a href="#" class="cmn-btn" id="save-client"><i class="far fa-save"></i> Save</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

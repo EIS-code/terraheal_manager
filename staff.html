@@ -1,0 +1,321 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/staff.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side-last">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Therapists</div>
+                <div class="top-right">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="th-new-top">
+                <div class="d-flex justify-content-between">
+                    <div class="th-left">
+                        <div class="search-top">
+                            <input type="text" placeholder="Search By Name, Email, Tel, DOB" id="search-text" />
+                            <button type="submit"><img src="images/search.png" alt="search" id="search-staff" /></button>
+                        </div>
+                    </div>
+                    <div class="th-right"> <a href="#" class="cmn-btn" id="add-staff">Add Staff</a> </div>
+                </div>
+            </div>
+            <div class="th-new-middle">
+                <div class="staff-tbl">
+                    <table class="staff-table" width="100%" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Login Access</th>
+                                <th style="text-align: left;">Status</th>
+                                <th>Access Control</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-staff">
+                            <tr>
+                                <td colspan="6">No record found!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Staff Modal -->
+    <div class="modal fade" id="updatestaff-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Add New Staff
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="staff-form">
+                        <div class="updatestaff">
+                            <div class="update-bx">
+                                <label>Full Name</label>
+                                <input type="text" name="full_name" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Gender</label>
+                                <select name="gender">
+                                    <option value=""></option>
+                                    <option value="m">Male</option>
+                                    <option value="f">Female</option>
+                                </select>
+                            </div>
+                            <div class="update-bx">
+                                <label>D.O.B</label>
+                                <input type="date" name="dob" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Mobile Number</label>
+                                <input type="text" name="mobile_number" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Email</label>
+                                <input type="email" name="email" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Emergency Contact</label>
+                                <input type="text" name="emergency_number" />
+                            </div>
+                            <div class="update-bx">
+                                <label>NIF</label>
+                                <input type="text" name="nif" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Select Role</label>
+                                <select name="role">
+                                    <option value=""></option>
+                                    <option value="0">Receptionist</option>
+                                    <option value="1">Cleaning lady</option>
+                                </select>
+                            </div>
+                            <div class="update-bx">
+                                <label>Country</label>
+                                <select name="country_id" id="countries"></select>
+                            </div>
+                            <div class="update-bx">
+                                <label>City</label>
+                                <select name="city_id" id="cities">
+                                    <option value="">Select City</option>
+                                </select>
+                            </div>
+                            <div class="update-bx">
+                                <label>Social Security No.</label>
+                                <input type="text" name="security_number" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Bank Name</label>
+                                <input type="text" name="bank_name" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Account Number</label>
+                                <input type="text" name="account_number" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Languages Spoken</label>
+                                <input type="text" name="language_spoken" />
+                            </div>
+                            <div class="update-bx">
+                                <label>Health Condition</label>
+                                <input type="text" name="health_condition" />
+                            </div>
+                            <div class="update-bx" style="width: 100%;">
+                                <label>Address</label>
+                                <textarea name="address"></textarea>
+                            </div>
+                            <div class="update-bx wide">
+                                <div class="pay-flex">
+                                    <div class="ph-radio small pay-d-left">
+                                        <span>Pay Scale</span>
+                                        <br />
+                                        <ul style="padding-top: 20px;width: 122%;">
+                                            <li>
+                                                <input type="radio" name="pay_scale" id="pay_scale_0" value="0" /><label>Fixed Monthly</label>
+                                            </li>
+                                            <li>
+                                                <input type="text" name="amount" id="amount_0" class="excluded" disabled="" />
+                                            </li>
+                                        </ul>
+                                        <ul style="padding-top: 20px;width: 122%;">
+                                            <li>
+                                                <input type="radio" name="pay_scale" id="pay_scale_1" value="1" /><label>Fixed Hourly</label>
+                                            </li>
+                                            <li>
+                                                <input type="text" name="amount" id="amount_1" class="excluded" disabled="" />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="update-bx wide">
+                                <label>Work schedule</label>
+                                <div class="schedule">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[0][day_name]" value="0" /><label>Sunday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[0][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[0][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[1][day_name]" value="1" /><label>Monday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[1][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[1][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[2][day_name]" value="2" /><label>Tuesday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[2][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[2][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[3][day_name]" value="3" /><label>Wednesday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[3][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[3][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[4][day_name]" value="4" /><label>Thursday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[4][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[4][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[5][day_name]" value="5" /><label>Friday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[5][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[5][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="ph-radio small">
+                                                        <ul>
+                                                            <li>
+                                                                <input type="checkbox" name="schedule[6][day_name]" value="6" /><label>Saturday</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[6][start_time]" readonly="" />
+                                                </td>
+                                                <td>
+                                                    <input type="time" name="schedule[6][end_time]" readonly="" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="updates-button d-flex justify-content-end">
+                            <a href="#" class="cmn-btn" data-dismiss="modal" aria-label="Close">Cancel</a>
+                            <a href="#" class="cmn-btn" id="staff-save"><i class="far fa-save"></i> Save</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

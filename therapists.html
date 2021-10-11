@@ -1,0 +1,144 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/therapists.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side-last">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Therapists</div>
+            </div>
+            <div class="th-new-top">
+                <div class="d-flex justify-content-between">
+                    <div class="th-left">
+                        <div class="search-top">
+                            <input type="text" placeholder="Search By Name, Email, Tel, NIF" id="text-search">
+                            <button type="button" id="btn-search"><img src="images/search.png" alt="search"></button>
+                        </div>
+                    </div>
+                    <div class="th-center">
+                        <div class="tab-common">
+                            <ul id="th-tabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                <li><a class="active" href="#today" data-toggle="tab">Today</a></li>
+                                <li><a href="#all-tab" data-toggle="tab">All</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="th-right"> <a href="#" class="cmn-btn" data-toggle="modal" data-target="#therp-modal">Add Therapist</a> </div>
+                </div>
+            </div>
+            <div class="th-new-middle">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="today">
+                        <ul id="list-therapists" class="therapists-list">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Therapist add new Modal -->
+    <div class="modal fade" id="therp-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="therp-box">
+                        <a href="therapists-existing.html" class="cmn-btn">Add Existing</a>
+                        <a href="#" class="cmn-btn" data-toggle="modal" data-target="#therapist-add-new">Add New</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add new therapists. -->
+    <div class="modal fade" id="therapist-add-new" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Therapist</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <form id="new-therapist" method="POST">
+                        <h5>Create Account</h5>
+                        <div class="grp-field">
+                            <label>Name : </label>
+                            <div class="grp-right">
+                                <input type="text" name="therapist-first-name" placeholder="Therapist first name" />
+                            </div>
+                        </div>
+                        <div class="grp-field">
+                            <label>Surname : </label>
+                            <div class="grp-right">
+                                <input type="text" name="therapist-surname" placeholder="Therapist surname" />
+                            </div>
+                        </div>
+                        <div class="grp-field">
+                            <label>Email : </label>
+                            <div class="grp-right">
+                                <input type="email" name="therapist-email" placeholder="Therapist email" />
+                            </div>
+                        </div>
+                        <div class="grp-field">
+                            <label>Password : </label>
+                            <div class="grp-right">
+                                <input type="password" name="therapist-password" placeholder="Application Password" />
+                            </div>
+                        </div>
+                        <div class="grp-field">
+                            <label>Confirm Password : </label>
+                            <div class="grp-right">
+                                <input type="password" name="therapist-confirm-password" placeholder="Confirm Application Password" />
+                            </div>
+                        </div>
+                        <div class="grp-field">
+                            <label>Active App : </label>
+                            <div class="grp-left">
+                                <div class="checkbox-grp">
+                                    <input type="checkbox" name="therapist-active-app" /><label></label>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <h5>Chip Registration</h5>
+                        <a href="#" class="cmn-btn">Register Chip</a>
+                        <div class="last-colmn text-right">
+                            <a href="javascript:void(0);" class="cmn-btn" id="add-therapist"><i class="far fa-save"></i> Add Therapist</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="static-ratings">
+        <span class="fa fa-star" id="client-rating-star-1"></span>
+        <span class="fa fa-star" id="client-rating-star-2"></span>
+        <span class="fa fa-star" id="client-rating-star-3"></span>
+        <span class="fa fa-star" id="client-rating-star-4"></span>
+        <span class="fa fa-star" id="client-rating-star-5"></span>
+    </div>
+</body>

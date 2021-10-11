@@ -1,0 +1,389 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/therapist-profile.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <section class="shop-main-section content-sec">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Therapist</div>
+                <div class="top-right">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="main-page">
+                <div class="waiting-booking cm-height profile-main">
+                    <div class="wrapper" style="max-width: 100% !important;">
+                        <div class="waiting-main">
+                            <div class="waiting-sec">
+                                <div class="wh-content">
+                                    <div class="profile-main-inner">
+                                        <div class="tab-common">
+                                            <ul id="th-tabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                                <li><a class="active" href="#personal" data-toggle="tab">Personal</a></li>
+                                                <li><a href="#documents" data-toggle="tab">Documents</a></li>
+                                                <li><a href="#portfolio" data-toggle="tab">Portfolio</a></li>
+                                                <li><a href="#availability" data-toggle="tab">Availability</a></li>
+                                                <li><a href="#ratings" data-toggle="tab">Ratings</a></li>
+                                                <li><a href="#attendance" data-toggle="tab">Attendance</a></li>
+                                                <li><a href="#calendar" data-toggle="tab">Calendar</a></li>
+                                                <li><a href="#payment" data-toggle="tab">Payment</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade active" id="personal">
+                                                <form id="form-personal" method="POST">
+                                                    <div class="per-top">
+                                                        <div class="per-left d-flex">
+                                                            <div class="per-img">
+                                                                <img alt="" id="profile_photo" />
+                                                            </div>
+                                                            <span><label id="therapist-name"></label>, Therapist</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="per-first">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="grp-field">
+                                                                    <label>First Name:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="name" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Last Name:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="surname" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Telephone:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="tel_number" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Gender:</label>
+                                                                    <div class="grp-right">
+                                                                        <select name="gender">
+                                                                            <option value="">-</option>
+                                                                            <option value="m">Male</option>
+                                                                            <option value="f">Female</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>NIF:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="nif" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Email:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="email" name="email" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>City:</label>
+                                                                    <div class="grp-right">
+                                                                        <select name="city_id" id="cities">
+                                                                            
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="grp-field">
+                                                                    <label>Emergency Contact:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="emergence_contact_number" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Date of birth:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="date" name="dob" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Security Number:</label>
+                                                                    <div class="grp-right">
+                                                                        <input type="text" name="social_security_number" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Country:</label>
+                                                                    <div class="grp-right">
+                                                                        <select name="country_id" id="countries">
+                                                                            
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="grp-field">
+                                                                    <label>Address:</label>
+                                                                    <div class="grp-right">
+                                                                        <textarea name="address" placeholder="" rows="3"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <input type="hidden" name="id" value="">
+                                                </form>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="documents">
+                                                <form id="form-documents" method="POST">
+                                                    <div class="per-top">
+                                                        <div class="per-left d-flex">
+                                                            Documents
+                                                        </div>
+                                                        <div class="per-right">
+                                                            <a href="javascript:void(0)" class="addnew c-btn" data-toggle="modal" data-target="#documentsadd-modal">Add New</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="per-second">
+                                                        <div class="up-row">
+                                                            <div class="up-left d-flex"><label>Document Name</label><label>Document</label></div>
+                                                            <div class="up-right d-flex"><label>Uploaded by</label><label>Date</label><label>Remove</label></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="therapist-documents">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <input type="hidden" name="id" value="">
+                                                </form>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="portfolio">
+                                                <div class="common-top">
+                                                    <div class="tab-common">
+                                                        <ul id="cpatabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                                            <li><a class="active" href="#services" data-toggle="tab">Massages</a></li>
+                                                            <li><a href="#services" data-toggle="tab">Therapies</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="voucher-content">
+                                                    <div class="tab-content">
+                                                        <div role="tabpanel" class="tab-pane fade in active" id="services">
+                                                            <ul class="pack-list">
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp2.png" alt=""/></figure>
+                                                                    <p><a href="#">Lymphatic Drenaige</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp3.png" alt=""/></figure>
+                                                                    <p><a href="#">Thai Yoga Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp4.png" alt=""/></figure>
+                                                                    <p><a href="#">Deep Tissue/Sports</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp2.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp3.png" alt=""/></figure>
+                                                                    <p><a href="#">Deep Tissue/Sports</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp3.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp2.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="therapie">
+                                                            <ul class="pack-list">
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                                <li>
+                                                                    <input type="radio" name="rd"/>
+                                                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                                                    <p><a href="#">Relax Massage</a></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="statistics">
+                                                <form id="form-statistics" method="POST">
+                                                    <div class="per-top">
+                                                        <div class="per-left">
+                                                            <input type="month" name="month" id="statistics-month">
+                                                        </div>
+                                                        <div class="per-right">
+                                                            <a href="#" class="c-btn">Download</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between d-list">
+                                                        <div class="d-tm">
+                                                            <label id="total-working-days">0</label><span>Total Working Days</span>
+                                                        </div>
+                                                        <div class="d-tm">
+                                                            <label id="total-present-days">0</label><span>Present</span>
+                                                        </div>
+                                                        <div class="d-tm">
+                                                            <label id="total-absent-days">0</label><span>Absent</span>
+                                                        </div>
+                                                        <div class="d-tm">
+                                                            <label id="total-hours">0</label><span>Total Hours</span>
+                                                        </div>
+                                                        <div class="d-tm">
+                                                            <label id="break-time-hour">0</label><span>Break Time Hour</span>
+                                                        </div>
+                                                        <div class="d-tm">
+                                                            <label id="total-working-hours">0</label><span>Total Working Hours</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pro-middle">
+                                                        <table width="100%" cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Date</th>
+                                                                    <th>Login Time</th>
+                                                                    <th>Logout Time</th>
+                                                                    <th>Break(min)</th>
+                                                                    <th>Total Hours</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tbody-statistics">
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <input type="hidden" name="id" value="">
+                                                </form>
+                                            </div>
+                                            <div class="d-flex wait-bottom justify-content-between">
+                                                <a href="therapists.html" class="cmn-btn">← Back</a>
+                                                <a href="javascript:void(0);" class="cmn-btn d-none" id="profile-save">Save&nbsp;<i class="fa fa-save"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Documents Modal -->
+    <div class="modal fade" id="documentsadd-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Upload Document
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="form-document-upload" method="POST" enctype="multipart/form-data">
+                        <div class="document-add">
+                            <select name="document_type">
+                                <option value="">Select Type of Document</option>
+                                <option value="1">Address Proof</option>
+                                <option value="2">Identity Proof Front</option>
+                                <option value="3">Identity Proof Back</option>
+                                <option value="4">Insurance</option>
+                                <option value="5">Freelancer financial document</option>
+                                <option value="6">Certificates</option>
+                                <option value="7">CV</option>
+                                <option value="8">Reference Latter</option>
+                                <option value="9">Personal experience</option>
+                                <option value="10">Others</option>
+                            </select>
+
+                            <div class="expdate" id="statistics">
+                                <span class="checkbox-grp">
+                                    <input type="checkbox" class="chcked" id="expire-date" />
+
+                                    <label>Expire Date</label>
+                                </span>
+
+                                <div class="per-top d-none" id="div-expire-date">
+                                    <div class="per-left margin-20px width-100-percent">
+                                        <div>
+                                            <input type="date" name="expire_date" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label for="myfile"></label>
+
+                            <input type="file" id="file_name" name="file_name"><br>
+
+                            <div class="save-btn text-right">
+                                <a href="javascript:void(0)" class="cmn-btn" id="save-document"><i class="far fa-save"></i>Save</a>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

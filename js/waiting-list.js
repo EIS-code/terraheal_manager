@@ -1,5 +1,5 @@
 import { ONGOING, WAITING, CONFIRM_BOOKING, GET_ALL_THERAPISTS, GET_ROOMS, ASSIGN_ROOMS, DOWNGRADE_BOOKING, CANCEL_BOOKING, END_SERVICE_TIME, START_SERVICE_TIME, PRINT_BOOKING_DETAILS } from './networkconst.js';
-import { Post, Get, redirect, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE } from './networkconst.js';
+import { Post, Get, redirect, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE, THERAPIST_TIMETABLE } from './networkconst.js';
 
 var backFile      = getUrl(window.location.href, 'backfile'),
     intervalArray = {};
@@ -25,6 +25,10 @@ window.addEventListener("load", function() {
 
     // Bind header filter click events.
     bindHeaderFilterClickEvents();
+
+    setYearMonth(true);
+
+    $(document).find('#current-month').on("change", buildHeader);
 
     // Bind cancel booking events.
     $(document).find('.cancel-booking').on("click", function() {
@@ -326,7 +330,7 @@ function GetOnGoing(type)
             showError(res.data.msg);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -475,7 +479,7 @@ function GetWaiting(type, filter)
             showError(res.data.msg);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -497,7 +501,7 @@ function confirmBookingMassage(bookingMassageId, type)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -525,7 +529,7 @@ function getTherapists()
             bindHeaderFilterClickEvents();
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -560,7 +564,7 @@ function getRooms()
             bindHeaderFilterClickEvents();
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -583,7 +587,7 @@ function assignRoom(bookingMassageId, roomId, type)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -605,7 +609,7 @@ function downgradeBooking(bookingMassageId, type)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -629,7 +633,7 @@ function cancelBooking(bookingId, cancelType, cancelReason, type)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 }
 
@@ -652,7 +656,7 @@ function endService(bookingMassageId, endTime, type, hideModal)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 
     if (hideModal) {
@@ -679,7 +683,7 @@ function startService(bookingMassageId, startTime, type, hideModal)
             GetWaiting(type);
         }
     }, function (err) {
-        console.log("AXIOS ERROR: ", err);
+        showError("AXIOS ERROR: " + err);
     });
 
     if (hideModal) {
@@ -889,6 +893,114 @@ function getBookingPrintDetails(bookingId)
             $(document).find('#print-modal').empty();
             $(document).find('#print-modal').html(printModal);
             $(document).find('#print-modal').modal('show');
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getSelectedMonth() {
+    return new Date($('#current-month').val());
+};
+
+function setYearMonth(isCurrent)
+{
+    if (isCurrent) {
+        let currentMonthYear = moment().format('YYYY-MM');
+
+        $('#current-month').val(currentMonthYear);
+    }
+
+    buildHeader();
+}
+
+function getTotalDays()
+{
+    let currentMonth = moment(getSelectedMonth().getTime()),
+        daysInMonth  = currentMonth.daysInMonth(),
+        monthDate    = currentMonth.startOf('month'),
+        returnDays   = [];
+
+    for (let i = 0; i < daysInMonth; i++) {
+        let newDay = monthDate.clone().add(i,'days');
+
+        returnDays.push(newDay);
+    }
+
+    return returnDays;
+}
+
+function buildHeader()
+{
+    let totalDays = getTotalDays(),
+        table     = $('#current-table'),
+        thead     = "<tr>";
+
+    $.each(totalDays, function(key, day) {
+        thead += '<th>';
+            thead += day.format('ddd DD/MM');
+        thead += '</th>';
+    });
+
+    thead += "</tr>";
+
+    table.find('thead').empty().html(thead);
+
+    buildTherapistData();
+}
+
+function buildTherapistData()
+{
+    let selectedMonth = getSelectedMonth(),
+        postData      = {
+            "date": selectedMonth.getTime()
+        };
+
+    Post(THERAPIST_TIMETABLE, postData, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            let data      = res.data.data,
+                totalDays = getTotalDays(),
+                tbody     = "",
+                tableBody = $('#current-body');
+
+            $.each(data, function(index, row) {
+                tbody += '<tr>';
+
+                let rowDay    = moment(row.date).format('YYYY-MM-DD'),
+                    startTime = new Date(row.therapist_working_schedule_time.start_time).getUTCHours(),
+                    endTime   = new Date(row.therapist_working_schedule_time.end_time).getUTCHours(),
+                    therapist = row.therapist;
+
+                $.each(totalDays, function(key, day) {
+                    tbody += '<td>';
+
+                    let thisDay = day.format('YYYY-MM-DD');
+
+                    if (thisDay == rowDay) {
+                        tbody += '<div class="cont">';
+                            tbody += startTime + '-' + endTime;
+
+                            tbody += '<span class="c-name">';
+                                 tbody += ' ' + therapist.name;
+                            tbody += '</span>';
+                        tbody += '</div>';
+                    } else {
+                        tbody += '<mark> - </mark>';
+                    }
+
+                    tbody += '</td>';
+                });
+
+                tbody += '</tr>';
+            });
+
+            if (tbody != "") {
+                tableBody.empty().html(tbody);
+            } else {
+                tableBody.empty().html('<tr><td colspan="31"><mark>No records found!</mark></mark></td></tr>');
+            }
+        } else {
+            showError(res.data.msg);
         }
     }, function (err) {
         console.log("AXIOS ERROR: ", err);

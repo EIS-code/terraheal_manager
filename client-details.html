@@ -1,0 +1,701 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $(".language-bar").load("language-bar.html", function() {
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/client-details.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side">
+            <div class="right-tp justify-content-end">
+                <div class="top-right">
+                    <div class="language-bar">
+                    </div>
+                    <div class="timer">
+                    </div>
+                </div>
+            </div>
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Client</div>
+            </div>
+            <div class="waiting-content-sec">
+                <div class="ca-top">
+                    <div class="caleft">
+                        <div class="catop-left d-flex">
+                            <div class="ca-bx">
+                                <img src="images/capro.jpg" alt=""/>
+                                <div class="cl"><label id="client-name">-</label><br><span id="client-age">0</span>, <span id="client-gender">-</span></div>
+                                <div class="clr">
+                                    <span id="client-active" class="disp-none">Active</span>
+                                    <span id="client-inactive" class="disp-none">Inactive</span>
+                                    <br>
+                                    <span class="fa fa-star" id="client-rating-star-1"></span>
+                                    <span class="fa fa-star" id="client-rating-star-2"></span>
+                                    <span class="fa fa-star" id="client-rating-star-3"></span>
+                                    <span class="fa fa-star" id="client-rating-star-4"></span>
+                                    <span class="fa fa-star" id="client-rating-star-5"></span>
+                                </div>
+                            </div>
+                            <div class="ca-bx">
+                                <span>Registered Date : <span id="client-registered-date">-</span></span>
+                                <br>
+                                <br>
+                                <span>Last Visit : <span id="client-last-visited-date">-</span></span>
+                            </div>
+                        </div>
+                        <div class="cabottom-left d-flex">
+                            <div class="ca-bx disp-block">
+                                <span id="total-appointments">0</span>
+                                <br>
+                                Appointments
+                            </div>
+                            <div class="ca-bx disp-block">
+                                <span id="no-show">0</span>
+                                <br>
+                                No Show
+                            </div>
+                            <div class="ca-bx disp-block">
+                                <span id="total-revenue">0</span><br>
+                                Total Revenue
+                            </div>
+                            <div class="ca-bx disp-block">
+                                <span id="total-recipients">0</span><br>
+                                Recipients
+                            </div>
+                            <div class="ca-bx disp-block">
+                                <span id="total-addresses">0</span><br>
+                                Addresses
+                            </div>
+                            <div class="ca-bx disp-block">
+                                <span id="total-therapists">0</span><br>
+                                Therapists
+                            </div>
+                        </div>
+                    </div>
+                    <div class="caright">
+                        <table width="50%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>Client Id</td>
+                                <td id="client-id">0</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile</td>
+                                <td class="tel-number">-</td>
+                            </tr>
+                            <tr>
+                                <td>email</td>
+                                <td class="client-email">-</td>
+                            </tr>
+                            <tr>
+                                <td>D.O.B</td>
+                                <td id="client-dob">-</td>
+                            </tr>
+                        </table>
+                        <table width="50%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>NIF :</td>
+                                <td id="client-nif">-</td>
+                            </tr>
+                            <tr>
+                                <td>City :</td>
+                                <td id="client-city">-</td>
+                            </tr>
+                            <tr>
+                                <td>Country :</td>
+                                <td id="client-country">-</td>
+                            </tr>
+                            <tr>
+                                <td>Emergency Contact No.</td>
+                                <td id="emergency-tel-number">9810126584</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="catop-second">
+                    <div class="tab-common">
+                        <ul id="ca-top-tab" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                            <li><a class="active" href="#appointments" data-toggle="tab">Appointments</a></li>
+                            <li><a href="#verification" data-toggle="tab">Verification</a></li>
+                            <li><a href="#info-msg" data-toggle="tab">Info for Massage</a></li>
+                            <li><a href="#questionnaire" data-toggle="tab">Questionnaire</a></li>
+                            <li><a href="#packs" data-toggle="tab">Packs</a></li>
+                            <li><a href="#vouchers" data-toggle="tab">Vouchers</a></li>
+                            <li><a href="#ratings" data-toggle="tab">Ratings</a></li>
+                            <li><a href="#source" data-toggle="tab">Source</a></li>
+                            <li><a href="#forgotten" data-toggle="tab">Forgotten Objects</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content cmn-cont">
+                    <div role="tabpanel" class="tab-pane fade in active" id="appointments">
+                        <div class="d-flex justify-content-between">
+                            <div class="th-left">
+                                <div class="tab-common">
+                                    <ul id="ca-bottom-tab" class="nav nav-pills nav-justified custom-nav booking-type" role="tablist" data-tabs="tabs">
+                                        <li><a class="active" href="#center" data-toggle="tab">Center</a></li>
+                                        <li><a href="#home" data-toggle="tab">Home</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="th-center">
+                                <div class="tab-common">
+                                    <ul id="ca-bottom-tab" class="nav nav-pills nav-justified custom-nav booking-upc" role="tablist" data-tabs="tabs">
+                                        <li><a class="active" href="#upcoming" data-toggle="tab">Upcoming</a></li>
+                                        <li><a href="#past" data-toggle="tab">Past</a></li>
+                                        <li><a href="#cancelled" data-toggle="tab">Cancelled</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="th-right">
+                                <div class="tab-common">
+                                    <a class="cmn-btn book-now" href="#">
+                                        <i class="fa fa-save"></i>
+                                        Make New Booking
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cappoint-content-sec">
+                            <div class="tab-content cmn-cont">
+                                <div role="tabpanel" class="tab-pane fade in active" id="center">
+                                    <div class="table-content h-7">
+                                        <table class="seprate" width="100%" cellpadding="0" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Date</th>
+                                                    <th class="text-center">Session</th>
+                                                    <th>Service</th>
+                                                    <th>Time</th>
+                                                    <th class="text-center">Therapist</th>
+                                                    <th class="text-center">Room</th>
+                                                    <th class="text-center">Booked</th>
+                                                    <th>Payment</th>
+                                                    <th class="text-center">Notes</th>
+                                                    <th class="text-center">Edit</th>
+                                                    <th class="text-center">Delete</th>
+                                                    <th class="text-center">Details</th>
+                                                    <th class="text-center">Print</th>
+                                                    <th class="text-center">Confirm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="client-appointments">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="verification">
+                        <div class="ap-cont">
+                            <div class="verification-sec">
+                                <div class="verificatn-bx">
+                                    <ul>
+                                        <li>
+                                            <label>Mobile<i class="fas fa-times-circle fa-tel-number"></i></label>
+                                            <p class="tel-number">-</p>
+                                        </li>
+                                        <li>
+                                            <label>Email<i class="fas fa-times-circle fa-email"></i></label>
+                                            <p class="client-email">-</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="verificatn-bx">
+                                    <label>Id / Passport</label>
+
+                                    <ul class="cards-sec">
+                                        <li>
+                                            Front Side
+                                            <figure>
+                                                <img src="images/front.png" id="img-passport-front" alt=""/>
+                                            </figure>
+                                        </li>
+                                        <li>
+                                            Back Side
+                                            <figure>
+                                                <img src="images/back.png" id="img-passport-back" alt=""/>
+                                            </figure>
+                                        </li>
+                                    </ul>
+                                    <div class="btm-status text-right">
+                                        <a class="btn cmn-btn bg-red d-none" id="btn-decline" href="javascript:void(0);">
+                                            <i class="fa fa-times-circle"></i>
+                                            Decline
+                                        </a>
+                                        <a class="btn cmn-btn bg-red d-none" id="btn-declined" href="javascript:void(0);">
+                                            <i class="fa fa-times-circle"></i>
+                                            Declined
+                                        </a>
+                                        <a class="btn cmn-btn bg-orange d-none" id="btn-accept" href="javascript:void(0);">
+                                            <i class="fa fa-check-circle"></i>
+                                            Accept
+                                        </a>
+                                        <a class="btn cmn-btn bg-success d-none" id="btn-accepted" href="javascript:void(0);">
+                                            <i class="fa fa-check-circle"></i>
+                                            Accepted
+                                        </a>
+                                        <a href="javascript:void(0);" class="btn cmn-btn bg-orange d-none" id="btn-add-new-document" data-toggle="modal" data-target="#add-new-document-modal">
+                                            <i class="fa fa-plus"></i>
+                                            Add New
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="info-msg">
+                        <div class="ap-cont">
+                            <ul class="info-list" id="massage-preferences">
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="questionnaire">
+                        <div class="ap-cont">
+                            <ul class="que-list" id="questionnaires">
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="packs">
+                        <div class="ap-cont">
+                            <ul class="pack-list">
+                                <li>
+                                    <figure><img src="images/cp1.png" alt=""/></figure>
+                                    <p><a href="client-pack.html">PROGRAM "FREE FROM PAIN" 5 Massages & Therapies of 60 mins</a></p>
+                                    <div class="prc"><span>€225.00</span>€225.00</div>
+                                </li>
+                                <li>
+                                    <figure><img src="images/cp2.png" alt=""/></figure>
+                                    <p><a href="client-pack.html">PROGRAM "THE MAGIC OF ORIENT" 10 Different Oriental Massages & Therapies</a></p>
+                                    <div class="prc"><span>€600.00</span>€450.00</div>
+                                </li>
+                                <li>
+                                    <figure><img src="images/cp3.png" alt=""/></figure>
+                                    <p><a href="client-pack.html">PROGRAM "THE MAGIC OF ORIENT" 5 Different Oriental Massages & Therapies</a></p>
+                                    <div class="prc"><span>€450.00</span>€225.00</div>
+                                </li>
+                                <li>
+                                    <figure><img src="images/cp4.png" alt=""/></figure>
+                                    <p><a href="client-pack.html">PROGRAM "TO HEAVEN AND BACK" 10 Special Super Relaxing Massages of 60 mins</a></p>
+                                    <div class="prc"><span>€650.00</span>€620.00</div>
+                                </li>
+                                <li>
+                                    <figure><img src="images/cp5.png" alt=""/></figure>
+                                    <p><a href="client-pack.html">PROGRAM "TO HEAVEN AND BACK" 5 Special Super Relaxing Massages of 60 mins</a></p>
+                                    <div class="prc"><span>€400.00</span>€330.00</div>
+                                </li>
+                            </ul>
+                            <div class="add-pck text-right">
+                                <a class="cmn-btn add" href="buy-pack.html">Add Pack</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="vouchers">
+                        <div class="ap-cont">
+                            <table class="voucher" width="100%" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+                                        <th>Voucher No.</th>
+                                        <th class="text-left">Service</th>
+                                        <th>Total Value</th>
+                                        <th>Used Value</th>
+                                        <th>Available Value</th>
+                                        <th>Expiry Date</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td class="text-left">Hot Yoga Massage</td>
+                                        <td>€ 500</td>
+                                        <td>€ 300</td>
+                                        <td>€ 200</td>
+                                        <td>10 Dec, 2020</td>
+                                        <td><a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#voucherbookmodal">Book This</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td class="text-left">Hot Yoga Massage</td>
+                                        <td>€ 500</td>
+                                        <td>€ 300</td>
+                                        <td>€ 200</td>
+                                        <td>10 Dec, 2020</td>
+                                        <td><a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#voucherbookmodal">Book This</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td class="text-left">Hot Yoga Massage</td>
+                                        <td>€ 500</td>
+                                        <td>€ 300</td>
+                                        <td>€ 200</td>
+                                        <td>10 Dec, 2020</td>
+                                        <td><a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#voucherbookmodal">Book This</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td class="text-left">Hot Yoga Massage</td>
+                                        <td>€ 500</td>
+                                        <td>€ 300</td>
+                                        <td>€ 200</td>
+                                        <td>10 Dec, 2020</td>
+                                        <td><a href="javascript:void(0);" class="cmn-btn" data-toggle="modal" data-target="#voucherbookmodal">Book This</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="btm-btn text-right">
+                            <a class="add cmn-btn" href="add-vouchers.html">Add Vouchers</a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="ratings">
+                        <div class="rate-pack">
+                            <div class="rating-inner">
+                                <ul>
+                                    <li>
+                                        Punctuality And Presence For Reservations
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        Behavior
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        Sexual Issues
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        Hygiene
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        Left Bad / Good Review
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        Payment Issues
+                                        <div class="rating rating2">
+                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="d-flex justify-content-end rate-btm">
+                                    <a href="#" class="cmn-btn" data-dismiss="modal">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="source">
+                        <div class="ap-cont">
+                            <ul class="source-list">
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/internet.png" alt=""/>
+                                        <h3>Internet</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/recommendation.png" alt=""/>
+                                        <h3>Recommedation</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/flyer.png" alt=""/>
+                                        <h3>Flyer</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/publicity.png" alt=""/>
+                                        <h3>Publicity</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/hotel.png" alt=""/>
+                                        <h3>Hotel</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input type="radio" name="sc"/>
+                                    <div class="sc-cont">
+                                        <img src="images/bychance.png" alt=""/>
+                                        <h3>By Chance</h3>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="forgotten">
+                        <div class="ap-cont">
+                            <table class="forget-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Forgotten Objects</th>
+                                        <th>Location</th>
+                                        <th>Client Informed</th>
+                                        <th>Returned</th>
+                                    <tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>22/8/2020</td>
+                                        <td>Mobile</td>
+                                        <td>Terra Heal Massage Center - Room26</td>
+                                        <td>
+                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>25/8/2020</td>
+                                        <td>Key</td>
+                                        <td>Terra Heal Massage Center - Room32</td>
+                                        <td>
+                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div id="notes-modal-static">
+        
+    </div>
+    <!-- Details Modal -->
+    <div id="details-modal-static">
+        
+    </div>
+    <!-- location Modal -->
+    <div class="modal fade" id="location-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="location-inner">
+                        <div class="location-top">
+                            <h4><i class="fas fa-map-marker-alt"></i> home</h4>
+                            <p>Lorem Ipsum, Lisbon, portugal 12451.</p>
+                        </div>
+                        <figure>
+                            <img src="images/location.jpg"/>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking-Details Modal -->
+    <div class="modal fade" id="booking-detail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">Booking #12345-2
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="details-inner">
+                        <div class="d-flex justify-content-between">
+                            <a href="#" class="cmn-btn">Start</a>
+                            <a href="#" class="cmn-btn" data-toggle="modal" data-target="#rating-modal">Finished</a>
+                        </div>
+                        <div class="book-detail-modal">
+                            <figure>
+                                <img src="images/book-details-map.jpg" alt=""/>
+                            </figure>
+                            <div class="detail-table">
+                                <div class="det-top d-flex justify-content-between">
+                                    <div class="d-left">
+                                        <div class="det-in">
+                                            <label>Booking date</label>
+                                            <div class="det-bk">10 aug, 2020 10:11 -13:41</div>
+                                        </div>
+                                        <div class="det-in">
+                                            <label>Need to bring</label>
+                                            <div class="det-bk">2 Table</div>
+                                        </div>
+                                        <div class="det-in">
+                                            <label>Therapist go there</label>
+                                            <div class="det-bk">Car<span><img src="images/edit-icon.png"/></span></div>
+                                        </div>
+                                        <div class="det-in">
+                                            <label>Therapist Safety</label>
+                                            <div class="det-bk"></div>
+                                        </div>
+                                    </div>
+                                    <div class="d-right">
+                                        <div class="det-in">
+                                            <label>Preferred language</label>
+                                            <div class="det-bk"><img src="images/flag.png" alt=""/>Portugues</div>
+                                        </div>
+                                        <div class="det-in">
+                                            <label>Address</label>
+                                            <div class="det-bk">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="det-bottom">
+                                    <table class="modal-table" width="100%" cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Client</th>
+                                                <th>Service</th>
+                                                <th>Therapist</th>
+                                                <th>Pressure Preference</th>
+                                                <th>Focus Areas</th>
+                                                <th>Gender Preference</th>
+                                                <th>Any Injury or Physical Condition ?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Akash</td>
+                                                <td>Hot Yoga Massage (30 Min)</td>
+                                                <td>Rita<img src="images/edit-icon.png" alt=""/></td>
+                                                <td>Medium</td>
+                                                <td>Head</td>
+                                                <td>Male Only</td>
+                                                <td>Lorem ipsum dolor sit amet, consetetur</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Prince</td>
+                                                <td>Hot Yoga Massage (20 Min)</td>
+                                                <td>Merlin<img src="images/edit-icon.png" alt=""/></td>
+                                                <td>Medium</td>
+                                                <td>Head</td>
+                                                <td>Male Only</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- rooms assign Modal -->
+    <div class="modal fade" id="assign-rooms-modal" data-id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header"><strong>Assign Room</strong>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="room-center">
+                        <ul>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- print Modal -->
+    <div class="modal fade" id="print-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    </div>
+
+    <!-- Upload passport documents Modal -->
+    <div class="modal fade" id="add-new-document-modal" data-id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header"><strong>Upload Passport Documents</strong>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-document" enctype="multipart/form-data">
+                        Passport Front :
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="file" class="btn cmn-btn bg-orange" name="document-passport-front" style="height: 44px;width:  100%;padding: .375rem .75rem;" id="document-passport-front">
+                            </div>
+                        </div>
+
+                        <br />
+                        <br />
+
+                        Passport Back :
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="file" class="btn cmn-btn bg-orange" name="document-passport-back" style="height: 44px;width:  100%;padding: .375rem .75rem" id="document-passport-back">
+                            </div>
+                        </div>
+
+                        <br />
+                        <br />
+
+                        <div class="col-md-12">
+                            <a href="javascript:void(0);" class="btn cmn-btn bg-blue" style="float: right;height: 44px;padding: 10px 20px;" id="submit-passport-documents"><i class="fa fa-save"></i>
+                                &nbsp;Submit
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

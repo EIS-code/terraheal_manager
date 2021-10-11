@@ -1,5 +1,7 @@
 
     <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
 
     <div class="right-panel">
         <div class="top-right">
@@ -34,11 +36,11 @@
             </div>
             <div class="rt-in">
                 <h4 id="vouchers-count">0</h4>
-                <span>{{VOUCHERS}}</span> <a href="#" class="v-all cmn-btn">{{VIEW_ALL}}</a> 
+                <span>{{VOUCHERS}}</span> <a href="#" class="v-all cmn-btn" id="view-all-vouchers">{{VIEW_ALL}}</a> 
             </div>
             <div class="rt-in">
                 <h4 id="packs-count">0</h4>
-                <span>{{PACKS}}</span> <a href="#" class="v-all cmn-btn">{{VIEW_ALL}}</a> 
+                <span>{{PACKS}}</span> <a href="#" class="v-all cmn-btn" id="view-all-packs">{{VIEW_ALL}}</a> 
             </div>
         </div>
         <div class="righ-graph">
@@ -188,6 +190,7 @@
             </div>
         </div>
     </div>
+
     <!-- news eye Modal -->
     <div class="modal fade" id="meye" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -196,8 +199,8 @@
                     <h4>{{NEWS}}</h4>
                     <div class="tab-common">
                         <ul id="vouchertabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
-                            <li><a class="active" href="#read" data-toggle="tab"><i class="fas fa-eye"></i> {{READ}}</a></li>
-                            <li><a href="#unread" data-toggle="tab"><i class="far fa-eye-slash"></i> {{UNREAD}}</a></li>
+                            <li><a class="active" href="#read" id="read-news" data-toggle="tab"><i class="fas fa-eye"></i> {{READ}}</a></li>
+                            <li><a href="#unread" data-toggle="tab" id="unread-news"><i class="far fa-eye-slash"></i> {{UNREAD}}</a></li>
                         </ul>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
@@ -206,74 +209,89 @@
                     <div class="ann-modal-cont">
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="read">
-                                <div class="ann-mode">
-                                    <div class="ann-left">
-                                        <h3>Lorem Ipsum<span><i class="fas fa-clock"></i>01 Jan 2021</span></h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod.</p>
-                                    </div>
-                                    <div class="ann-right">
-                                        <ul>
-                                            <li><a href="#" data-toggle="modal" data-target="#medit"><i class="fas fa-edit"></i></a><a href="#"><i class="far fa-trash-alt"></i></a></li>
-                                            <li><a href="#" data-toggle="modal" data-target="#meye"><i class="fas fa-eye"></i></a><span class="an-val">08</span></li>
-                                            <li><a href="#"><i class="far fa-eye-slash"></i></a><span class="an-val">15</span></li>
-                                        </ul>
-                                    </div>
+                                <div class="ann-modal-cont" id="news-listing-show">
+
                                 </div>
                                 <div class="an-view-cont">
-                                    <ul>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i1.png" alt=""> </div>
-                                                <span class="name">Rita</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i2.png" alt=""> </div>
-                                                <span class="name">Merlin</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i3.png" alt=""> </div>
-                                                <span class="name">John</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i4.png" alt=""> </div>
-                                                <span class="name">Rita</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i5.png" alt=""> </div>
-                                                <span class="name">Merlin</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i6.png" alt=""> </div>
-                                                <span class="name">John</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i1.png" alt=""> </div>
-                                                <span class="name">Rita</span> 
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sl-cont">
-                                                <div class="th-image"> <img src="images/i2.png" alt=""> </div>
-                                                <span class="name">Merlin</span>
-                                                <div class="avail">Now</div>
-                                            </div>
-                                        </li>
+                                    <ul id="read-unread-therapists">
+                                        
                                     </ul>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="unread"> {{UNREAD}} </div>
+                            <div role="tabpanel" class="tab-pane fade" id="unread">
+                                <div class="ann-modal-cont" id="news-listing-show">
+
+                                </div>
+                                <div class="an-view-cont">
+                                    <ul id="read-unread-therapists">
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vouchers list modal -->
+    <div class="modal fade" id="modal-vouchers" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{VOUCHERS}} <label id="count-vouchers">0</label></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="ann-modal-cont">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active show" id="active">
+                                <table id="table-vouchers" class="voucher" width="100%" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Voucher No.</th>
+                                            <th class="text-left">Date of Generation</th>
+                                            <th>Total Value</th>
+                                            <th>Expiry Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-vouchers">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Packs list modal -->
+    <div class="modal fade" id="modal-packs" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{VOUCHERS}} <label id="count-packs">0</label></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="ann-modal-cont">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active show" id="active">
+                                <div class="voucher-content">
+                                    <div class="tab-content">
+                                        <ul class="pack-list" id="ul-pack-list">
+                                            
+                                        </ul>
+
+                                        <div class="text-center" id="pagination">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

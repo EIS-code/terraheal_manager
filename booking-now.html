@@ -1,0 +1,427 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $(".language-bar").load("language-bar.html", function() {
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/booking-now.js" async></script>
+<script type="text/javascript" src="js/owl.carousel.min.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <section class="shop-main-section content-sec" style="width: 100% !important;">
+            <div class="right-tp justify-content-end">
+                <div class="top-right">
+                    <div class="language-bar">
+                        
+                    </div>
+                    <div class="timer">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="home-booking cm-height">
+                <div class="wrapper">
+                    <div class="book-main">
+                        <div class="book-sec">
+                            <div id="tabs">
+                                <ul>
+                                    <li><a href="#fragment-1">1</a></li>
+                                    <li><a href="#fragment-2">2</a></li>
+                                    <li><a href="#fragment-3">3</a></li>
+                                    <li><a href="#fragment-4">4</a></li>
+                                    <li><a href="#fragment-5">4</a></li>
+                                </ul>
+                                <form method="POST" class="booking-form">
+                                    <div id="fragment-1" class="ui-tabs-panel">
+                                        <div class="wh-box">
+                                            <div class="bl-title">
+                                                <span class="count">1</span><span>Select Therapist</span>
+                                            </div>
+                                            <div class="wh-content">
+                                                <div class="top-tab-sec">
+                                                    <ul id="sessionTabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                                        
+                                                    </ul>
+                                                </div>
+                                                <div class="therapist-col">
+                                                    <ul class="grid">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
+                                        <div class="wh-box">
+                                            <div class="bl-title">
+                                                <span class="count">2</span><span>Select Services</span>
+                                                <ul class="tab-sat-sec therapist-names">
+                                                    
+                                                </ul>
+                                            </div>
+                                            <div class="wh-content">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="top-tab-sec">
+                                                            <ul id="myTabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                                                <li><a class="active" href="#massages" data-toggle="tab">Massages</a></li>
+                                                                <li><a href="#therapies" data-toggle="tab">therapies</a></li>
+                                                            </ul>
+                                                            <div class="tab-content">
+                                                                <div role="tabpanel" class="tab-pane fade in active" id="massages">
+                                                                    <div class="cust-flex">
+                                                                        <ul class="grid_service">
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="tabpanel" class="tab-pane fade" id="therapies">
+                                                                    <div class="cust-flex">
+                                                                        <ul class="grid_service">
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!---Show Select Service---->
+
+                                                    <div class="col-md-4 service_info">
+                                                        <div class="msg-right-main">
+                                                            <div class="owl-carousel owl-theme" id="msg-slider">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
+                                        <div class="wh-box">
+                                            <div class="bl-title">
+                                                <span class="count">4</span><span>Client Registration</span>
+
+                                                <ul class="tab-sat-sec therapist-names">
+                                                    
+                                                </ul>
+                                            </div>
+                                            <div class="wh-content">
+                                                <div class="details-sec">
+                                                    <div class="details-tab-top tab-common">
+                                                        <ul id="detail-tab" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
+                                                            <li><a class="active" href="#guest" data-toggle="tab">Guest</a></li>
+                                                            <li><a href="#existing" data-toggle="tab">Existing</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="tab-content cmn-cont">
+                                                        <div role="tabpanel" class="tab-pane fade in active" id="guest">
+                                                            <!-- <a href="javascript:void(0)" class="cmn-btn register add">Register</a> -->
+                                                            <div class="guest-data norm-pad">
+                                                                <div class="form-data">
+                                                                    <div class="form-list">
+                                                                        <label>Name</label>
+                                                                        <input type="text" name="guest_name" id="guest_name" placeholder="enter your Name"/>
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Telephone</label>
+                                                                        <input type="text" name="guest_telephone" id="guest_telephone" placeholder="Enter Telephone Number"/>
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Email</label>
+                                                                        <input type="email" name="guest_email" id="guest_email" placeholder="Enter your Email"/>
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Gender</label>
+
+                                                                        <div class="ph-radio" style="margin-left: 0px !important;">
+                                                                            <ul>
+                                                                                <li><input type="radio" name="gender" value="m"><label>Male</label></li>
+                                                                                <li><input type="radio" name="gender" value="f"><label>Female</label></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="add-p">
+                                                                <a href="#" class="cmn-btn addGuest">Register</a>
+                                                            </div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="existing">
+                                                            <div class="existing-data norm-pad">
+                                                                <div class="form-data">
+                                                                    <div class="client-id d-flex">
+                                                                        <label>Client</label>
+                                                                        <div class="autocomplete">
+                                                                            <input type="text" name="user_search" id="autocomplete" placeholder="Search by Mobile, Name, Customer id"/>
+
+                                                                            <div id="autocomplete-list" class="autocomplete-items">
+                                                                                
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#qrmodal"><img src="images/qr.png" alt=""/></a>
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Name</label>
+                                                                        <input type="text" name="user_name" id="user_name" placeholder="Your Name" readonly="" />
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Telephone</label>
+                                                                        <input type="text" name="user_phone" id="user_phone" placeholder="Telephone Number" readonly="" />
+                                                                    </div>
+                                                                    <div class="form-list">
+                                                                        <label>Email</label>
+                                                                        <input type="email" name="user_email" id="user_email" placeholder="Your Email" readonly="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="client_id[]" id="client_id" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
+                                        <div class="wh-box">
+                                            <div class="bl-title">
+                                                <span class="count">3</span><span>Select Preferences</span>
+
+                                                <ul class="tab-sat-sec therapist-names">
+                                                    
+                                                </ul>
+                                            </div>
+                                            <div class="wh-content">
+                                                <div class="preferance">
+                                                    <div class="pref-top d-flex justify-content-around">
+                                                        <div class="pref-type focus">
+                                                            <div class="pref-title">Focus Areas</div>
+                                                            <div class="pref-list"><a href="#" class="focus" id="focus_preference" data-toggle="modal" data-target="#focusmodal">Select</a></div>
+                                                        </div>
+                                                        <!-- <div class="pref-type session">
+                                                            <div class="pref-title">Session Type</div>
+                                                            <div class="pref-list">
+                                                                <div class="dropdown">
+                                                                    <button id="dLabel" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    Select
+                                                                    </button>
+                                                                    <ul id="session" class="dropdown-menu" aria-labelledby="dLabel">
+                                                                        
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="pref-type pressure">
+                                                            <div class="pref-title">Pressure</div>
+                                                            <div class="pref-list">
+                                                                <div class="dropdown">
+                                                                    <button id="pLabel" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        Select
+                                                                    </button>
+                                                                    <ul id="pressure" class="dropdown-menu" aria-labelledby="dLabel">
+                                                                        <li><label>Soft Pressure</label></li>
+                                                                        <li><label>Medium Pressure</label></li>
+                                                                        <li><label>Strong Pressure</label></li>
+                                                                        <li><label>Extra Strong Pressure</label></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pref-middle">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="ph-box">
+                                                                    <div class="d-flex">
+                                                                        <p>Any Injury or Physical Condition ?</p>
+                                                                        <div class="ph-radio">
+                                                                            <ul>
+                                                                                <li><input type="radio" name="physical_condition" value="1" /><label>Yes</label></li>
+                                                                                <li><input type="radio" name="physical_condition" value="0" checked="" /><label>No</label></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ph-text">
+                                                                        <textarea placeholder="Please Write Here" name="notes_of_injuries" id="notes_of_injuries" disabled=""></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="ph-box">
+                                                                    <div class="d-flex">
+                                                                        <p>Booking Notes:</p>
+                                                                        <div class="ph-radio">
+                                                                            <ul>
+                                                                                <li><input type="radio" name="booking_notes" value="1" /><label>Yes</label></li>
+                                                                                <li><input type="radio" name="booking_notes" value="0" checked="" /><label>No</label></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ph-text">
+                                                                        <textarea placeholder="Please Write Here" name="special_notes" id="special_notes" disabled=""></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ph-total">
+                                                        <div class="d-flex ph-t"><span class="durtn">Subtotal</span><span class="line-hr"></span><span class="price"><small>€</small><span class="subtotal"></span></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
+                                        <div class="wh-box">
+                                            <div class="bl-title">
+                                                <span class="count">5</span><span>Payment</span>
+                                            </div>
+                                            <div class="wh-content">
+                                                <div class="payment-sec">
+                                                    <div class="pay-top">
+                                                        <div class="pay-list d-flex">
+                                                            <label>Amount to Pay</label>
+                                                            <div class="inpt-bx"><span>&#8364;</span><input type="text" placeholder="" disabled="" class="subtotal-value" /></div>
+                                                        </div>
+                                                        <div class="pay-list d-flex">
+                                                            <div class="pref-list">
+                                                                <div class="dropdown">
+                                                                    <button id="pay" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Payment Method</button>
+                                                                    <ul id="payment" class="dropdown-menu" aria-labelledby="dLabel">
+                                                                        <li><label>Cash</label></li>
+                                                                        <li><label>Card INT</label></li>
+                                                                        <li><label>Card Local</label></li>
+                                                                        <li><label>Voucher</label></li>
+                                                                        <li><label>MBWay</label></li>
+                                                                        <li><label>PayPal</label></li>
+                                                                        <li><label>NET Card</label></li>
+                                                                        <li><label>Apple Pay</label></li>
+                                                                        <li><label>Google Pay</label></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pay-add">
+                                                        <a href="javascript:void(0)"><i class="fas fa-plus"></i>Add</a>
+                                                    </div>
+                                                    <div class="pay-bottom">
+                                                        <div class="pt-btm">
+                                                            <label>Discount by Value</label>
+                                                            <div class="inpt-bx"><span>&#8364;</span><input type="text" name="pay"/></div>
+                                                        </div>
+                                                        <div class="pt-btm">
+                                                            <label>Discount by Percentage</label>
+                                                            <div class="inpt-bx"><input type="text" name="pay"/><span>%</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pay-buttons">
+                                                        <a href="javascript:void(0)" class="cmn-btn reset">Reset</a>
+                                                        <a href="javascript:void(0)" class="cmn-btn checkout">Checkout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Select Focus Modal -->
+                                    <div class="modal fade" id="focusmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- client QR Modal -->
+        <div class="modal fade" id="qrmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ct-id-box">
+                            <figure><span><img src="images/qr.png" alt="qr-code"/></span></figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- add person Modal -->
+        <div class="modal fade" id="addperson-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">Add Client
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="person-inner">
+                            <div class="d-flex flex-wrap">
+                                <div class="p-wrap">
+                                    <label>Name</label>
+                                    <input type="text" name="name"/>
+                                </div>
+                                <div class="p-wrap">
+                                    <label>Telephone Number</label>
+                                    <input type="text" name="telephone"/>
+                                </div>
+                                <div class="p-wrap">
+                                    <label>Email ID</label>
+                                    <input type="email" name="email"/>
+                                </div>
+                                <div class="p-wrap">
+                                    <label>Gender</label>
+                                    <select>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                                <div class="p-wrap">
+                                    <label>Source</label>
+                                    <select>
+                                        <option>Opt1</option>
+                                        <option>Opt2</option>
+                                    </select>
+                                </div>
+                                <div class="p-wrap">
+                                    <label>Client Notes</label>
+                                    <input type="text" name="notes"/>
+                                </div>
+                            </div>
+                            <div class="person-bottom text-right">
+                                <a href="#" class="cmn-btn"><i class="far fa-save"></i> Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,61 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+<script async>
+    $(function(){
+        $("head").load("header.html");
+        $("<div class='aside sidebar'>").prependTo(".main-flex").load("left-panel.html");
+        $("<div class='right-sidebar'>").insertAfter(".content-sec").load("right-panel.html", function() {
+            $(".language-bar").load("language-bar.html");
+            $(".timer").load("timer.html");
+        });
+        $("<div id='footer'>").appendTo("body").load("footer.html", function() {
+            showBody();
+        });
+    });
+</script>
+
+<script type="module" src="js/therapists-existing.js" async></script>
+
+<script type="module" src="js/right-panel.js" async></script>
+
+<body class="manager-dashboard" style="display: none;">
+    <div class="d-flex main-flex">
+        <div class="content-sec manage-side-last">
+            <div class="center-top d-flex justify-content-between">
+                <div class="title">Therapists of all Shops</div>
+            </div>
+            <div class="th-new-top th-existing">
+                <div class="d-flex">
+                    <div class="th-left">
+                        <div class="search-top">
+                            <input type="text" placeholder="Search By Name, Email, Tel, NIF" id="text-search">
+                            <button type="button" id="btn-search"><img src="images/search.png" alt="search"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="th-new-middle">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="today-tab">
+                        <ul id="list-therapists" class="therapists-list">
+                            
+                        </ul>
+                    </div>
+
+                    <div class="norm-back">
+                        <a href="therapists.html" class="cmn-btn backlink">← Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="static-ratings">
+        <span class="fa fa-star" id="client-rating-star-1"></span>
+        <span class="fa fa-star" id="client-rating-star-2"></span>
+        <span class="fa fa-star" id="client-rating-star-3"></span>
+        <span class="fa fa-star" id="client-rating-star-4"></span>
+        <span class="fa fa-star" id="client-rating-star-5"></span>
+    </div>
+</body>
