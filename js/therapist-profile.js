@@ -1,10 +1,14 @@
 import { Post, Get, EXCEPTION_CODE, SUCCESS_CODE, getCountries, getCities } from './networkconst.js';
-import { GET_THERAPIST_INFO, UPDATE_THERAPIST } from './networkconst.js';
+import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE } from './networkconst.js';
 
 var tabPersonal   = '#personal',
     tabDocuments  = '#documents',
     tabStatistics = '#statistics',
+    tabPortfolio  = '#portfolio',
     therapistId   = getQueryStringValue('id');
+
+const TYPE_MASSAGE = '0';
+const TYPE_THERAPY = '1';
 
 window.addEventListener("load", function() {
     loadDatas(tabPersonal, true);
@@ -50,6 +54,10 @@ window.addEventListener("load", function() {
         if (currentForm.attr('id') == 'form-personal') {
             savePersonal(currentForm);
         }
+    });
+
+    $('#range-availability').dateRangePicker({
+        singleMonth: true
     });
 });
 
@@ -175,6 +183,9 @@ function loadDatas(tabName, clearCache) {
                         setYearMonth(true);
 
                         getStatistics(getSelectedMonth().getTime());
+                    } else if (tabName == tabPortfolio) {
+                        getServices(TYPE_MASSAGE, therapistData.selected_services);
+                        getServices(TYPE_THERAPY, therapistData.selected_services);
                     }
                 }
             }
@@ -418,4 +429,130 @@ function closeFileUploadModal() {
     $(document).find('#documentsadd-modal').modal('hide');
 
     $(document).find('form#form-document-upload').get(0).reset();
+}
+
+function getServices(type, therapistServices)
+{
+    let postData = {
+        "type": type
+    };
+
+    Post(SERVICES, postData, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+
+            let myArray = res.data.data,
+                li      = '';
+
+            $.each(myArray, function(i, item) {
+                let checked = null;
+
+                if (type == TYPE_MASSAGE) {
+                    $.each(therapistServices.massages, function(key, massage) {
+                        if (massage.service_id == item.id) {
+                            checked = true;
+
+                            return true;
+                        }
+                    });
+                } else if (type == TYPE_THERAPY) {
+                    $.each(therapistServices.therapies, function(key, therapy) {
+                        if (therapy.service_id == item.id) {
+                            checked = true;
+
+                            return true;
+                        }
+                    });
+                }
+
+                li += '<li>';
+                    li += '<input class="select-input_service" type="checkbox" name="services[]" value="' + item.id + '" data-type="' + TYPE_MASSAGE + '" ' + (checked ? "checked='true'" : "") + ' />';
+
+
+                    li += '<figure><img src="' + item.image + '" alt="' + item.name + '">';
+                    li += '</figure>';
+                    li += '<p>';
+                        li += item.name;
+                    li += '</p>';
+                li += '</li>';
+            });
+
+            if (type == TYPE_MASSAGE) {
+                var gridServices  = $("#massages .pack-list"),
+                    inputServices = gridServices.find('.select-input_service');
+            } else {
+                var gridServices  = $("#therapies .pack-list"),
+                    inputServices = gridServices.find('.select-input_service');
+            }
+
+            gridServices.empty().append(li);
+
+            if (type == TYPE_MASSAGE) {
+                var inputServices = gridServices.find('.select-input_service');
+            } else {
+                var inputServices = gridServices.find('.select-input_service');
+            }
+
+            inputServices.unbind().click(function(e) {
+                if (this.value != null) {
+                    if (this.checked) {
+                        confirm("Are you sure want to add this service ?", addService, [this.value], $(this));
+                    } else {
+                        confirm("Are you sure want to remove this service ?", removeService, [this.value], $(this));
+                    }
+                }
+            });
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function addService(serviceId) {
+    let formData = {};
+
+    formData['services'] = {};
+
+    formData['services'][0] = serviceId;
+
+    formData['therapist_id'] = therapistId;
+
+    Post(ADD_THERAPIST_SERVICE, formData, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            showSuccess(data.msg);
+
+            loadDatas(tabPortfolio, true);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function removeService(serviceId) {
+    let formData = {};
+
+    formData['services'] = {};
+
+    formData['services'][0] = serviceId;
+
+    formData['therapist_id'] = therapistId;
+
+    Post(REMOVE_THERAPIST_SERVICE, formData, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            showSuccess(data.msg);
+
+            loadDatas(tabPortfolio, true);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
 }
