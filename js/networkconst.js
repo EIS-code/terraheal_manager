@@ -35,6 +35,7 @@ export const GET_STAFF_LIST = BASEURL_MANAGER + "/staff/list";
 export const ADD_STAFF = BASEURL_MANAGER + "/staff/add";
 export const UPDATE_STAFF = BASEURL_MANAGER + "/staff/update";
 export const UPDATE_STAFF_STATUS = BASEURL_MANAGER + "/staff/update/status";
+export const GET_THERAPIST_RATING = BASEURL_MANAGER + "/therapist/ratings/get";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
@@ -69,6 +70,7 @@ export const THERAPIST_ADD_NEW_EXISTING = BASEURL + "/therapist/existing";
 export const ADD_CLIENT = BASEURL + "/waiting/addClient";
 export const THERAPIST_TIMETABLE = BASEURL + "/waiting/getTimeTable";
 export const UPDATE_THERAPIST = BASEURL + "/therapist/profile/update";
+export const GET_THERAPIST_AVAILABILITY = BASEURL + "/therapist/myAvailabilities";
 
 // Shop routes
 export const SERVICES = BASEURL_SHOP + "/getServices";

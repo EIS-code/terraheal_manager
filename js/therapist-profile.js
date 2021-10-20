@@ -1,14 +1,25 @@
 import { Post, Get, EXCEPTION_CODE, SUCCESS_CODE, getCountries, getCities } from './networkconst.js';
-import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE } from './networkconst.js';
+import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE, GET_THERAPIST_AVAILABILITY, GET_THERAPIST_RATING } from './networkconst.js';
 
-var tabPersonal   = '#personal',
-    tabDocuments  = '#documents',
-    tabStatistics = '#statistics',
-    tabPortfolio  = '#portfolio',
-    therapistId   = getQueryStringValue('id');
+var tabPersonal     = '#personal',
+    tabDocuments    = '#documents',
+    tabStatistics   = '#statistics',
+    tabPortfolio    = '#portfolio',
+    tabAvailability = '#availability',
+    tabRatings      = '#ratings',
+    therapistId     = getQueryStringValue('id');
 
 const TYPE_MASSAGE = '0';
 const TYPE_THERAPY = '1';
+
+const TODAY = '0';
+const YESTERDAY = '1';
+const THIS_WEEK = '2';
+const CURRENT_MONTH = '3';
+const LAST_7_DAYS = '4';
+const LAST_14_DAYS = '5';
+const LAST_30_DAYS = '6';
+const CUSTOM = '7';
 
 window.addEventListener("load", function() {
     loadDatas(tabPersonal, true);
@@ -59,7 +70,41 @@ window.addEventListener("load", function() {
     $('#range-availability').dateRangePicker({
         singleMonth: true
     });
+
+    setAvailabilityDate();
+
+    $('#availability-date').on('change', function() {
+        let self = $(this);
+
+        getAvailabilities();
+    });
+
+    $('#custom-date').on('change', function() {
+        let date = convertDateInputToUTCTimestamps($(this).val());
+
+        if ((!empty(date) && date >= 0) || empty($(this).val())) {
+            getRatings(CUSTOM, date);
+        }
+    });
+
+    $('select#rating-filters').on('change', function() {
+        if ($(this).val() == CUSTOM) {
+            $('#custom-date').fadeIn(200);
+        } else {
+            $('#custom-date').fadeOut(200);
+
+            $('#custom-date').val("");
+
+            getRatings($(this).val());
+        }
+    });
 });
+
+function setAvailabilityDate() {
+    let currentDate = moment();
+
+    $('#availability-date').val(currentDate.format("yyyy-MM-DD"));
+}
 
 function loadDatas(tabName, clearCache) {
     tabName = (tabName == "" || tabName == null) ? tabPersonal : tabName;
@@ -177,6 +222,12 @@ function loadDatas(tabName, clearCache) {
                                 element.append(html);
                             });
                         }
+                    } else if (tabName == tabAvailability) {
+                        getAvailabilities();
+                    } else if (tabName == tabRatings) {
+                        $('select#rating-filters').val(TODAY);
+
+                        getRatings();
                     } else if (tabName == tabStatistics) {
                         $('form#form-statistics').find('input[name="id"]').val(therapistId);
 
@@ -551,6 +602,107 @@ function removeService(serviceId) {
             showSuccess(data.msg);
 
             loadDatas(tabPortfolio, true);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getAvailabilities() {
+    let formData = {};
+
+    formData['date'] = convertDateInputToUTCTimestamps($('#availability-date').val());
+
+    formData['therapist_id'] = therapistId;
+
+    Post(GET_THERAPIST_AVAILABILITY, formData, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            let element1 = $('#availabilities-1'),
+                element2 = $('#availabilities-2');
+
+            if (!empty(data.data.Schedule) && Object.keys(data.data.Schedule).length > 0) {
+                let tr1 = "",
+                    tr2 = "",
+                    totalRows = data.data.Schedule.length,
+                    halfRowCount = parseInt(totalRows / 2);
+
+                $.each(data.data.Schedule, function(index, schedule) {
+                    let isWorking = (schedule.is_working.toLowerCase() == 'not working');
+
+                    if ((index + 1) > halfRowCount) {
+                        tr2 += "<tr class='" + (isWorking ? 'na' : '') + "'>";
+                            tr2 += "<td>" + getDate(schedule.date) + "</td>";
+                            tr2 += "<td>" + schedule.is_working + "</td>";
+                            tr2 += "<td>" + getTime(schedule.shifts.from) + " - " + getTime(schedule.shifts.to) + "</td>";
+                        tr2 += "</tr>";
+                    } else {
+                        tr1 += "<tr class='" + (isWorking ? 'na' : '') + "'>";
+                            tr1 += "<td>" + getDate(schedule.date) + "</td>";
+                            tr1 += "<td>" + schedule.is_working + "</td>";
+                            tr1 += "<td>" + getTime(schedule.shifts.from) + " - " + getTime(schedule.shifts.to) + "</td>";
+                        tr1 += "</tr>";
+                    }
+
+                    element1.empty().html(tr1);
+                    element2.empty().html(tr2);
+                });
+            } else {
+                element1.empty();
+                element2.empty();
+            }
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getRatings(filter, date) {
+    filter = filter || TODAY;
+
+    Post(GET_THERAPIST_RATING, {'therapist_id': therapistId, "filter" : filter, "date" : date}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            let element = $('ul#rating-list'),
+                li      = "";
+
+            element.empty();
+
+            $.each(data.data, function(key, rating) {
+                li += "<li>";
+                    li += rating.question;
+
+                    li += "<div>";
+                        li += '<span class="fa fa-star" id="client-rating-star-' + key + '-1"></span>';
+                        li += '<span class="fa fa-star" id="client-rating-star-' + key + '-2"></span>';
+                        li += '<span class="fa fa-star" id="client-rating-star-' + key + '-3"></span>';
+                        li += '<span class="fa fa-star" id="client-rating-star-' + key + '-4"></span>';
+                        li += '<span class="fa fa-star" id="client-rating-star-' + key + '-5"></span>';
+                    li += "</div>";
+                li += "</li>";
+
+                element.append(li);
+
+                let i = 1,
+                    ratingRemainder = (rating.rate > 0) ? ((rating.rate - parseInt(rating.rate)) * 100).toFixed(2) : 0;
+
+                for (;i <= parseInt(rating.rate);) {
+                    $('#client-rating-star-' + key + '-' + i).addClass('active');
+                    i++;
+                }
+
+                if (ratingRemainder >= 50) {
+                    $('#client-rating-star-' + key + '-' + i).removeClass('fa-star').addClass('fa-star-half').addClass('active');
+                }
+
+                li = '';
+            });
         }
     }, function (err) {
         showError("AXIOS ERROR: " + err);

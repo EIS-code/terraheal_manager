@@ -201,7 +201,7 @@
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade" id="availability">
                                                 <div class="fr-time" style="padding: unset;">
-                                                    <input type="date" />
+                                                    <input type="date" id="availability-date" />
                                                 </div>
 
                                                 <div class="available-sec">
@@ -214,17 +214,8 @@
                                                                     <th>Time</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>01, Monday</td>
-                                                                    <td>Available</td>
-                                                                    <td>10:30 - 20:30</td>
-                                                                </tr>
-                                                                <tr class="na">
-                                                                    <td>09, Monday</td>
-                                                                    <td>Not Available</td>
-                                                                    <td>-</td>
-                                                                </tr>
+                                                            <tbody id="availabilities-1">
+                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -237,22 +228,8 @@
                                                                     <th>Time</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>15, Monday</td>
-                                                                    <td>Available</td>
-                                                                    <td>10:30 - 20:30</td>
-                                                                </tr>
-                                                                <tr class="na">
-                                                                    <td>09, Monday</td>
-                                                                    <td>Not Available</td>
-                                                                    <td>-</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>01, Monday</td>
-                                                                    <td>Available</td>
-                                                                    <td>10:30 - 20:30</td>
-                                                                </tr>
+                                                            <tbody id="availabilities-2">
+                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -296,51 +273,25 @@
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade" id="ratings">
                                                 <div class="rate-top">
-                                                    <select>
-                                                        <option>Last Month</option>
-                                                        <option>Last Week</option>
-                                                        <option>Yesterday</option>
-                                                    </select>
+                                                    <div class="fr-time" style="padding: unset;">
+                                                        <select id="rating-filters">
+                                                            <option value="0">Today</option>
+                                                            <option value="1">Yesterday</option>
+                                                            <option value="2">This Week</option>
+                                                            <option value="3">Current Month</option>
+                                                            <option value="4">Last 7 Days</option>
+                                                            <option value="5">Last 14 Days</option>
+                                                            <option value="6">Last 30 Days</option>
+                                                            <option value="7">Custom</option>
+                                                        </select>
+
+                                                        <input type="date" id="custom-date" class="disp-none" />
+                                                    </div>
                                                 </div>
                                                 <div class="rate-pack rate-mng">
                                                     <div class="rating-inner">
-                                                        <ul>
-                                                            <li>
-                                                                Punctuality And Presence For Reservations
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                Behavior
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                Sexual Issues
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                Hygiene
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                Left Bad / Good Review
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                Payment Issues
-                                                                <div class="rating rating2">
-                                                                    <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                                                </div>
-                                                            </li>
+                                                        <ul id="rating-list">
+                                                            
                                                         </ul>
                                                     </div>
                                                 </div>
