@@ -1,20 +1,33 @@
 {
-  "name": "manager",
+  "name": "Manager",
   "version": "1.0.0",
   "description": "Shop Manager",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder -nwl"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EIS-code/terraheal_manager.git"
+  },
   "keywords": [
     "shop",
     "manager"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": {
+    "name": "Evolution IT Solutions",
+    "email": "support@evolutionitsolution.com",
+    "url": "http://evolutionitsolution.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EIS-code/terraheal_manager/issues"
+  },
   "devDependencies": {
     "electron": "^8.5.5",
+    "electron-builder": "~22.10.5",
     "electron-packager": "^15.3.0",
     "electron-winstaller": "^5.0.0",
     "electron-wix-msi": "^2.2.0"

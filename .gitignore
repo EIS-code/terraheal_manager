@@ -3,3 +3,5 @@ node_modules/
 /export-exe.bat
 ManagerExe-win32-x64/
 windows_installer/
+dist/
+out/
