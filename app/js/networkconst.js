@@ -71,6 +71,7 @@ export const ADD_CLIENT = BASEURL + "/waiting/addClient";
 export const THERAPIST_TIMETABLE = BASEURL + "/waiting/getTimeTable";
 export const UPDATE_THERAPIST = BASEURL + "/therapist/profile/update";
 export const GET_THERAPIST_AVAILABILITY = BASEURL + "/therapist/myAvailabilities";
+export const ASSIGN_THERAPIST           = BASEURL + "/waiting/assignTherapist";
 
 // Shop routes
 export const SERVICES = BASEURL_SHOP + "/getServices";
