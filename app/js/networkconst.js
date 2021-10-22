@@ -36,6 +36,7 @@ export const ADD_STAFF = BASEURL_MANAGER + "/staff/add";
 export const UPDATE_STAFF = BASEURL_MANAGER + "/staff/update";
 export const UPDATE_STAFF_STATUS = BASEURL_MANAGER + "/staff/update/status";
 export const GET_THERAPIST_RATING = BASEURL_MANAGER + "/therapist/ratings/get";
+export const SAVE_THERAPIST_AVAILABILITY = BASEURL_MANAGER + "/therapist/availability/add";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
@@ -77,6 +78,7 @@ export const ASSIGN_THERAPIST           = BASEURL + "/waiting/assignTherapist";
 export const SERVICES = BASEURL_SHOP + "/getServices";
 export const SESSIONS = BASEURL_SHOP + "/sessions/get";
 export const PREFERENCES = BASEURL_SHOP + "/getPreferences";
+export const GET_SHIFTS  = BASEURL_SHOP + "/shifts/get";
 
 const CancelToken = axios.CancelToken;
 

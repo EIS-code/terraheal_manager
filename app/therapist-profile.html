@@ -201,7 +201,7 @@
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade" id="availability">
                                                 <div class="fr-time" style="padding: unset;">
-                                                    <input type="date" id="availability-date" />
+                                                    <input type="month" id="availability-date" />
                                                 </div>
 
                                                 <div class="available-sec">
@@ -234,40 +234,31 @@
                                                         </table>
                                                     </div>
                                                     <div class="av-table">
-                                                        <div class="form-group">
-                                                            <div class="fr-time" style="padding-right: unset;">
-                                                                <div class="fr-sc">
-                                                                    <input type="text" id="range-availability" style="width: 100%;" />
+                                                        <form id="form-availability" method="POST">
+                                                            <div class="form-group">
+                                                                <div class="fr-time" style="padding-right: unset;">
+                                                                    <label><h4>Add Availability</h4></label>
+
+                                                                    <div class="fr-sc">
+                                                                        <input type="text" id="range-availability" name="from-to" style="width: 100%;" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="fr-time">
+                                                                    <div class="pref-list">
+                                                                        <div class="dropdown">
+                                                                            <button id="dLabel" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            Select Shift
+                                                                            </button>
+                                                                            <ul id="dropdown-shifts" class="dropdown-menu" aria-labelledby="dLabel" style="">
+                                                                                <li><label>No Shifts</label></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="avail-option">
-                                                                <div class="av-opt">
-                                                                    <input type="radio" name="av-op"><label>Available</label>
-                                                                </div>
-                                                                <div class="av-opt na-av">
-                                                                    <input type="radio" name="av-op"><label>Not Available</label>
-                                                                </div>
-                                                            </div>
-                                                            <br />
-                                                            <div class="avail-option">
-                                                                <div class="av-opt">
-                                                                    <input type="radio" name="av-op"><label>Flexible</label>
-                                                                </div>
-                                                                <div class="av-opt">
-                                                                    <input type="radio" name="av-op"><label>Home Visit</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="fr-time">
-                                                                <div class="fr-sc">
-                                                                    <label>From</label>
-                                                                    <input id="input-c" value="" data-default="20:48" placeholder="Time">
-                                                                </div>
-                                                                <div class="fr-sc">
-                                                                    <label>To</label>
-                                                                    <input id="input-d" value="" data-default="20:48" placeholder="Time">
-                                                                </div>
-                                                            </div>
-                                                        </div>
+
+                                                            <input type="hidden" id="selected-shift" name="shift" />
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

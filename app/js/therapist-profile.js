@@ -1,5 +1,5 @@
 import { Post, Get, EXCEPTION_CODE, SUCCESS_CODE, getCountries, getCities } from './networkconst.js';
-import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE, GET_THERAPIST_AVAILABILITY, GET_THERAPIST_RATING } from './networkconst.js';
+import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE, GET_THERAPIST_AVAILABILITY, GET_THERAPIST_RATING, GET_SHIFTS, SAVE_THERAPIST_AVAILABILITY } from './networkconst.js';
 
 var tabPersonal     = '#personal',
     tabDocuments    = '#documents',
@@ -64,6 +64,8 @@ window.addEventListener("load", function() {
 
         if (currentForm.attr('id') == 'form-personal') {
             savePersonal(currentForm);
+        } else if (currentForm.attr('id') == 'form-availability') {
+            saveAvailability(currentForm);
         }
     });
 
@@ -103,7 +105,7 @@ window.addEventListener("load", function() {
 function setAvailabilityDate() {
     let currentDate = moment();
 
-    $('#availability-date').val(currentDate.format("yyyy-MM-DD"));
+    $('#availability-date').val(currentDate.format("yyyy-MM"));
 }
 
 function loadDatas(tabName, clearCache) {
@@ -223,7 +225,11 @@ function loadDatas(tabName, clearCache) {
                             });
                         }
                     } else if (tabName == tabAvailability) {
+                        getShifts();
+
                         getAvailabilities();
+
+                        $('#profile-save').removeClass('d-none').fadeIn(200);
                     } else if (tabName == tabRatings) {
                         $('select#rating-filters').val(TODAY);
 
@@ -608,6 +614,43 @@ function removeService(serviceId) {
     });
 }
 
+function getShifts() {
+    Post(GET_SHIFTS, {}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            if (!empty(data.data) && Object.keys(data.data).length > 0) {
+                let element = $('#dropdown-shifts'),
+                    li      = "";
+
+                $.each(data.data, function(index, shift) {
+                    li += '<li data-id="' + shift.id + '">';
+                        li += '<label>';
+                            li += getDate(shift.from, "DD/MM/YYYY HH:mm:ss") + " to " + getDate(shift.to, "DD/MM/YYYY HH:mm:ss");
+                        li += '</label>';
+                    li += '</li>';
+                });
+
+                element.empty().html(li);
+
+                element.find('li').unbind().on('click', function() {
+                    $(this).addClass('selected').siblings().removeClass('selected');
+
+                    let getValue = $(this).text();
+
+                    $('#dLabel').text(getValue);
+
+                    $('#selected-shift').val($(this).data('id'));
+                });
+            }
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
 function getAvailabilities() {
     let formData = {};
 
@@ -703,6 +746,47 @@ function getRatings(filter, date) {
 
                 li = '';
             });
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function saveAvailability(form) {
+    let formInputs = form.serializeArray(),
+        postData   = {};
+
+    postData["therapist_id"] = therapistId;
+    postData["from_date"]    = "";
+    postData["to_date"]      = "";
+    postData["shift"]        = "";
+
+    $.each(formInputs, function(key, input) {
+        if (input.name == 'from-to' && !empty(input.value)) {
+            let fromTo = input.value.split(' to ');
+
+            postData["from_date"] = new Date(fromTo[0]).getTime();
+            postData["to_date"]   = new Date(fromTo[1]).getTime();
+        } else if (input.name == 'shift') {
+            postData["shift"] = input.value;
+        }
+    });
+
+    Post(SAVE_THERAPIST_AVAILABILITY, postData, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            form.get(0).reset();
+
+            $('#dLabel').html("Select Shift");
+
+            $('#selected-shift').val("");
+
+            showSuccess(data.msg);
+
+            loadDatas(tabAvailability, true);
         }
     }, function (err) {
         showError("AXIOS ERROR: " + err);
