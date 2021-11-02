@@ -791,6 +791,16 @@ function getAllDays()
     return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 }
 
+function getUrlExtension(url)
+{
+    try {
+        return url.match(/^https?:\/\/.*[\\\/][^\?#]*\.([a-zA-Z0-9]+)\??#?/)[1]
+    } catch (ignored) {
+        return false;
+    }
+}
+
+
 $(document).ready(function() {
 
     $(document).find('.backlink').click(function() {

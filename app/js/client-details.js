@@ -1,5 +1,5 @@
 import { Post, Get, PostDocument, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE } from './networkconst.js';
-import { GET_CLIENT_DETAILS, GET_CLIENT_FUTURE_BOOKINGS, GET_CLIENT_PAST_BOOKINGS, GET_CLIENT_CANCELLED_BOOKINGS, CONFIRM_BOOKING, GET_ROOMS, ASSIGN_ROOMS, PRINT_BOOKING_DETAILS, updateQuestionnairs, DECLINE_CLIENT_DOCUMENT, ACCEPT_CLIENT_DOCUMENT, UPLOAD_CLIENT_DOCUMENT } from './networkconst.js';
+import { GET_CLIENT_DETAILS, GET_CLIENT_FUTURE_BOOKINGS, GET_CLIENT_PAST_BOOKINGS, GET_CLIENT_CANCELLED_BOOKINGS, CONFIRM_BOOKING, GET_ROOMS, ASSIGN_ROOMS, PRINT_BOOKING_DETAILS, updateQuestionnairs, DECLINE_CLIENT_DOCUMENT, ACCEPT_CLIENT_DOCUMENT, UPLOAD_CLIENT_DOCUMENT, GET_SHOP_LOCATION, ADD_FORGOTTEN_OBJECT, GET_FORGOTTEN_OBJECT, RETURN_FORGOTTEN_OBJECT, EMAIL_FORGOTTEN_OBJECT, INFORM_FORGOTTEN_OBJECT_TO_CLIENT } from './networkconst.js';
 
 const IN_MASSAGE_CENTER = '1';
 const HOME_HOTEL_VISITS = '2';
@@ -25,6 +25,14 @@ window.addEventListener("load", function() {
     $('ul.custom-nav').find('li').on("click", handleBookingTabs);
 
     $('a.book-now').attr('href', 'booking-now.html?href=client-details.html?id=' + userId);
+
+    // Get forgotten objects.
+    getForgottoenObjects();
+
+    // Get shop locations.
+    getShopLocations();
+
+    $("#save-forgotten-object").on("click", saveForgottenObject);
 });
 
 function handleBookingTabs() {
@@ -63,7 +71,8 @@ function getClientDetails(userId) {
         } else {
             let client = data.data.client,
                 massagePreferences = data.data.massage_preferences,
-                questionnaries = data.data.questionnaries;
+                questionnaries = data.data.questionnaries,
+                ratings = data.data.ratings;
 
             $('#client-name').html(client.name + " " + client.surname);
             $('#client-age').html(client.age);
@@ -233,6 +242,91 @@ function getClientDetails(userId) {
                     }, 1000);
                 }
             });
+
+            // Ratings.
+            let ratingList = $('ul#rating-list'),
+                li         = "";
+
+            ratingList.empty();
+
+            if (empty(ratings)) {
+                li += "<li>";
+                    li += "No ratings";
+                li += "</li>";
+
+                ratingList.append(li);
+            } else {
+                $.each(ratings, function(key, rating) {
+                    li += "<li>";
+                        li += rating.rating_name;
+
+                        li += "<div>";
+                            li += '<span class="fa fa-star" id="client-rating-star-' + key + '-1"></span>';
+                            li += '<span class="fa fa-star" id="client-rating-star-' + key + '-2"></span>';
+                            li += '<span class="fa fa-star" id="client-rating-star-' + key + '-3"></span>';
+                            li += '<span class="fa fa-star" id="client-rating-star-' + key + '-4"></span>';
+                            li += '<span class="fa fa-star" id="client-rating-star-' + key + '-5"></span>';
+                        li += "</div>";
+
+                        li += '<div class="rate-hov-cont">';
+                            li += '<ul class="rt-in">';
+                                $.each(rating.users, function(k, user) {
+                                    li += '<li>';
+                                        li += '<span>';
+                                            li += user.user_name;
+                                        li += '</span>';
+
+                                        li += "<ul class='d-flex'>";
+                                            li += '<li><span class="fa fa-star" id="user-rating-star-' + key + "-" + k + '-1" style="min-width: unset;"></span></li>';
+                                            li += '<li><span class="fa fa-star" id="user-rating-star-' + key + "-" + k + '-2" style="min-width: unset;"></span></li>';
+                                            li += '<li><span class="fa fa-star" id="user-rating-star-' + key + "-" + k + '-3" style="min-width: unset;"></span></li>';
+                                            li += '<li><span class="fa fa-star" id="user-rating-star-' + key + "-" + k + '-4" style="min-width: unset;"></span></li>';
+                                            li += '<li><span class="fa fa-star" id="user-rating-star-' + key + "-" + k + '-5" style="min-width: unset;"></span></li>';
+                                        li += "</ul>";
+                                    li += '</li>';
+                                });
+                            li += '</ul>';
+                        li += '</div>';
+                    li += "</li>";
+
+                    ratingList.append(li);
+
+                    let i = 1,
+                        ratingRemainder = (rating.avg_rating > 0) ? ((rating.avg_rating - parseInt(rating.avg_rating)) * 100).toFixed(2) : 0;
+
+                    for (;i <= parseInt(rating.avg_rating);) {
+                        $('#client-rating-star-' + key + '-' + i).addClass('active');
+                        i++;
+                    }
+
+                    if (ratingRemainder >= 50) {
+                        $('#client-rating-star-' + key + '-' + i).removeClass('fa-star').addClass('fa-star-half').addClass('active');
+                    }
+
+                    $.each(rating.users, function(k, user) {
+                        let inc = 1,
+                            remainder = (user.rating > 0) ? ((user.rating - parseInt(user.rating)) * 100).toFixed(2) : 0;
+
+                        for (;inc <= parseInt(user.rating);) {
+                            $('#user-rating-star-' + key + "-" + k + '-' + inc).addClass('active');
+                            inc++;
+                        }
+
+                        if (remainder >= 50) {
+                            $('#user-rating-star-' + key + "-" + k + '-' + inc).removeClass('fa-star').addClass('fa-star-half').addClass('active');
+                        }
+                    });
+
+                    li = '';
+                });
+
+                $('.rating-inner ul li').unbind().hover(function() {
+                    $(this).children('.rate-hov-cont').stop(true, false, true).slideToggle(300);
+                });
+            }
+
+            // Source.
+            $("#source").find('input[name="source"][value="' + client.source + '"]').prop('checked', true);
         }
     }, function (error) {
         showError("AXIOS ERROR: " + error);
@@ -775,6 +869,209 @@ function uploadDocument(userId) {
             getClientDetails(userId);
 
             $('form#form-document').get(0).reset();
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function getShopLocations() {
+    return Post(GET_SHOP_LOCATION, {}, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            let locations = data.data,
+                option    = "<option>Select Location</option>",
+                element   = $("#forgotten-object-modal").find("select[name='room_id']");
+
+            $.each(locations, function(index, location) {
+                option += '<option value="' + location.room_id + '">';
+                    option += location.room;
+                option += '</option>';
+            });
+
+            element.empty().html(option);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function saveForgottenObject() {
+    let formInputs  = $("#form-forgotten-object").serializeArray(),
+        formData    = {},
+        isSendEmail = false;
+
+    formData["is_client_informed"] = "0";
+    formData["user_id"]            = userId;
+
+    $.each(formInputs, function(key, input) {
+        if (input.name == 'is_client_informed') {
+            if (input.value == "on") {
+                formData[input.name] = "1";
+            }
+        } else if (input.name == 'is_send_email' && input.value == "on") {
+            isSendEmail = true;
+        } else {
+            formData[input.name] = input.value;
+        }
+    });
+
+    formData["is_pass_manager_id"] = false;
+
+    // Send email of forgotten object.
+    if (isSendEmail) {
+        return forgottenObjectEmailSend(formData);
+    } else {
+        return storeForgottenObject(formData);
+    }
+}
+
+function getForgottoenObjects() {
+    return Post(GET_FORGOTTEN_OBJECT, {"client_id" : userId}, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            let objects = data.data,
+                element = $("#forgotten-objects"),
+                tr      = "";
+
+            element.empty();
+
+            $.each(objects, function(index, object) {
+                let isChecked  = "",
+                    isReadonly = "";
+
+                tr += "<tr>";
+                    tr += "<td>";
+                        tr += getDate(object.created_at);
+                    tr += "</td>";
+
+                    tr += "<td>";
+                        tr += object.forgotten_object;
+                    tr += "</td>";
+
+                    tr += "<td>";
+                        tr += object.shops.name + " " + object.rooms.name;
+                    tr += "</td>";
+
+                    tr += "<td>";
+                        isChecked  = object.is_client_informed == "1" ? "checked='true'" : "";
+
+                        tr += '<div class="checkbox-grp">';
+                            tr += '<input type="checkbox" class="forgotten-object-inform-to-client" data-id="' + object.id + '" ' + isChecked + ' />';
+
+                            tr += '<label></label>';
+                        tr += '</div>';
+                    tr += "</td>";
+
+                    tr += "<td>";
+                        isChecked  = object.is_returned == "1" ? "checked='true'" : "";
+                        isReadonly = !empty(isChecked) ? "disabled='true'" : "";
+
+                        tr += '<div class="checkbox-grp">';
+                            tr += '<input type="checkbox" class="forgotten-object-return" data-id="' + object.id + '" ' + isChecked + ' />';
+
+                            tr += '<label></label>';
+                        tr += '</div>';
+                    tr += "</td>";
+                tr += "</tr>";
+            });
+
+            element.html(tr);
+
+            $(".forgotten-object-return").unbind().on("click", function() {
+                let self     = $(this),
+                    objectId = self.data("id");
+
+                if (!empty(objectId)) {
+                    let isReturned = self.is(':checked') ? "1" : "0";
+
+                    confirm("Are you sure ?", returnObject, [objectId, isReturned], $(this));
+                }
+            });
+
+            $(".forgotten-object-inform-to-client").unbind().on("click", function() {
+                let self     = $(this),
+                    objectId = self.data("id");
+
+                if (!empty(objectId)) {
+                    let isInform = self.is(':checked') ? "1" : "0";
+
+                    confirm("Are you sure ?", informObject, [objectId, isInform], $(this));
+                }
+            });
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function returnObject(objectId, isReturned) {
+    return Post(RETURN_FORGOTTEN_OBJECT, {"object_id" : objectId, "is_returned" : isReturned}, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            showSuccess(data.msg);
+
+            getForgottoenObjects();
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function informObject(objectId, isInform) {
+    return Post(INFORM_FORGOTTEN_OBJECT_TO_CLIENT, {"object_id" : objectId, "client_inform" : isInform}, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            showSuccess(data.msg);
+
+            getForgottoenObjects();
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function storeForgottenObject(formData) {
+    return Post(ADD_FORGOTTEN_OBJECT, formData, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            showSuccess(data.msg);
+
+            $("#form-forgotten-object").get(0).reset();
+
+            getForgottoenObjects();
+
+            $("#forgotten-object-modal").modal("hide");
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function forgottenObjectEmailSend(formData) {
+    return Post(EMAIL_FORGOTTEN_OBJECT, formData, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            // showSuccess(data.msg);
+            storeForgottenObject(formData);
         }
     }, function (err) {
         showError("AXIOS ERROR: " + err);

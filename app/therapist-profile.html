@@ -35,7 +35,7 @@
                             <div class="waiting-sec">
                                 <div class="wh-content">
                                     <div class="profile-main-inner">
-                                        <div class="tab-common">
+                                        <div class="tab-common" id="therapist-profile-tabs">
                                             <ul id="th-tabs" class="nav nav-pills nav-justified" role="tablist" data-tabs="tabs">
                                                 <li><a class="active" href="#personal" data-toggle="tab">Personal</a></li>
                                                 <li><a href="#documents" data-toggle="tab">Documents</a></li>
@@ -240,7 +240,7 @@
                                                                     <label><h4>Add Availability</h4></label>
 
                                                                     <div class="fr-sc">
-                                                                        <input type="text" id="range-availability" name="from-to" style="width: 100%;" />
+                                                                        <input type="text" id="range-availability" name="from-to" style="width: 100%;" readonly="true" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="fr-time">
@@ -288,6 +288,58 @@
                                                 </div>
 
                                                 <br />
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="attendance">
+                                                <div class="per-top">
+                                                    <div class="per-left left-slt">
+                                                        <div class="fr-time" style="padding: unset;">
+                                                            <input type="month" id="attendance-date" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="per-right">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between d-list">
+                                                    <div class="d-tm">
+                                                        <label id="total-working-days">0</label>
+                                                        <span>Total Working Days</span>
+                                                    </div>
+                                                    <div class="d-tm">
+                                                        <label id="total-present-days">0</label>
+                                                        <span>Present</span>
+                                                    </div>
+                                                    <div class="d-tm">
+                                                        <label id="total-absent-days">0</label>
+                                                        <span>Absent</span>
+                                                    </div>
+                                                    <div class="d-tm">
+                                                        <label id="total-working-hours">0</label>
+                                                        <span>Total Hours</span>
+                                                    </div>
+                                                    <div class="d-tm">
+                                                        <label id="break-time-hour">0</label>
+                                                        <span>Break Time/Hour</span>
+                                                    </div>
+                                                    <div class="d-tm">
+                                                        <label id="total-working-hours">0</label>
+                                                        <span>Total Working Hours</span>
+                                                    </div>
+                                                </div>
+                                                <div class="pro-middle">
+                                                    <table width="100%" cellspacing="0" cellpadding="0" id="table-attendances">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Centers</th>
+                                                                <th>Shifts</th>
+                                                                <th>Start Time</th>
+                                                                <th>End Time</th>
+                                                                <th>Total Hours</th>
+                                                                <th>&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
                                             <div role="tabpanel" class="tab-pane fade" id="calendar">
                                                     <div class="wh-content tab-common" style="min-height: unset;">
@@ -463,7 +515,7 @@
                                                 </form>
                                             </div>
                                             <div class="d-flex wait-bottom justify-content-between">
-                                                <a href="therapists.html" class="cmn-btn">← Back</a>
+                                                <a href="therapists.html" class="cmn-btn" style="margin-top: 25px;">← Back</a>
                                                 <a href="javascript:void(0);" class="cmn-btn d-none" id="profile-save">Save&nbsp;<i class="fa fa-save"></i></a>
                                             </div>
                                         </div>
@@ -489,8 +541,8 @@
 
                 <div class="modal-body">
                     <form id="form-document-upload" method="POST" enctype="multipart/form-data">
-                        <div class="document-add">
-                            <select name="document_type">
+                        <div class="document-add rate-top">
+                            <select name="document_type" id="document_type" style="width: 100%;">
                                 <option value="">Select Type of Document</option>
                                 <option value="1">Address Proof</option>
                                 <option value="2">Identity Proof Front</option>
@@ -504,7 +556,9 @@
                                 <option value="10">Others</option>
                             </select>
 
-                            <div class="expdate" id="statistics">
+                            <br />
+
+                            <div class="expdate disp-none" id="statistics">
                                 <span class="checkbox-grp">
                                     <input type="checkbox" class="chcked" id="expire-date" />
 
@@ -522,7 +576,7 @@
 
                             <label for="myfile"></label>
 
-                            <input type="file" id="file_name" name="file_name"><br>
+                            <input type="file" id="file_name" name="file_name" accept="image/png, image/gif, image/jpeg, application/pdf" /><br>
 
                             <div class="save-btn text-right">
                                 <a href="javascript:void(0)" class="cmn-btn" id="save-document"><i class="far fa-save"></i>Save</a>
@@ -531,6 +585,28 @@
 
                         <input type="hidden" name="id" value="">
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show Documents Modal -->
+    <div class="modal fade" id="show-document-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="width: auto;">
+                <div class="modal-header">
+                    <label class="document-info"></label>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <img id="document-img" />
+
+                    <label class="pdf-info disp-none">Copy this URL and paste to the browser.</label>
+                    <label id="document-pdf"></label>
                 </div>
             </div>
         </div>

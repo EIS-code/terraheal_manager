@@ -1,5 +1,5 @@
 import { Post, Get, EXCEPTION_CODE, SUCCESS_CODE, getCountries, getCities } from './networkconst.js';
-import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE, GET_THERAPIST_AVAILABILITY, GET_THERAPIST_RATING, GET_SHIFTS, SAVE_THERAPIST_AVAILABILITY } from './networkconst.js';
+import { GET_THERAPIST_INFO, UPDATE_THERAPIST, SERVICES, ADD_THERAPIST_SERVICE, REMOVE_THERAPIST_SERVICE, GET_THERAPIST_AVAILABILITY, GET_THERAPIST_RATING, GET_SHIFTS, SAVE_THERAPIST_AVAILABILITY, GET_THERAPIST_ATTENDANCE, DELETE_THERAPIST_DOCUMENT } from './networkconst.js';
 
 var tabPersonal     = '#personal',
     tabDocuments    = '#documents',
@@ -7,7 +7,10 @@ var tabPersonal     = '#personal',
     tabPortfolio    = '#portfolio',
     tabAvailability = '#availability',
     tabRatings      = '#ratings',
-    therapistId     = getQueryStringValue('id');
+    tabAttendance   = '#attendance',
+    therapistId     = getQueryStringValue('id'),
+    managerData     = getLocalManagerStorage(),
+    availabilityDatesPicker = "";
 
 const TYPE_MASSAGE = '0';
 const TYPE_THERAPY = '1';
@@ -69,9 +72,7 @@ window.addEventListener("load", function() {
         }
     });
 
-    $('#range-availability').dateRangePicker({
-        singleMonth: true
-    });
+    setAvailabilityDatePicker();
 
     setAvailabilityDate();
 
@@ -100,12 +101,78 @@ window.addEventListener("load", function() {
             getRatings($(this).val());
         }
     });
+
+    setAttendanceDate();
+
+    $('#attendance-date').on('change', function() {
+        let date = convertDateInputToUTCTimestamps($(this).val());
+
+        if ((!empty(date) && date >= 0) || empty($(this).val())) {
+            getAttendance();
+        }
+    });
+
+    $(document).on("click", ".show-attendance", function() {
+        showAttendance($(this));
+    });
+
+    $(document).on("click", ".hide-attendance", function() {
+        hideAttendance($(this));
+    });
+
+    $(document).on('click', '#document-delete', function() {
+        confirm("Are you sure want to delete this document ?", deleteDocument, [$(this).data('id')], $(this));
+    });
+
+    $('#show-document-modal').on('show.bs.modal', function (e) {
+        let loadurl      = $(e.relatedTarget).data('url'),
+            documentInfo = $(e.relatedTarget).data('alt');
+
+        $(this).find('.modal-body #document-img').prop('src', "");
+        $(this).find('.modal-header .document-info').empty();
+        $(this).find('.modal-body .pdf-info').addClass('disp-none');
+        $(this).find('.modal-body #document-pdf').empty();
+
+        if (!empty(loadurl)) {
+            let extension = getUrlExtension(loadurl).toLowerCase();
+
+            $(this).find('.modal-header .document-info').html(documentInfo);
+
+            if (extension == 'png' || extension == 'jpg' || extension == 'jpeg' || extension == 'gif') {
+                $(this).find('.modal-body #document-img').prop('src', loadurl);
+            } else {
+                $(this).find('.modal-body .pdf-info').removeClass('disp-none');
+
+                $(this).find('.modal-body #document-pdf').html(loadurl);
+            }
+        }
+    });
 });
 
 function setAvailabilityDate() {
     let currentDate = moment();
 
     $('#availability-date').val(currentDate.format("yyyy-MM"));
+}
+
+function setAvailabilityDatePicker() {
+    try {
+        availabilityDatesPicker.destroy();
+    } catch(error) {}
+
+    availabilityDatesPicker = new Lightpick({
+        field: document.getElementById('range-availability'),
+        singleDate: false,
+        inline: true,
+        format: 'YYYY-MM-DD',
+        separator: ' to '
+    });
+}
+
+function setAttendanceDate() {
+    let currentDate = moment();
+
+    $('#attendance-date').val(currentDate.format("yyyy-MM"));
 }
 
 function loadDatas(tabName, clearCache) {
@@ -118,6 +185,8 @@ function loadDatas(tabName, clearCache) {
             if (!response || !response.data || response.data.length <= 0) {
                 // showError("No records found.");
             } else {
+                $(document).find("ul#th-tabs").find('li a').css('pointer-events', 'visible');
+
                 let data = response.data;
 
                 if (data.code == SUCCESS_CODE) {
@@ -186,8 +255,9 @@ function loadDatas(tabName, clearCache) {
 
                                         html += '<div class="grp-right">';
                                             html += '<ul>';
-                                                html += '<li data-toggle="modal" data-target="#model">';
-                                                    html += '<img src="' + documents.file_name + '" alt="' + documents.doc_name + '">';
+                                                html += '<li>';
+                                                    // html += '<img src="' + documents.file_name + '" alt="' + documents.doc_name + '">';
+                                                    html += '<a href="javascript:void(0);" data-toggle="modal" data-target="#show-document-modal" data-url="' + documents.file_name + '" data-alt="' + documents.doc_name + '">Show</a>';
                                                 html += '</li>';
 
                                                 if (documents.expire_date > 0) {
@@ -215,7 +285,7 @@ function loadDatas(tabName, clearCache) {
                                         html += '</div>';
 
                                         html += '<div>';
-                                            html += '<a href="javascript:void(0);"><i class="fa fa-trash"></i></a>';
+                                            html += '<a href="javascript:void(0);" id="document-delete" data-id="' + documents.id + '"><i class="fa fa-trash"></i></a>';
                                         html += '</div>';
                                     html += '</div>';
 
@@ -234,6 +304,8 @@ function loadDatas(tabName, clearCache) {
                         $('select#rating-filters').val(TODAY);
 
                         getRatings();
+                    } else if (tabName == tabAttendance) {
+                        getAttendance();
                     } else if (tabName == tabStatistics) {
                         $('form#form-statistics').find('input[name="id"]').val(therapistId);
 
@@ -448,24 +520,46 @@ function savePersonal(form) {
 }
 
 function saveDocument() {
-    let form       = $('form#form-document-upload'),
-        formInputs = form.serializeArray(),
-        formData   = new FormData(),
-        fileName   = document.querySelector('#file_name');
+    let form         = $('form#form-document-upload'),
+        documentType = form.find('#document_type').val(),
+        formInputs   = form.serializeArray(),
+        formData     = new FormData(),
+        fileName     = document.querySelector('#file_name');
 
-    if (!empty(fileName)) {
-        formData.append("file_name", fileName.files[0]);
+    if (empty(documentType)) {
+        showError("Please select document type.");
+
+        return false;
     }
 
-    $.each(formInputs, function(key, input) {
-        if (input.name == 'expire_date') {
-            input.value = new Date(input.value).getTime();
+    if (!empty(fileName)) {
+        if (documentType == '1') {
+            formData.append("document_address_proof", fileName.files[0]);
+        } else if (documentType == '2') {
+            formData.append("document_id_passport_front", fileName.files[0]);
+        } else if (documentType == '3') {
+            formData.append("document_id_passport_back", fileName.files[0]);
+        } else if (documentType == '4') {
+            formData.append("document_insurance", fileName.files[0]);
+        } else if (documentType == '5') {
+            formData.append("document_freelancer_financial_document", fileName.files[0]);
+        } else if (documentType == '6') {
+            formData.append("document_certificates[]", fileName.files[0]); //
+        } else if (documentType == '7') {
+            formData.append("document_cv", fileName.files[0]);
+        } else if (documentType == '8') {
+            formData.append("document_reference_letter", fileName.files[0]);
+        } else if (documentType == '9') {
+            formData.append("document_personal_experience[]", fileName.files[0]); //
+        } else if (documentType == '10') {
+            formData.append("document_others[]", fileName.files[0]); //
         }
+    }
 
-        formData.append(input.name, input.value);
-    });
+    formData.append("id", therapistId);
+    formData.append("shop_id", managerData.shop_id);
 
-    Post(THERAPIST_ADD_DOCUMENT, formData, function (res) {
+    Post(UPDATE_THERAPIST, formData, function (res) {
         let data = res.data;
 
         if (data.code == EXCEPTION_CODE) {
@@ -473,6 +567,22 @@ function saveDocument() {
         } else {
             closeFileUploadModal();
 
+            showSuccess(data.msg);
+
+            loadDatas(tabDocuments, true);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function deleteDocument(documentId) {
+    Post(DELETE_THERAPIST_DOCUMENT, {'document_id' : documentId}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
             showSuccess(data.msg);
 
             loadDatas(tabDocuments, true);
@@ -752,6 +862,127 @@ function getRatings(filter, date) {
     });
 }
 
+function getAttendance() {
+    let date    = $('#attendance-date').val(),
+        element = $('#table-attendances'),
+        tbody   = '<tbody class="attendances"><tr class="except"><td colspan="7" class="text-center">No record found!</td></tr></tbody>';
+
+    if (empty(date)) {
+        setAttendanceDate();
+
+        date = $('#attendance-date').val();
+    }
+
+    date = convertDateInputToUTCTimestamps(date);
+
+    $('#attendance').find('#total-working-days').html(0);
+    $('#attendance').find('#total-present-days').html(0);
+    $('#attendance').find('#total-absent-days').html(0);
+    $('#attendance').find('#total-working-hours').html(0);
+    $('#attendance').find('#break-time-hour').html(0);
+    $('#attendance').find('#total-working-hours').html(0);
+
+    element.find('tbody').remove();
+
+    Post(GET_THERAPIST_ATTENDANCE, {'therapist_id': therapistId, "date" : date}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+
+            element.find('thead').after(tbody);
+        } else {
+            let response   = data.data,
+                customData = {};
+
+            if (!empty(response) && Object.keys(response).length > 0) {
+                $('#attendance').find('#total-working-days').html(response.totalWorkingDays);
+                $('#attendance').find('#total-present-days').html(response.presentDays);
+                $('#attendance').find('#total-absent-days').html(response.absentDays);
+                $('#attendance').find('#total-working-hours').html(response.totalHours);
+                $('#attendance').find('#break-time-hour').html(response.breakHours);
+                $('#attendance').find('#total-working-hours').html(response.totalWorkingHours);
+
+                if (!empty(response.scheduleData) && Object.keys(response.scheduleData).length > 0) {
+                    tbody = "";
+
+                    $.each(response.scheduleData, function(key, attendance) {
+                        if (empty(customData[attendance.date]) || typeof customData[attendance.date] === typeof undefined) {
+                            customData[attendance.date] = [];
+                        }
+
+                        customData[attendance.date].push(attendance);
+                    });
+
+                    $.each(customData, function(index, attendances) {
+                        tbody += '<tbody class="attendances">';
+                            $.each(attendances, function(key, attendance) {
+                                tbody += '<tr class="except">';
+                                    tbody += '<td>';
+                                        tbody += getDate(attendance.date);
+                                    tbody += '</td>';
+                                    tbody += '<td>';
+                                        tbody += attendance.shop_name;
+                                    tbody += '</td>';
+                                    tbody += '<td>';
+                                        tbody += attendance.shift_id;
+                                    tbody += '</td>';
+                                    tbody += '<td>';
+                                        tbody += getTime(attendance.start_time);
+                                    tbody += '</td>';
+                                    tbody += '<td>';
+                                        tbody += getTime(attendance.end_time);
+                                    tbody += '</td>';
+                                    tbody += '<td>';
+                                        tbody += attendance.total_hours;
+                                    tbody += '</td>';
+                                    if (key == '0') {
+                                        if (Object.values(attendances).length > 1) {
+                                            tbody += '<td>';
+                                                tbody += '<a href="javascript:void(0);" class="show-attendance">';
+                                                    tbody += '<i class="fa fa-eye"></i>';
+                                                tbody += '</a>';
+                                            tbody += '</td>';
+                                        } else {
+                                            tbody += '<td>';
+                                                tbody += '-';
+                                            tbody += '</td>';
+                                        }
+                                    } else {
+                                        tbody += '<td>';
+                                            tbody += '&nbsp;';
+                                        tbody += '</td>';
+                                    }
+                                tbody += '</tr>';
+                            });
+                        tbody += '</tbody>';
+                    });
+                }
+            }
+
+            element.find('thead').after(tbody);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function showAttendance(self) {
+    self.parents('.attendances').find('tr').not(':first').fadeIn(300);
+
+    self.find('i').attr('class', 'fa fa-eye-slash');
+
+    self.attr('class', 'hide-attendance');
+}
+
+function hideAttendance(self) {
+    self.parents('.attendances').find('tr').not(':first').fadeOut(200);
+
+    self.find('i').attr('class', 'fa fa-eye');
+
+    self.attr('class', 'show-attendance');
+}
+
 function saveAvailability(form) {
     let formInputs = form.serializeArray(),
         postData   = {};
@@ -787,6 +1018,8 @@ function saveAvailability(form) {
             showSuccess(data.msg);
 
             loadDatas(tabAvailability, true);
+
+            setAvailabilityDatePicker();
         }
     }, function (err) {
         showError("AXIOS ERROR: " + err);

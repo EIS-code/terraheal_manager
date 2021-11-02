@@ -371,47 +371,9 @@
                     <div role="tabpanel" class="tab-pane fade" id="ratings">
                         <div class="rate-pack">
                             <div class="rating-inner">
-                                <ul>
-                                    <li>
-                                        Punctuality And Presence For Reservations
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        Behavior
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        Sexual Issues
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        Hygiene
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        Left Bad / Good Review
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        Payment Issues
-                                        <div class="rating rating2">
-                                            <a href="#5" title="Give 5 stars">★</a><a href="#4" title="Give 4 stars">★</a><a href="#3" title="Give 3 stars">★</a><a href="#2" title="Give 2 stars">★</a><a href="#1" title="Give 1 star">★</a>
-                                        </div>
-                                    </li>
+                                <ul id="rating-list">
+                                    
                                 </ul>
-                                <div class="d-flex justify-content-end rate-btm">
-                                    <a href="#" class="cmn-btn" data-dismiss="modal">Submit</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -419,42 +381,42 @@
                         <div class="ap-cont">
                             <ul class="source-list">
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="0" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/internet.png" alt=""/>
                                         <h3>Internet</h3>
                                     </div>
                                 </li>
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="1" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/recommendation.png" alt=""/>
-                                        <h3>Recommedation</h3>
+                                        <h3>Recommendation</h3>
                                     </div>
                                 </li>
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="2" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/flyer.png" alt=""/>
                                         <h3>Flyer</h3>
                                     </div>
                                 </li>
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="3" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/publicity.png" alt=""/>
                                         <h3>Publicity</h3>
                                     </div>
                                 </li>
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="4" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/hotel.png" alt=""/>
                                         <h3>Hotel</h3>
                                     </div>
                                 </li>
                                 <li>
-                                    <input type="radio" name="sc"/>
+                                    <input type="radio" name="source" value="5" disabled="true" />
                                     <div class="sc-cont">
                                         <img src="images/bychance.png" alt=""/>
                                         <h3>By Chance</h3>
@@ -475,31 +437,15 @@
                                         <th>Returned</th>
                                     <tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>22/8/2020</td>
-                                        <td>Mobile</td>
-                                        <td>Terra Heal Massage Center - Room26</td>
-                                        <td>
-                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>25/8/2020</td>
-                                        <td>Key</td>
-                                        <td>Terra Heal Massage Center - Room32</td>
-                                        <td>
-                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
-                                        </td>
-                                        <td>
-                                            <div class="checkbox-grp"><input type="checkbox" name=""><label></label></div>
-                                        </td>
-                                    </tr>
+                                <tbody id="forgotten-objects">
+                                    
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="text-right">
+                            <a class="cmn-btn add" href="#" data-toggle="modal" data-target="#forgotten-object-modal">
+                                Add New
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -515,6 +461,7 @@
     <div id="details-modal-static">
         
     </div>
+
     <!-- location Modal -->
     <div class="modal fade" id="location-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -692,6 +639,68 @@
                             <a href="javascript:void(0);" class="btn cmn-btn bg-blue" style="float: right;height: 44px;padding: 10px 20px;" id="submit-passport-documents"><i class="fa fa-save"></i>
                                 &nbsp;Submit
                             </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- location Modal -->
+    <div class="modal fade" id="forgotten-object-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Add New Forgotten Object
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" id="form-forgotten-object">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="grp-field">
+                                    <label>Forgotten Object : </label>
+                                    <div class="grp-right">
+                                        <input type="text" name="forgotten_object" />
+                                    </div>
+                                </div>
+                                <div class="grp-field">
+                                    <label>Location : </label>
+                                    <div class="grp-right">
+                                        <select name="room_id">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grp-field">
+                                    <label>Client Informed : </label>
+                                    <div>
+                                        <div class="checkbox-grp">
+                                            <input type="checkbox" name="is_client_informed" />
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grp-field">
+                                    <label>Send email to Client : </label>
+                                    <div>
+                                        <div class="checkbox-grp">
+                                            <input type="checkbox" name="is_send_email" />
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grp-field">
+                                    <div class="grp-right" style="text-align: right;">
+                                        <a class="v-all cmn-btn" id="save-forgotten-object" href="javascript:void(0);">
+                                            Save
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>

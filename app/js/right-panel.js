@@ -555,6 +555,8 @@ function getPacks(page) {
                     $('#modal-packs').modal('show');
                 }
             } else if (element) {
+                showError(languages.NO_RECORD_FOUND);
+
                 element.empty().html('');
             }
         }

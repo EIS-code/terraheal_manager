@@ -37,6 +37,12 @@ export const UPDATE_STAFF = BASEURL_MANAGER + "/staff/update";
 export const UPDATE_STAFF_STATUS = BASEURL_MANAGER + "/staff/update/status";
 export const GET_THERAPIST_RATING = BASEURL_MANAGER + "/therapist/ratings/get";
 export const SAVE_THERAPIST_AVAILABILITY = BASEURL_MANAGER + "/therapist/availability/add";
+export const DELETE_THERAPIST_DOCUMENT = BASEURL_MANAGER + "/document/delete";
+export const ADD_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/addForgotObject";
+export const GET_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/getForgotObjects";
+export const RETURN_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/returnForgotObject";
+export const EMAIL_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/sendEmailToClient";
+export const INFORM_FORGOTTEN_OBJECT_TO_CLIENT = BASEURL_MANAGER + "/clients/inform";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
@@ -73,12 +79,14 @@ export const THERAPIST_TIMETABLE = BASEURL + "/waiting/getTimeTable";
 export const UPDATE_THERAPIST = BASEURL + "/therapist/profile/update";
 export const GET_THERAPIST_AVAILABILITY = BASEURL + "/therapist/myAvailabilities";
 export const ASSIGN_THERAPIST           = BASEURL + "/waiting/assignTherapist";
+export const GET_THERAPIST_ATTENDANCE = BASEURL + "/therapist/myAttendence";
 
 // Shop routes
 export const SERVICES = BASEURL_SHOP + "/getServices";
 export const SESSIONS = BASEURL_SHOP + "/sessions/get";
 export const PREFERENCES = BASEURL_SHOP + "/getPreferences";
 export const GET_SHIFTS  = BASEURL_SHOP + "/shifts/get";
+export const GET_SHOP_LOCATION  = BASEURL_SHOP + "/location/get";
 
 const CancelToken = axios.CancelToken;
 
