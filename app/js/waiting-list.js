@@ -1008,8 +1008,8 @@ function buildTherapistData()
                 tbody += '<tr>';
 
                 let rowDay    = moment(row.date).format('YYYY-MM-DD'),
-                    startTime = new Date(row.therapist_working_schedule_time.start_time).getUTCHours(),
-                    endTime   = new Date(row.therapist_working_schedule_time.end_time).getUTCHours(),
+                    startTime = !empty(row.therapist_working_schedule_time) ? new Date(row.therapist_working_schedule_time.start_time).getUTCHours() : "",
+                    endTime   = !empty(row.therapist_working_schedule_time) ? new Date(row.therapist_working_schedule_time.end_time).getUTCHours() : "",
                     therapist = row.therapist;
 
                 $.each(totalDays, function(key, day) {

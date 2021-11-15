@@ -415,7 +415,7 @@ function activeServices()
 }
 
 function getTherapists() {
-    let postData = {};
+    let postData = {"filter": "1"};
 
     Post(THERAPISTS, postData, function (res) {
         if (res.data.code == SUCCESS_CODE) {
@@ -423,11 +423,11 @@ function getTherapists() {
             var myArray = res.data.data;
 
             $.each( myArray, function( i, item ) {
-                var newListItem = "<li>" + "<input class=\"select-input\" type=\"checkbox\" name=\"therapist[]\" value=\"" + item.therapistId + "\" data-name=\"" + item.therapistName + "\" />"+
+                var newListItem = "<li>" + "<input class=\"select-input\" type=\"checkbox\" name=\"therapist[]\" value=\"" + item.therapist_id + "\" data-name=\"" + item.therapist_name + "\" />"+
                 "<div class=\"sl-cont\">"+
-                "<span class=\"name\">"+item.therapistName+"</span>"+
+                "<span class=\"name\">"+item.therapist_name+"</span>"+
                 "<div class=\"th-image\">"+
-                "<img src="+item.therapistPhoto+" alt=\"\"/>"+
+                "<img src="+item.therapist_photo+" alt=\"\"/>"+
                 "</div>"+
                 "<div class=\"avail\">" + getAvailableTime(item.available) + "</div>"+
                 "</div>"+ "</li>";

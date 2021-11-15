@@ -220,6 +220,10 @@ function getLocalManagerStorage()
     return (managerData) ? JSON.parse(managerData) : {};
 }
 
+function isLoggedIn() {
+    return (!empty(getLocalManagerStorage()) && Object.keys(getLocalManagerStorage()).length > 0);
+}
+
 function clearLocalStorage(key)
 {
     localStorage.removeItem(key);
@@ -881,7 +885,7 @@ $(document).ready(function() {
             $tabs.tabs('select', rel);
         }
 
-        if ($(this).attr("href") == waiting-list.html) {
+        if ($(this).attr("href") == "waiting-list.html") {
             return true;
         }
 

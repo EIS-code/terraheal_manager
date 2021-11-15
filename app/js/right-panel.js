@@ -1,5 +1,5 @@
-import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS, DASHBOARD_UPDATE_NEWS, DASHBOARD_ADD_NEWS, DASHBOARD_NEWS_DETAILS, DASHBOARD_GET_VOUCHERS, SEARCH_PACKS } from './networkconst.js';
-import { Post, redirect, SUCCESS_CODE } from './networkconst.js';
+import { DASHBOARD_RIGHT_SIDEBAR, DASHBOARD_GET_NEWS, DASHBOARD_DELETE_NEWS, DASHBOARD_UPDATE_NEWS, DASHBOARD_ADD_NEWS, DASHBOARD_NEWS_DETAILS, DASHBOARD_GET_VOUCHERS, SEARCH_PACKS, GET_UNREAD_NOTIFICATION } from './networkconst.js';
+import { Post, Get, redirect, SUCCESS_CODE } from './networkconst.js';
 
 var charts = [], ckEditor = [];
 
@@ -66,6 +66,14 @@ window.addEventListener("load", function() {
     $('#view-all-vouchers').on('click', getVouchers);
 
     $('#view-all-packs').on('click', function() { getPacks(1); });
+
+    $(".notification").on("click", function() {
+        $("#notify-model").modal("show");
+
+        $(".notification").find(".counts").html(0);
+    });
+
+    getNotifications();
 });
 
 function initCKEditor(id) {
@@ -563,4 +571,38 @@ function getPacks(page) {
     }, function (err) {
         showError("AXIOS ERROR: " + err);
     });
+}
+
+function getNotifications() {
+    return Get(GET_UNREAD_NOTIFICATION, {}, function (res) {
+        if (res.data.code == SUCCESS_CODE) {
+            let data = res.data.data;
+
+            appendNotification(data);
+        } else {
+            showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function appendNotification(datas) {
+    let li = "";
+
+    $.each(datas, function(index, data) {
+        let createdAt = JSON.parse(data.payload);
+
+        li += '<li>';
+            li += '<figure><img src="images/placeholder.png" alt="notify"></figure>';
+
+            li += '<p>' + data.title + '<p>';
+
+            li += '<span class="note-date">';
+                li += getDate(createdAt.date);
+            li += '</span>';
+        li += '</li>';
+    });
+
+    $(document).find("#notification-list").append(li);
 }

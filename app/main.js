@@ -1,5 +1,7 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const { setup: setupPushReceiver } = require('electron-push-receiver')
+const { ipcMain } = require('electron');
 
 // this should be placed at top of main.js to handle setup events quickly
 if (handleSquirrelEvent(app)) {
@@ -91,6 +93,13 @@ function createWindow () {
     // Maximized window.
     mainWindow.maximize();
     mainWindow.show();
+
+    // Initialize electron-push-receiver component. Should be called before 'did-finish-load'
+    setupPushReceiver(mainWindow.webContents);
+
+    ipcMain.on('showWindow', function () {
+        mainWindow.show();
+    });
 }
 
 // This method will be called when Electron has finished

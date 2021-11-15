@@ -1,7 +1,7 @@
-const PASSWORD_SALT = "shivRam@1434"
-const BASEURL = "http://35.180.202.175";
-const BASEURL_MANAGER = BASEURL + "/manager";
-const BASEURL_SHOP = BASEURL + "/shops";
+const PASSWORD_SALT = localStorage.getItem('PASSWORD_SALT');
+const BASEURL = localStorage.getItem('BASEURL');
+const BASEURL_MANAGER = localStorage.getItem('BASEURL_MANAGER');
+const BASEURL_SHOP = localStorage.getItem('BASEURL_SHOP');
 
 export const SUCCESS_CODE     = 200;
 export const ERROR_CODE       = 401;
@@ -43,6 +43,7 @@ export const GET_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/getForgotObjects
 export const RETURN_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/returnForgotObject";
 export const EMAIL_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/sendEmailToClient";
 export const INFORM_FORGOTTEN_OBJECT_TO_CLIENT = BASEURL_MANAGER + "/clients/inform";
+export const GET_UNREAD_NOTIFICATION = BASEURL_MANAGER + "/notification/unread";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";

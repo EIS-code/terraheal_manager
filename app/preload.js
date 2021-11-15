@@ -6,8 +6,18 @@ window.addEventListener('DOMContentLoaded', () => {
     /* Use {debug: true} like require('dotenv').config({debug: true}); for get include errors. */
     require('dotenv').config();
 
+    require('./renderer.js');
+
     try {
-        localStorage.setItem('ENV_APP_ENV', process.env.APP_ENV);
+        let envPrefix = 'ENV.';
+
+        localStorage.clear();
+
+        $.each(process.env, function(key, value) {
+            if (key.indexOf(envPrefix) != -1) {
+                localStorage.setItem(key.split(envPrefix)[1], value);
+            }
+        });
     } catch(e) {
         console.log(e);
     }

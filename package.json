@@ -28,12 +28,13 @@
   "devDependencies": {
     "electron": "^8.5.5",
     "electron-builder": "~22.10.5",
-    "electron-packager": "^15.3.0",
+    "electron-packager": "^15.4.0",
     "electron-winstaller": "^5.0.0",
     "electron-wix-msi": "^2.2.0"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
+    "electron-push-receiver": "^1.2.4",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
