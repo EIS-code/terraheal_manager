@@ -1,6 +1,6 @@
 
 import { Post, Get, searchClients, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE } from './networkconst.js';
-import { THERAPISTS, SERVICES, PREFERENCES, SESSIONS, ADD_CLIENT, ADD_NEW_BOOKING_SHOP, SEARCH_CLIENT } from './networkconst.js';
+import { THERAPISTS, SERVICES, PREFERENCES, SESSIONS, ADD_CLIENT, ADD_NEW_BOOKING_SHOP, SEARCH_CLIENT, GET_USER_CARD_DETAILS, ADD_USER_CARD_DETAILS } from './networkconst.js';
 
 var selectedServices  = [],
     clientIds         = [],
@@ -711,6 +711,69 @@ function buildClientForm()
     }
 }
 
+function selectCard()
+{
+    let selectedClients = $('#client_id').val() != "" ? JSON.parse($('#client_id').val()) : [];
+
+    Post(GET_USER_CARD_DETAILS, {"user_id": selectedClients}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            let tbody   = '',
+                element = $("#client-cards-modal").find("#card-list");
+
+            $.each(data.data, function(index, card) {
+                tbody += '<tr>';
+                    tbody += '<td class="text-left">';
+                        tbody += card.holder_name;
+                    tbody += '</td>';
+
+                    tbody += '<td class="text-left">';
+                        tbody += card.card_number;
+                    tbody += '</td>';
+
+                    tbody += '<td class="text-left">';
+                        tbody += card.exp_month + "/" + card.exp_year;
+                    tbody += '</td>';
+
+                    let checked = card.is_default == "1" ? "checked" : "";
+                    tbody += '<td>';
+                        tbody += '<input type="radio" name="is_default" ' + checked + ' />';
+                    tbody += '</td>';
+                tbody += '</tr>';
+            });
+
+            element.empty();
+            element.html(tbody);
+
+            $("#client-cards-modal").modal("show");
+
+            $("#add-new-card").unbind().on("click", function() {
+                addNewCard();
+            });
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function addNewCard()
+{
+    Post(ADD_USER_CARD_DETAILS, {"user_id": selectedClients}, function (res) {
+        let data = res.data;
+
+        if (data.code == EXCEPTION_CODE) {
+            showError(data.msg);
+        } else {
+            
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
 function addBooking()
 {
     let formInputs      = $('.booking-form').serializeArray(),
@@ -831,7 +894,7 @@ function getClients(searchValue)
         return false;
     }
 
-    searchClients(searchValue).then(
+    searchClients({"search_val" : searchValue}).then(
         function(response) {
             if (!response || !response.data || response.data.length <= 0) {
                 // showError("No records found.");
@@ -852,7 +915,7 @@ function getClients(searchValue)
             }
         },
         function(error) {
-            showError("AXIOS ERROR: " + err);
+            showError("AXIOS ERROR: " + error);
         }
     );
 }

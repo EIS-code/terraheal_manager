@@ -2689,3 +2689,7 @@ width: 100% !important;}
 .rate-hov-cont > ul span{ min-width: 240px; margin-top: 3px; margin-bottom: 3px; text-align: left; color:#666; }
 .rating-inner > ul > li:hover{ background:#29B6F6; color:#fff;}
 .rating-inner > ul > li:hover .rating > a{ color:#FF9900; }
+
+.text-left {
+    text-align: left;
+}

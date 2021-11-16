@@ -44,6 +44,8 @@ export const RETURN_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/returnForgotO
 export const EMAIL_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/sendEmailToClient";
 export const INFORM_FORGOTTEN_OBJECT_TO_CLIENT = BASEURL_MANAGER + "/clients/inform";
 export const GET_UNREAD_NOTIFICATION = BASEURL_MANAGER + "/notification/unread";
+export const GET_USER_CARD_DETAILS = BASEURL_MANAGER + "/user/card/details/get";
+export const ADD_USER_CARD_DETAILS = BASEURL_MANAGER + "/user/card/details/save";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
