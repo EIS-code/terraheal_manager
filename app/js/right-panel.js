@@ -574,7 +574,9 @@ function getPacks(page) {
 }
 
 function getNotifications() {
-    return Get(GET_UNREAD_NOTIFICATION, {}, function (res) {
+    let managerData = getLocalManagerStorage();
+
+    return Post(GET_UNREAD_NOTIFICATION, {"user_id": managerData.id}, function (res) {
         if (res.data.code == SUCCESS_CODE) {
             let data = res.data.data;
 

@@ -12,6 +12,19 @@ $(document).ready(function() {
   });
 
   var clockInterval = setInterval(function() { clock(clockInterval); }, 1000);
+
+    $('.main-menu').slicknav(
+        defaults = {
+            label: '',
+            duplicate: true,
+            duration: 200,
+            easingOpen: 'swing',
+            easingClose: 'swing',
+            closedSymbol: '&#9658;',
+            openedSymbol: '&#9660;',
+            prependTo: '.navigation',
+        }
+    );
 });
 
 
@@ -428,10 +441,16 @@ function checkBookingForm(tab)
             return false; */
         }
     } else if (tab == 4) {
-        let clientId = $("#client_id").val();
+        let clientId  = $("#client_id").val(),
+            clientIds = JSON.parse(clientId);
 
         if (typeof clientId === typeof undefined || clientId == '' || clientId == null) {
             showError("Please select user or add guest.");
+
+            return false;
+        } else if (Object.values(clientIds).length > 1) {
+            // Have to set only one user as conflict in payment user cards.
+            showError("Please select only one user.");
 
             return false;
         }
@@ -479,7 +498,10 @@ function autoComplete(value, data, callback, args, clientIds)
 
         $("#autocomplete").val(input.data('value'));
 
+        clientIds = [];
+
         clientIds.push(input.val());
+
         $('#client_id').val(JSON.stringify(clientIds));
 
         closeAllLists();

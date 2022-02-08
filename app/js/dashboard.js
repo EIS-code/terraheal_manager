@@ -27,6 +27,7 @@ function getSalesInsights(value, title) {
 
             $("#total-bookings").empty().html(data.allBookings);
             $("#cancelled-bookings").empty().html(data.cancelBooking);
+            $("#payment-received").empty().html(data.paymentRecevied);
 
             drawUpcomingAppointmentsChart(data);
 

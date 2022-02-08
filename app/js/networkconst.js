@@ -45,7 +45,8 @@ export const EMAIL_FORGOTTEN_OBJECT = BASEURL_MANAGER + "/clients/sendEmailToCli
 export const INFORM_FORGOTTEN_OBJECT_TO_CLIENT = BASEURL_MANAGER + "/clients/inform";
 export const GET_UNREAD_NOTIFICATION = BASEURL_MANAGER + "/notification/unread";
 export const GET_USER_CARD_DETAILS = BASEURL_MANAGER + "/user/card/details/get";
-export const ADD_USER_CARD_DETAILS = BASEURL_MANAGER + "/user/card/details/save";
+export const ADD_USER_CARD_DETAILS = BASEURL_MANAGER + "/card/details/save";
+export const ADD_USER_DEFAULT_CARD = BASEURL_MANAGER + "/user/default/card/save";
 
 // Other routes
 export const ONGOING = BASEURL + "/waiting/getOngoingMassage";
@@ -83,6 +84,7 @@ export const UPDATE_THERAPIST = BASEURL + "/therapist/profile/update";
 export const GET_THERAPIST_AVAILABILITY = BASEURL + "/therapist/myAvailabilities";
 export const ASSIGN_THERAPIST           = BASEURL + "/waiting/assignTherapist";
 export const GET_THERAPIST_ATTENDANCE = BASEURL + "/therapist/myAttendence";
+export const ADD_SERVICE_TIME = BASEURL + "/waiting/service-time/add";
 
 // Shop routes
 export const SERVICES = BASEURL_SHOP + "/getServices";

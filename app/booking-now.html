@@ -13,8 +13,14 @@
     });
 </script>
 
-<script type="module" src="js/booking-now.js" async></script>
 <script type="text/javascript" src="js/owl.carousel.min.js" async></script>
+<script src="https://js.stripe.com/v3/" async></script>
+<script type="text/javascript" async>
+    setTimeout(function() {
+        stripePayment = Stripe('pk_test_4bLip6592JWXJBQFdKFiTcs500nDITdqbX');
+    }, 1000);
+</script>
+<script type="module" src="js/booking-now.js" async></script>
 
 <body class="manager-dashboard" style="display: none;">
     <div class="d-flex main-flex">
@@ -388,10 +394,10 @@
                         <table class="norm-blue" width="100%" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left;">Holder Name</th>
-                                    <th style="text-align: left;">Card Number</th>
-                                    <th style="text-align: left;">Expiry</th>
-                                    <th style="text-align: center;">Is Default</th>
+                                    <th class="text-left">Holder Name</th>
+                                    <th class="text-left">Card Number</th>
+                                    <th class="text-left">Expiry</th>
+                                    <th class="text-left">Is Default</th>
                                 </tr>
                             </thead>
                             <tbody id="card-list">
@@ -400,7 +406,40 @@
                         </table>
 
                         <br />
-                        <a href="javascript:void(0);" class="cmn-btn" id="add-new-card" style="float: right;">Add New</a>
+                        <a href="javascript:void(0);" class="cmn-btn" id="create-booking" style="float: right;">Create Booking</a>
+                        <a href="javascript:void(0);" class="cmn-btn" id="add-new-card" style="float: right;margin-right: 10px;background: #29B6F6;">Add New</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="client-cards-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Add Card
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="client-new-card-form">
+                            <div class="person-inners">
+                                <div class="p-wrap" style="width: 100% !important;">
+                                    <input type="text" name="card_holder_name" placeholder="Card Holder Name" />
+                                </div>
+                                <div class="p-wrap" id="card-elements" style="width: 100% !important;">
+                                    
+                                </div>
+                                <div class="p-wrap" style="width: 100% !important;">
+                                    <label id="card-errors"></label>
+                                </div>
+                                <div class="person-bottom text-right">
+                                    <a href="#" class="cmn-btn" id="client-cards-save"><i class="far fa-save"></i> Save</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

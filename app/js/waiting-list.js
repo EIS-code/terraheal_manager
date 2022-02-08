@@ -1,5 +1,5 @@
 import { ONGOING, WAITING, CONFIRM_BOOKING, GET_ALL_THERAPISTS, GET_ROOMS, ASSIGN_ROOMS, DOWNGRADE_BOOKING, CANCEL_BOOKING, END_SERVICE_TIME, START_SERVICE_TIME, PRINT_BOOKING_DETAILS, ASSIGN_THERAPIST } from './networkconst.js';
-import { Post, Get, redirect, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE, THERAPIST_TIMETABLE } from './networkconst.js';
+import { Post, Get, redirect, SUCCESS_CODE, ERROR_CODE, EXCEPTION_CODE, THERAPIST_TIMETABLE, ADD_SERVICE_TIME } from './networkconst.js';
 
 var backFile      = getUrl(window.location.href, 'backfile'),
     intervalArray = {};
@@ -371,7 +371,7 @@ function GetWaiting(type, filter)
                 let specialNotes = (item.notes != '' && item.notes != null) ? item.notes : false;
 
                 if (item.therapistName == null || item.therapistName == '') {
-                    therapistName="<td class=\"text-center\"><span class=\"th-sp\"><span class=\"ed-icon\"><a href=\"#\" class=\"open-model\" data-target=\"#assign-therapist-modal\" data-id=" + item.booking_info_id + " data-type=" + type + "><img src=\"images/girl.png\" alt=\"\"/></a></span></span></td>" 
+                    therapistName="<td class=\"text-center\"><span class=\"th-sp\"><span class=\"ed-icon\"><a href=\"#\" class=\"open-model\" data-target=\"#assign-therapist-modal\" data-id=" + item.booking_massage_id + " data-type=" + type + "><img src=\"images/girl.png\" alt=\"\"/></a></span></span></td>" 
                 } else {
                     therapistName="<td class=\"text-center\"><span class=\"th-sp\">"+item.therapistName+"<span class=\"ed-icon\"></span></span></td>" 
                 }
@@ -380,7 +380,7 @@ function GetWaiting(type, filter)
  
                 var newListItem = "<tr>"+
                     "<td><span class=\"user-icon\"><img src=\"images/double-user.png\" /></span>"+item.client_name+"</td>"+
-                    "<td>" + serviceName + " ("+item.massage_duration+")</td>"+
+                    "<td><div class='main-time'><span class='time-new'><i class='far fa-clock'></i></span><div class='hidden-timer'><label>Enter Start Time</label><div class='input-group' data-id='" + item.booking_massage_id + "' id='clockpicker-" + item.booking_massage_id + "'><span class='input-group-addon'><i class='far fa-clock'></i></span><input type='text' class='form-control' value='" + getTime(item.massage_start_time) + "'></div></div></div>" + serviceName + " ("+item.massage_duration+")</td>"+
                     "<td>"+getTime(item.massage_start_time)+" -"+getTime(item.massage_end_time)+"</td>"+
                     therapistName+
                     "<td class=\"text-center\"><span>" + (item.roomName ? item.roomName : '<span class="as-room"><a href="#" class="open-model" data-target="#assign-rooms-modal" data-id="' + item.booking_massage_id + '" data-type="' + type + '">00</a></span>') + "</span></td>"+
@@ -395,6 +395,15 @@ function GetWaiting(type, filter)
                 "</tr>";
              
                 $(".waiting-" + type).append(newListItem);
+
+                $('#clockpicker-' + item.booking_massage_id).clockpicker({
+                    donetext: 'Done',
+                    afterDone: function() {
+                        let clockPickerElement = $('#clockpicker-' + item.booking_massage_id);
+
+                        addServiceTime(clockPickerElement, type);
+                    }
+                });
 
                 $('.confirm_booking').unbind().change(function() {
                     if (this.checked) {
@@ -464,6 +473,14 @@ function GetWaiting(type, filter)
                 $('#details-modal-static').append(detailsModel);
             });
 
+            $(".time-new").unbind().on("click", function() {
+                $(".main-time").find(".hidden-timer").fadeOut();
+
+                if (!$(this).parent(".main-time").find(".hidden-timer").is(":visible")) {
+                    $(this).parent(".main-time").find(".hidden-timer").slideToggle("slow");
+                }
+            });
+
             $(document).find(".open-model").on("click", function() {
                 $($(this).data('target')).attr('data-id', $(this).data('id'));
 
@@ -488,6 +505,38 @@ function GetWaiting(type, filter)
 
         } else {
             showError(res.data.msg);
+        }
+    }, function (err) {
+        showError("AXIOS ERROR: " + err);
+    });
+}
+
+function addServiceTime(clockPickerElement, type) {
+    let bookingMassageId = clockPickerElement.data("id"),
+        elementValue     = clockPickerElement.find("input").get(0).value;
+
+    return confirm("Are you sure want to update service time ?", apiServiceTime, [bookingMassageId, elementValue, type], clockPickerElement);
+}
+
+function apiServiceTime(bookingMassageId, serviceTime, type)
+{
+    $(".main-time").find(".hidden-timer").fadeOut();
+
+    serviceTime = convertTimeInputToUTCTimestamps(serviceTime);
+
+    let postData = {
+        "booking_massage_id": bookingMassageId,
+        "service_start_time": serviceTime
+    };
+
+    Post(ADD_SERVICE_TIME, postData, function (res) {
+        let data = res.data;
+
+        if (data.code == ERROR_CODE) {
+            showError(data.msg);
+        } else {
+            GetOnGoing(type);
+            GetWaiting(type);
         }
     }, function (err) {
         showError("AXIOS ERROR: " + err);
@@ -612,7 +661,7 @@ function assignRoom(bookingMassageId, roomId, type)
 function assignTherapist(bookingInfoId, therapistId, type)
 {
     let postData = {
-        "booking_info_id": bookingInfoId,
+        "booking_massage_id": bookingInfoId,
         "therapist_id": therapistId
     };
 
